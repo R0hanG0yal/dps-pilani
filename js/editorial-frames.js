@@ -1435,8 +1435,10 @@ void main() {
 
     function openMenu() {
       overlay.removeAttribute('hidden');
-      overlay.offsetHeight; // trigger reflow
-      overlay.classList.add('active');
+      overlay.style.display = 'flex';
+      requestAnimationFrame(function () {
+        overlay.classList.add('active');
+      });
       document.body.classList.add('dps-menu-active');
       document.querySelectorAll('#dpsMegaMenuTrigger, .dps-mega-trigger-pill').forEach(function (btn) {
         btn.classList.add('is-open');
@@ -1470,8 +1472,9 @@ void main() {
       setTimeout(function () {
         if (!overlay.classList.contains('active')) {
           overlay.setAttribute('hidden', '');
+          overlay.style.display = 'none';
         }
-      }, 350);
+      }, 220);
     }
 
     function toggleMenu(e) {

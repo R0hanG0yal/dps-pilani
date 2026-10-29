@@ -343,6 +343,8 @@
     // If already seen in this session or prefers reduced motion, dismiss immediately
     if (prefersReducedMotion || sessionStorage.getItem(SESSION_KEY)) {
       gate.classList.add('gate-open', 'gate-done');
+      gate.style.pointerEvents = 'none';
+      document.body.style.overflow = '';
       if (gate.parentNode) gate.remove();
       startHero();
       return;
@@ -362,7 +364,7 @@
 
     // Smooth buttery 60fps loading progress bar
     const startTime = performance.now();
-    const loadingDuration = 900; // 900ms smooth fill
+    const loadingDuration = 700; // Fast smooth fill
 
     function stepLoading(now) {
       if (isOpening) return;
@@ -383,20 +385,20 @@
       if (isOpening) return;
       isOpening = true;
       setProgress(100);
+      gate.style.pointerEvents = 'none';
+      document.body.style.overflow = '';
 
       if (status) status.textContent = "Welcome to Durga Public School";
 
-      setTimeout(function () {
-        gate.classList.add('gate-open');
-        document.body.style.overflow = '';
-        setTimeout(startHero, 450);
+      gate.classList.add('gate-open');
+      setTimeout(startHero, 250);
 
-        // Remove from DOM after doors part
-        setTimeout(function () {
-          gate.classList.add('gate-done');
-          if (gate.parentNode) gate.remove();
-        }, 1250);
-      }, 260);
+      // Remove from DOM after doors part
+      setTimeout(function () {
+        gate.classList.add('gate-done');
+        if (gate.parentNode) gate.remove();
+        document.body.style.overflow = '';
+      }, 650);
     };
 
     if (skipBtn) {
@@ -412,7 +414,10 @@
     });
 
     // Safety fallback
-    setTimeout(openGate, 2400);
+    setTimeout(function () {
+      document.body.style.overflow = '';
+      openGate();
+    }, 1200);
   }
 
   function initRevealAnimations() {
@@ -519,7 +524,7 @@
 
   // 11. LAYERED HERO PARALLAX (depth drift on scroll, rAF-throttled)
   function initHeroParallax() {
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion || window.innerWidth <= 768) return;
     const stage = document.querySelector('.hero-visual-stage');
     if (!stage) return;
     const layers = [
@@ -931,6 +936,13 @@
     initMobileCategoryDrawer();
     initLiveSiteConfig();
     initAdminShortcut();
+
+    // Absolute mobile scrolling guarantee: Ensure body is never stuck in overflow: hidden
+    setTimeout(function () {
+      if (!document.body.classList.contains('dps-menu-active') && !document.querySelector('.dageroz-modal.active')) {
+        document.body.style.overflow = '';
+      }
+    }, 350);
   // 15. LIVE SITE CONFIGURATION SYNCHRONIZER (ADMIN OVERRIDES)
   function initLiveSiteConfig() {
     try {

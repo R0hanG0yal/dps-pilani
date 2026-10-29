@@ -4753,11 +4753,17 @@
   transition: opacity 0.6s ease, visibility 0.6s ease;
 }
 
+.dps-gate-loader.gate-open,
+.dps-curtain-loader.gate-open,
+.dps-gate-loader.gate-done,
+.dps-curtain-loader.gate-done {
+  pointer-events: none !important;
+}
+
 .dps-gate-loader.gate-done,
 .dps-curtain-loader.gate-done {
   opacity: 0 !important;
   visibility: hidden !important;
-  pointer-events: none !important;
 }
 
 /* ---------------------------------------------------------
@@ -9261,9 +9267,26 @@ details.apple-expandable-item[open] > summary::after {
   .dps-mega-overlay {
     z-index: 99995 !important;
     padding: 12px 10px !important;
-    display: flex !important;
     align-items: flex-start !important;
     justify-content: center !important;
+  }
+
+  .dps-mega-overlay:not(.active) {
+    display: none !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+  }
+
+  .dps-mega-overlay.active {
+    display: flex !important;
+    pointer-events: auto !important;
+    visibility: visible !important;
+  }
+
+  .dps-mega-backdrop {
+    background: rgba(18, 4, 11, 0.72) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
   }
 
   .dps-mega-card {
@@ -9276,18 +9299,19 @@ details.apple-expandable-item[open] > summary::after {
     max-width: 460px !important;
     max-height: calc(100vh - 110px) !important;
     border-radius: 28px !important;
-    background: linear-gradient(165deg, rgba(254, 250, 244, 0.96) 0%, rgba(248, 241, 230, 0.92) 50%, rgba(251, 238, 243, 0.90) 100%) !important;
-    -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
-    backdrop-filter: blur(28px) saturate(200%) !important;
+    background: #FAF6ED !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
     border: 1px solid rgba(255, 255, 255, 0.85) !important;
     border-top: 1.5px solid rgba(255, 255, 255, 0.98) !important;
     border-bottom: 1px solid rgba(217, 184, 138, 0.45) !important;
-    box-shadow: 0 24px 70px rgba(46, 8, 21, 0.22), inset 0 1px 2px rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28) !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
     margin: 0 auto !important;
     transform-origin: top center !important;
-    transition: transform 0.36s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease !important;
+    transition: transform 0.20s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.16s ease !important;
+    will-change: transform, opacity;
   }
 
   .dps-mega-overlay.active .dps-mega-card {
@@ -9606,43 +9630,37 @@ details.apple-expandable-item[open] > summary::after {
    Eliminates multi-pass GPU blur bottlenecks, enables 60/120Hz smooth scrolling
    ========================================================================= */
 @media (max-width: 768px) {
-  /* 1. Restore native touch inertia physics on mobile */
-  html, body {
-    scroll-behavior: auto !important;
+  /* 1. Fully unhindered native touch scrolling on mobile */
+  html {
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
     -webkit-overflow-scrolling: touch !important;
-    overscroll-behavior-y: none;
+    height: auto !important;
+    min-height: 100% !important;
+    scroll-behavior: auto !important;
   }
 
-  /* 2. Remove GPU-saturating backdrop-filter on scrolling body cards */
-  .card:not(.dps-mega-card),
-  .metric-card,
-  .feature-card,
-  .facility-card,
-  .wing-card,
-  .stream-card,
-  .philosophy-card,
-  .scrapbook-polaroid,
-  .scrapbook-badge-meta,
-  .hero-float-card,
-  .hero-rank-card,
-  .hero-stat-card,
-  .editorial-frame,
-  .quote-block,
-  .faq-card,
-  .curriculum-card,
-  .founder-card,
-  .quick-enquiry-card,
-  .stream-box,
-  .stage-card,
-  .academic-card,
-  .scrapbook-frame-card,
-  .valance-swag {
+  body {
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    height: auto !important;
+    min-height: 100% !important;
+    position: relative !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* 2. Completely eliminate GPU-saturating backdrop-filters on all mobile elements */
+  *,
+  *::before,
+  *::after {
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
   }
 
-  /* 3. Solidify backgrounds with lightweight luxury tint (looks identical, 0 GPU cost) */
-  .card:not(.card-wine):not(.dps-mega-card),
+  /* 3. Solidify backgrounds with lightweight luxury champagne tint (0 GPU shader overhead) */
+  .card:not(.card-wine),
   .metric-card,
   .facility-card,
   .wing-card,
@@ -9650,6 +9668,28 @@ details.apple-expandable-item[open] > summary::after {
   .philosophy-card,
   .scrapbook-frame-card {
     background: #FFFCF7 !important;
+  }
+
+  .dps-mega-card {
+    background: #FAF6ED !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28) !important;
+  }
+
+  .dps-mega-backdrop {
+    background: rgba(18, 4, 11, 0.72) !important;
+  }
+
+  .header-left-group {
+    background: #FAF6ED !important;
+  }
+
+  .mobile-bottom-dock {
+    background: rgba(254, 250, 244, 0.96) !important;
+  }
+
+  .mega-col-heading,
+  .mega-link-list {
+    background: #FFFFFF !important;
   }
 
   /* 4. Disable continuous floating keyframes that constantly repaint on mobile */
@@ -9671,11 +9711,11 @@ details.apple-expandable-item[open] > summary::after {
     -webkit-transform: translateZ(0);
   }
 
-  /* 6. Containment for offscreen sections to eliminate layout thrashing */
+  /* 6. Ensure sections NEVER collapse or trap mobile touch scrolling */
   .section,
   .scrapbook-album-chapter {
-    content-visibility: auto;
-    contain-intrinsic-size: 1px 500px;
+    content-visibility: visible !important;
+    contain-intrinsic-size: none !important;
   }
 
   /* 7. Remove expensive 3D perspective compositing on gallery cards */
