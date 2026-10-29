@@ -1,8 +1,10 @@
 # Scratch and development test files
 scratch/
 
+# Archives
+*.zip
+
 # OS metadata
 .DS_Store
 Thumbs.db
 desktop.ini
-
