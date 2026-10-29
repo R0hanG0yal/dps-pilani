@@ -9767,4 +9767,42 @@ details.apple-expandable-item[open] > summary::after {
     transition: opacity 0.20s ease, transform 0.20s cubic-bezier(0.16, 1, 0.3, 1) !important;
     will-change: opacity, transform;
   }
+
+  /* 12. De-escalate Layer Explosion: Prevent 20+ separate GPU composite layers on static cards */
+  .arch-card,
+  .card,
+  .tile,
+  .modern-pillar-card,
+  .visual-arch,
+  .visual-mini,
+  .visual-stack,
+  .section-head,
+  .section-head-center {
+    transform: none !important;
+    -webkit-transform: none !important;
+  }
+
+  /* 13. Section Containment Isolation: Eliminates scroll jank before, during, and after Pedagogical Pathway */
+  #hero,
+  #showcase,
+  #about,
+  #wings,
+  #results,
+  .stat-band {
+    contain: layout paint !important;
+  }
+
+  /* 14. Keep visual-mini cleanly inside About without bleeding across section boundaries */
+  .visual-mini {
+    bottom: 4px !important;
+    right: 6px !important;
+    box-shadow: 0 4px 12px rgba(46, 8, 21, 0.12) !important;
+  }
+
+  /* 15. Simplify stat-band on mobile */
+  .stat-band {
+    background: #FAF6ED !important;
+    border-block: 1px solid rgba(125, 29, 63, 0.10) !important;
+    box-shadow: none !important;
+  }
 }
