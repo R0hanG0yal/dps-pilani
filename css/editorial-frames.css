@@ -9861,15 +9861,16 @@ details.apple-expandable-item[open] > summary::after {
 }
 
 .vestra-panel {
-  background: rgba(26, 5, 13, 0.92);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(223, 175, 69, 0.26);
+  background: rgba(18, 3, 9, 0.96) !important;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1.5px solid rgba(223, 175, 69, 0.38) !important;
   border-radius: 18px;
   padding: 28px 34px;
   margin-top: 6px;
-  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.12);
   animation: vestraPanelFade 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+  color: #F8FAFC !important;
 }
 
 .vestra-panel[hidden] {
@@ -9900,15 +9901,15 @@ details.apple-expandable-item[open] > summary::after {
 
 .vestra-kicker {
   font-family: var(--font-label, 'Cabinet Grotesk', system-ui, sans-serif);
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.16em !important;
   text-transform: uppercase;
-  color: var(--gold-400, #dfaf45);
+  color: #FBBF24 !important;
   margin-bottom: 14px;
   display: block;
   padding-bottom: 6px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(251, 191, 36, 0.25) !important;
 }
 
 .vestra-list {
@@ -9917,54 +9918,66 @@ details.apple-expandable-item[open] > summary::after {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .vestra-list li a {
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 0.86rem;
+  color: #FFFFFF !important;
+  font-size: 0.90rem !important;
+  font-weight: 600 !important;
   line-height: 1.45;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   transition: all 0.2s ease;
+  opacity: 0.95;
 }
 
 .vestra-list li a:hover {
-  color: var(--gold-300, #f2cf78);
+  color: #FDE68A !important;
+  opacity: 1;
   transform: translateX(4px);
 }
 
 .vestra-contact-details {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  font-size: 0.84rem;
-  color: rgba(255, 255, 255, 0.78);
-  line-height: 1.5;
+  gap: 10px;
+  font-size: 0.88rem !important;
+  color: #F8FAFC !important;
+  line-height: 1.55;
 }
 
 .vestra-contact-details p {
-  margin: 0;
+  margin: 0 !important;
+  color: #F8FAFC !important; /* Critical override against p { color: var(--ink-700) } */
+  font-size: 0.88rem !important;
+  font-weight: 450 !important;
+  line-height: 1.55 !important;
 }
 
 .vestra-contact-details strong {
-  color: #ffffff;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  margin-right: 4px;
 }
 
 .vestra-contact-details a {
-  color: var(--gold-300, #e6c875);
-  text-decoration: none;
+  color: #FDE68A !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+  font-weight: 600 !important;
+  transition: color 0.15s ease;
 }
 
 .vestra-contact-details a:hover {
-  text-decoration: underline;
+  color: #FFFFFF !important;
 }
 
 /* Vestra-style bottom statutory line */
 .foot-bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
   padding: 24px 0 20px;
   display: flex;
   flex-direction: column;
@@ -9972,8 +9985,8 @@ details.apple-expandable-item[open] > summary::after {
   justify-content: center;
   text-align: center;
   gap: 12px;
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.82);
   letter-spacing: 0.02em;
 }
 
@@ -9990,17 +10003,17 @@ details.apple-expandable-item[open] > summary::after {
 
 .foot-stats-row a {
   font-family: var(--font-label, 'Cabinet Grotesk', system-ui, sans-serif);
-  font-size: 0.68rem;
+  font-size: 0.70rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
   transition: color 0.18s ease;
 }
 
 .foot-stats-row a:hover {
-  color: var(--gold-300, #dfaf45);
+  color: #FDE68A;
 }
 
 @media (max-width: 680px) {
