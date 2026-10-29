@@ -261,12 +261,22 @@
     const stepBtns = document.querySelectorAll('.inspire-step-btn');
     const heroBgs = document.querySelectorAll('.inspire-hero-bg');
 
-    const slides = [
-      { img: 'assets/photos/campus-facade-main.jpg', alt: 'Sandstone Campus Facade of Durga Public School Pilani' },
-      { img: 'assets/photos/campus-quadrangle-assembly.jpg', alt: 'Scholars and faculty assembled in central quadrangle' },
-      { img: 'assets/photos/senior-students-celebration-portico.jpg', alt: 'Senior graduating batch under sandstone portico' },
-      { img: 'assets/photos/science-practical-demonstration.jpg', alt: 'Science practical demonstration in laboratory' }
-    ];
+    if (!curvedImg && !photoPills.length) return;
+
+    // Dynamically derive slides directly from the DOM pills so HTML data-img / data-alt are always strictly respected!
+    const slides = photoPills.length
+      ? Array.from(photoPills).map(function (pill) {
+          return {
+            img: pill.getAttribute('data-img') || '',
+            alt: pill.getAttribute('data-alt') || pill.textContent.trim()
+          };
+        })
+      : [
+          { img: 'assets/photos/client/campus/campus-building-exterior-1.jpg', alt: 'Sandstone Main Campus Building of Durga Public School' },
+          { img: 'assets/photos/client/events/event-sports-day-sprint-race-1.jpg', alt: 'Student athletes competing in sprint race at Durga Public School Sports Day' },
+          { img: 'assets/photos/client/labs/computer-lab-workstations-1.jpg', alt: 'High-Speed Computer Science & IT Hub' },
+          { img: 'assets/photos/client/transport/transport-bus-fleet-1.jpg', alt: 'Safe GPS Transport Fleet at Durga Public School' }
+        ];
 
     let activeIndex = 0;
     let autoTimer = null;
@@ -274,6 +284,7 @@
     function goToSlide(index) {
       activeIndex = (index + slides.length) % slides.length;
       const target = slides[activeIndex];
+      if (!target || !target.img) return;
 
       // Update curved photo with smooth cross-fade
       if (curvedImg) {
@@ -340,6 +351,27 @@
     function resetAutoTimer() {
       if (autoTimer) clearInterval(autoTimer);
       startAutoTimer();
+    }
+
+    // Preload hero slide images on idle for instantaneous switching
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      window.requestIdleCallback(function () {
+        slides.forEach(function (s) {
+          if (s.img) {
+            const pre = new Image();
+            pre.src = s.img;
+          }
+        });
+      });
+    } else {
+      setTimeout(function () {
+        slides.forEach(function (s) {
+          if (s.img) {
+            const pre = new Image();
+            pre.src = s.img;
+          }
+        });
+      }, 1500);
     }
 
     const heroStage = document.querySelector('.inspire-hero-stage');
