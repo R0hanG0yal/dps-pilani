@@ -272,7 +272,7 @@
           };
         })
       : [
-          { img: 'assets/photos/client/campus/campus-building-exterior-1.jpg', alt: 'Sandstone Main Campus Building of Durga Public School' },
+          { img: 'assets/photos/client/campus/campus-entry-portico-1.jpg', alt: 'Grand entrance portico and central quadrangle of Durga Public School Pilani' },
           { img: 'assets/photos/client/events/event-sports-day-sprint-race-1.jpg', alt: 'Student athletes competing in sprint race at Durga Public School Sports Day' },
           { img: 'assets/photos/client/labs/computer-lab-workstations-1.jpg', alt: 'High-Speed Computer Science & IT Hub' },
           { img: 'assets/photos/client/transport/transport-bus-fleet-1.jpg', alt: 'Safe GPS Transport Fleet at Durga Public School' }
