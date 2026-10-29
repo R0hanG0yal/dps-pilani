@@ -1569,6 +1569,18 @@ details.apple-expandable-item summary,
 
 /* 7. Mobile Viewport Refinements (320px - 768px) */
 @media (max-width: 768px) {
+  /* Consistent Mobile Ordering: Photo at top (order: 1), Narrative text below (order: 2) */
+  .section .split-2 > .visual-stack {
+    order: 1 !important;
+    margin-bottom: 4px !important;
+  }
+  .section .split-2 > div:not(.visual-stack) {
+    order: 2 !important;
+  }
+  #about, #results {
+    scroll-margin-top: calc(var(--header-h, 72px) + 20px) !important;
+  }
+
   .container {
     padding-left: 20px !important;
     padding-right: 20px !important;

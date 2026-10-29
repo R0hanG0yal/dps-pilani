@@ -9583,6 +9583,18 @@ details.apple-expandable-item[open] > summary::after {
    Eliminates multi-pass GPU blur bottlenecks, enables 60/120Hz smooth scrolling
    ========================================================================= */
 @media (max-width: 768px) {
+  /* Consistent Mobile Ordering: Photo at top (order: 1), Narrative text below (order: 2) */
+  .section .split-2 > .visual-stack {
+    order: 1 !important;
+    margin-bottom: 4px !important;
+  }
+  .section .split-2 > div:not(.visual-stack) {
+    order: 2 !important;
+  }
+  #about, #results {
+    scroll-margin-top: calc(var(--header-h, 72px) + 20px) !important;
+  }
+
   /* 1. Fully unhindered native touch scrolling on mobile */
   html {
     overflow-x: hidden !important;
