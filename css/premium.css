@@ -83,7 +83,7 @@
 /* ---------- 2. RESET & BASE ---------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { -webkit-text-size-adjust: 100%; overflow-x: hidden; max-width: 100%; }
+html { -webkit-text-size-adjust: 100%; overflow-x: clip; max-width: 100%; scroll-padding-top: var(--header-h); }
 @media (min-width: 769px) {
   html { scroll-behavior: smooth; }
 }
@@ -101,7 +101,7 @@ body {
     radial-gradient(1100px 550px at 80% 88%, rgba(201, 150, 46, 0.05), transparent 55%);
   background-attachment: fixed;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -275,7 +275,8 @@ p { color: var(--ink-700); }
 
 /* ---------- 5. HEADER / NAVIGATION (Fully Transparent Liquid Glass with Wine Tint) ---------- */
 .dps-header {
-  position: sticky; top: 0; z-index: 1100;
+  position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 1100;
+  height: var(--header-h);
   background: var(--glass-nav);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
@@ -285,6 +286,12 @@ p { color: var(--ink-700); }
     inset 0 1px 1px 0 rgba(255, 255, 255, 0.9),
     inset 0 -1px 1px 0 rgba(125, 29, 63, 0.06);
   transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, backdrop-filter 0.35s ease;
+}
+
+@media (min-width: 769px) {
+  body {
+    padding-top: var(--header-h);
+  }
 }
 
 .dps-header.is-scrolled {
@@ -1978,7 +1985,6 @@ details.apple-expandable-item summary,
 }
 
 /* Hardware accelerate fixed floating elements so they never trigger viewport repaints on scroll */
-.dps-header,
 .dps-cookie-dock,
 #dagerozFloatBtn {
   transform: translateZ(0);

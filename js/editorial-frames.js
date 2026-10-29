@@ -1431,7 +1431,6 @@ void main() {
   // Eye gallery discarded per user request
 
   function initLiquidGlassHeader() {
-    if (window.innerWidth <= 768) return; // Dedicated mobile Dynamic Island handles mobile; do not poll scroll
     const header = document.querySelector('.dps-header');
     if (!header) return;
 
@@ -1442,7 +1441,11 @@ void main() {
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(function () {
-        const shouldBeScrolled = (window.scrollY || window.pageYOffset) > 20;
+        if (window.innerWidth <= 768) {
+          ticking = false;
+          return;
+        }
+        const shouldBeScrolled = (window.scrollY || window.pageYOffset) > 15;
         if (shouldBeScrolled !== isScrolled) {
           isScrolled = shouldBeScrolled;
           if (isScrolled) {
@@ -1456,6 +1459,7 @@ void main() {
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
     handleScroll();
   }
 
