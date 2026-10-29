@@ -1703,16 +1703,18 @@ details.apple-expandable-item summary,
     width: 100% !important;
   }
 
-  /* Founders stay 2-col side-by-side divided by line above 640px */
+  /* Founders stay 2-col side-by-side vertically parallel divided by line on all screen sizes */
   @media (max-width: 640px) {
     .dageroz-modal .founders-vertical-split {
-      grid-template-columns: 1fr !important;
+      grid-template-columns: 1fr 1px 1fr !important;
+      gap: 10px !important;
     }
 
     .dageroz-modal .founders-vertical-divider {
-      width: 100% !important;
-      height: 1px !important;
-      margin: 12px 0 !important;
+      width: 1px !important;
+      height: auto !important;
+      min-height: 100% !important;
+      margin: 0 !important;
     }
   }
 }

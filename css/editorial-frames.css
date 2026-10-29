@@ -3213,13 +3213,14 @@
     align-items: flex-start;
   }
   .founders-vertical-split {
-    grid-template-columns: 1fr;
-    gap: 20px;
+    grid-template-columns: 1fr 1px 1fr;
+    gap: 10px;
   }
   .founders-vertical-divider {
-    width: 100%;
-    height: 1px;
-    margin: 2px 0;
+    width: 1px;
+    height: auto;
+    min-height: 100%;
+    margin: 0;
   }
   .founder-card-footer {
     flex-direction: column-reverse;
@@ -4283,21 +4284,21 @@
 
 @media (max-width: 640px) {
   .founders-vertical-split {
-    grid-template-columns: 1fr !important;
-    gap: 20px !important;
+    grid-template-columns: 1fr 1px 1fr !important;
+    gap: 10px !important;
   }
   .founders-vertical-divider {
-    width: 100% !important;
-    height: 1px !important;
-    min-height: 1px !important;
-    background: linear-gradient(90deg, 
+    width: 1px !important;
+    height: auto !important;
+    min-height: 100% !important;
+    background: linear-gradient(180deg, 
       transparent 0%, 
       rgba(255, 217, 138, 0.45) 15%, 
       rgba(255, 217, 138, 0.95) 50%, 
       rgba(255, 217, 138, 0.45) 85%, 
       transparent 100%
     ) !important;
-    margin: 4px 0 !important;
+    margin: 0 !important;
   }
 }
 
@@ -10023,5 +10024,267 @@ details.apple-expandable-item[open] > summary::after {
   .foot-stats-row a {
     font-size: 0.63rem;
     letter-spacing: 0.1em;
+  }
+}
+
+
+/* =========================================================================
+   DAGEROZ FOUNDERS MODAL: MOBILE CENTERING & VERTICALLY PARALLEL (BOTH AT ONCE)
+   ========================================================================= */
+@media (max-width: 768px) {
+  /* Ensure modal container is strictly centered with zero horizontal overflow */
+  .dageroz-modal {
+    padding: 12px 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Exactly centered card with equal left/right margins and no screen clipping */
+  .dageroz-card.dageroz-founder-card {
+    width: calc(100% - 12px) !important;
+    max-width: calc(100% - 12px) !important;
+    max-height: 92vh !important;
+    margin: 0 auto !important;
+    padding: 18px 12px !important;
+    border-radius: 20px !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.85), inset 0 1px 1px rgba(255, 243, 176, 0.3) !important;
+  }
+
+  .dageroz-founder-card .dageroz-close-btn {
+    top: 12px !important;
+    right: 12px !important;
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 1.15rem !important;
+  }
+
+  .founder-brand-row {
+    gap: 8px !important;
+  }
+
+  .dageroz-logo-symbol {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .founder-agency-title {
+    font-size: 1.15rem !important;
+  }
+
+  .founder-kicker-pill {
+    font-size: 0.52rem !important;
+    padding: 2px 6px !important;
+  }
+
+  .founder-live-pill {
+    font-size: 0.52rem !important;
+    padding: 2px 6px !important;
+    margin-top: 4px !important;
+  }
+
+  .founder-headline-bar {
+    padding: 6px 10px !important;
+    margin-bottom: 12px !important;
+    border-radius: 8px !important;
+  }
+
+  .founder-subhead-text {
+    font-size: 0.74rem !important;
+    line-height: 1.38 !important;
+  }
+
+  /* BOTH FOUNDERS SIDE-BY-SIDE IN VERTICALLY PARALLEL TRACKS (BOTH AT A TIME) */
+  .founders-vertical-split {
+    display: grid !important;
+    grid-template-columns: 1fr 1px 1fr !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+    margin-bottom: 14px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .founders-vertical-divider {
+    display: block !important;
+    width: 1px !important;
+    height: auto !important;
+    min-height: 100% !important;
+    background: linear-gradient(180deg, 
+      transparent 0%, 
+      rgba(255, 217, 138, 0.35) 15%, 
+      rgba(255, 217, 138, 0.85) 50%, 
+      rgba(255, 217, 138, 0.35) 85%, 
+      transparent 100%
+    ) !important;
+    box-shadow: 0 0 6px rgba(255, 217, 138, 0.3) !important;
+    margin: 0 !important;
+  }
+
+  .founder-col {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .founder-profile-top {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 5px !important;
+  }
+
+  .founder-avatar-wrap {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 12px !important;
+    margin: 0 auto !important;
+    flex-shrink: 0 !important;
+  }
+
+  .founder-meta {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .founder-role-tag {
+    font-size: 0.52rem !important;
+    letter-spacing: 0.08em !important;
+    padding: 2px 5px !important;
+    margin-bottom: 2px !important;
+    white-space: nowrap !important;
+  }
+
+  .founder-name {
+    font-size: 0.98rem !important;
+    font-weight: 800 !important;
+    line-height: 1.15 !important;
+    margin: 1px 0 !important;
+    white-space: nowrap !important;
+  }
+
+  .founder-subrole {
+    font-size: 0.65rem !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+  }
+
+  .founder-quote {
+    font-size: 0.66rem !important;
+    line-height: 1.32 !important;
+    padding: 6px 8px !important;
+    margin: 2px 0 !important;
+    border-radius: 0 6px 6px 0 !important;
+    background: rgba(255, 217, 138, 0.04) !important;
+    border-left: 2px solid #FFD98A !important;
+  }
+
+  .founder-links-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 5px !important;
+    width: 100% !important;
+  }
+
+  .founder-link-item {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 6px 8px !important;
+    border-radius: 8px !important;
+    gap: 5px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 217, 138, 0.16) !important;
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    text-decoration: none !important;
+  }
+
+  .founder-link-icon {
+    width: 13px !important;
+    height: 13px !important;
+    flex-shrink: 0 !important;
+    color: #FFD98A !important;
+  }
+
+  .founder-link-text {
+    display: flex !important;
+    flex-direction: column !important;
+    min-width: 0 !important;
+    flex: 1 !important;
+    overflow: hidden !important;
+  }
+
+  .founder-link-label {
+    font-size: 0.56rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.06em !important;
+    line-height: 1.15 !important;
+    color: #FFD98A !important;
+  }
+
+  .founder-link-val {
+    font-size: 0.62rem !important;
+    line-height: 1.15 !important;
+    color: rgba(255, 255, 255, 0.72) !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    max-width: 100% !important;
+  }
+
+  .founder-link-arrow {
+    font-size: 0.74rem !important;
+    color: #FFD98A !important;
+    flex-shrink: 0 !important;
+  }
+
+  .founder-skills-strip {
+    padding: 8px 10px !important;
+    margin: 10px 0 12px !important;
+    gap: 6px !important;
+    border-radius: 10px !important;
+  }
+
+  .skills-strip-label {
+    font-size: 0.58rem !important;
+  }
+
+  .skills-tags {
+    gap: 4px !important;
+  }
+
+  .skill-tag {
+    font-size: 0.56rem !important;
+    padding: 2px 5px !important;
+  }
+
+  .founder-footer-actions {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  .founder-agency-btn,
+  .replay-intro-btn,
+  .founder-close-link-btn {
+    padding: 7px 10px !important;
+    font-size: 0.68rem !important;
+    flex: 1 1 auto !important;
   }
 }
