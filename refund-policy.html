@@ -332,42 +332,102 @@
         </div>
       </div>
 
-      <button class="foot-drawer-toggle" data-expander="footer-links-content" aria-expanded="false" aria-controls="footer-links-content">
-        <span>Explore Full Department Directory &amp; Regulatory Links</span>
-        <span class="symbol">+</span>
-      </button>
-      <div id="footer-links-content" class="footer-expandable-content" hidden>
-        <div class="foot-cols">
-          <div class="foot-col">
-            <h4>Institutional Identity</h4>
-            <p>Durga Public School (also registered as Durga Devi Public School) is an established English-medium, co-educational institution in Pilani, Jhunjhunu District, Rajasthan 333031 &mdash; committed to scholastic discipline, character and athletic fitness.</p>
+      <!-- VESTRA-STYLE LUXURY EXPANDABLE DIRECTORY ACCORDIONS -->
+      <div class="vestra-footer-nav" role="region" aria-label="Department and statutory directories">
+        <div class="vestra-btn-row">
+          <button class="vestra-nav-btn" type="button" aria-expanded="false" aria-controls="vestra-panel-academics" data-vestra-toggle="academics">
+            <span class="vestra-nav-label">01 // ACADEMICS</span>
+            <span class="vestra-nav-chevron" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </span>
+          </button>
+
+          <button class="vestra-nav-btn" type="button" aria-expanded="false" aria-controls="vestra-panel-admissions" data-vestra-toggle="admissions">
+            <span class="vestra-nav-label">02 // ADMISSIONS</span>
+            <span class="vestra-nav-chevron" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </span>
+          </button>
+
+          <button class="vestra-nav-btn" type="button" aria-expanded="false" aria-controls="vestra-panel-statutory" data-vestra-toggle="statutory">
+            <span class="vestra-nav-label">03 // STATUTORY</span>
+            <span class="vestra-nav-chevron" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </span>
+          </button>
+        </div>
+
+        <div class="vestra-panels-container">
+          <!-- 01 ACADEMICS PANEL -->
+          <div id="vestra-panel-academics" class="vestra-panel" hidden>
+            <div class="vestra-panel-grid">
+              <div class="vestra-col">
+                <span class="vestra-kicker">Academic Wings</span>
+                <ul class="vestra-list">
+                  <li><a href="academics.html#foundational">Foundational Wing (Nursery&ndash;UKG)</a></li>
+                  <li><a href="academics.html#preparatory">Preparatory Wing (Class I&ndash;V)</a></li>
+                  <li><a href="academics.html#middle">Middle School (Class VI&ndash;VIII)</a></li>
+                  <li><a href="academics.html#senior">Senior Secondary (Science &amp; Commerce)</a></li>
+                </ul>
+              </div>
+              <div class="vestra-col">
+                <span class="vestra-kicker">Laboratories &amp; Resources</span>
+                <ul class="vestra-list">
+                  <li><a href="facilities.html#labs">Composite Science Labs</a></li>
+                  <li><a href="facilities.html#computer-lab">High-Speed Computer Science Hub</a></li>
+                  <li><a href="facilities.html#library">Central Reference Library</a></li>
+                  <li><a href="academics.html#calendar">Academic Year 2026&ndash;27 Calendar</a></li>
+                </ul>
+              </div>
+            </div>
           </div>
-          <div class="foot-col">
-            <h4>Academic Wings</h4>
-            <ul class="foot-list">
-              <li><a href="academics.html#foundational">Foundational Wing (Nursery&ndash;UKG)</a></li>
-              <li><a href="academics.html#preparatory">Preparatory Wing (Class I&ndash;V)</a></li>
-              <li><a href="academics.html#middle">Middle School (Class VI&ndash;VIII)</a></li>
-              <li><a href="academics.html#senior">Senior Secondary Streams</a></li>
-              <li><a href="facilities.html#labs">Science &amp; IT Laboratories</a></li>
-            </ul>
+
+          <!-- 02 ADMISSIONS PANEL -->
+          <div id="vestra-panel-admissions" class="vestra-panel" hidden>
+            <div class="vestra-panel-grid">
+              <div class="vestra-col">
+                <span class="vestra-kicker">Enrollment &amp; Visits</span>
+                <ul class="vestra-list">
+                  <li><a href="admissions.html">Admission Criteria &amp; Procedures</a></li>
+                  <li><a href="admissions.html#fees">Annual Fee Schedule Breakdown</a></li>
+                  <li><a href="admissions.html#enquiry">Online Admission Enquiry 2026&ndash;27</a></li>
+                  <li><a href="contact.html">Schedule Guided Campus Tour</a></li>
+                </ul>
+              </div>
+              <div class="vestra-col">
+                <span class="vestra-kicker">Campus &amp; Facilities</span>
+                <ul class="vestra-list">
+                  <li><a href="facilities.html#transport">Safe GPS Bus Fleet Network</a></li>
+                  <li><a href="facilities.html#sports">Sports &amp; Athletics Arena</a></li>
+                  <li><a href="life.html">House System &amp; Co-Curriculars</a></li>
+                  <li><a href="gallery.html">Official Campus Photo Gallery</a></li>
+                </ul>
+              </div>
+            </div>
           </div>
-          <div class="foot-col">
-            <h4>Admissions &amp; Governance</h4>
-            <ul class="foot-list">
-              <li><a href="admissions.html">Admission Criteria 2026-27</a></li>
-              <li><a href="admissions.html#fees">Fee Schedule</a></li>
-              <li><a href="life.html">Life @ DPS &amp; Activities</a></li>
-              <li><a href="about.html#disclosure">Mandatory Public Disclosure</a></li>
-              <li><a href="refund-policy.html">Fee Payment &amp; Refund Policy</a></li>
-            </ul>
-          </div>
-          <div class="foot-col">
-            <h4>Campus Secretariat</h4>
-            <p class="foot-contact-line">Near Ganesh Temple, Loharu Road,<br>Pilani, Rajasthan 333031</p>
-            <p class="foot-contact-line">Telephone: <a href="tel:+911596242000" style="color: inherit;">+91 1596 242000</a></p>
-            <p class="foot-contact-line">Email: durgapublicschoolpilani@gmail.com</p>
-            <p class="foot-contact-line">Hours: Mon&ndash;Sat, 08:30 AM&ndash;04:30 PM</p>
+
+          <!-- 03 STATUTORY PANEL -->
+          <div id="vestra-panel-statutory" class="vestra-panel" hidden>
+            <div class="vestra-panel-grid">
+              <div class="vestra-col">
+                <span class="vestra-kicker">Governance &amp; Disclosures</span>
+                <ul class="vestra-list">
+                  <li><a href="about.html">Institutional Heritage &amp; Estd. 2006</a></li>
+                  <li><a href="about.html#disclosure">Mandatory Public Disclosure</a></li>
+                  <li><a href="refund-policy.html">Fee Payment &amp; Refund Policy</a></li>
+                  <li><a href="facilities.html#safety">Campus Safety &amp; CCTV Vigilance</a></li>
+                </ul>
+              </div>
+              <div class="vestra-col">
+                <span class="vestra-kicker">Campus Secretariat</span>
+                <div class="vestra-contact-details">
+                  <p><strong>Campus Address:</strong> Near Ganesh Temple, Loharu Road, Pilani, Rajasthan 333031</p>
+                  <p><strong>Telephone:</strong> <a href="tel:+911596242000">+91 1596 242000</a></p>
+                  <p><strong>Email:</strong> <a href="mailto:durgapublicschoolpilani@gmail.com">durgapublicschoolpilani@gmail.com</a></p>
+                  <p><strong>Visiting Hours:</strong> Mon&ndash;Sat, 08:30 AM &ndash; 04:30 PM</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

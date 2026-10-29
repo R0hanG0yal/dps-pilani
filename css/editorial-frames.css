@@ -9771,3 +9771,257 @@ details.apple-expandable-item[open] > summary::after {
     box-shadow: none !important;
   }
 }
+
+
+/* =====================================================================
+   VESTRA-STYLE CATEGORIZED EXPANDABLE FOOTER ACCORDIONS
+   ===================================================================== */
+.vestra-footer-nav {
+  width: 100%;
+  max-width: 980px;
+  margin: 36px auto 28px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  z-index: 20;
+}
+
+.vestra-btn-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.vestra-nav-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.88);
+  padding: 9px 20px;
+  border-radius: 9999px;
+  font-family: var(--font-label, 'Cabinet Grotesk', system-ui, sans-serif);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  user-select: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.vestra-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(223, 175, 69, 0.5);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.vestra-nav-btn[aria-expanded="true"] {
+  background: rgba(223, 175, 69, 0.16);
+  border-color: var(--gold-400, #dfaf45);
+  color: var(--gold-300, #f2cf78);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(223, 175, 69, 0.35);
+}
+
+.vestra-nav-label {
+  display: inline-block;
+}
+
+.vestra-nav-chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+  color: currentColor;
+  width: 13px;
+  height: 13px;
+}
+
+.vestra-nav-btn[aria-expanded="true"] .vestra-nav-chevron {
+  transform: rotate(180deg);
+}
+
+.vestra-panels-container {
+  position: relative;
+  width: 100%;
+}
+
+.vestra-panel {
+  background: rgba(26, 5, 13, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(223, 175, 69, 0.26);
+  border-radius: 18px;
+  padding: 28px 34px;
+  margin-top: 6px;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  animation: vestraPanelFade 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.vestra-panel[hidden] {
+  display: none !important;
+}
+
+@keyframes vestraPanelFade {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.vestra-panel-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+
+.vestra-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.vestra-kicker {
+  font-family: var(--font-label, 'Cabinet Grotesk', system-ui, sans-serif);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-400, #dfaf45);
+  margin-bottom: 14px;
+  display: block;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.vestra-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.vestra-list li a {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.86rem;
+  line-height: 1.45;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.vestra-list li a:hover {
+  color: var(--gold-300, #f2cf78);
+  transform: translateX(4px);
+}
+
+.vestra-contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.84rem;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.5;
+}
+
+.vestra-contact-details p {
+  margin: 0;
+}
+
+.vestra-contact-details strong {
+  color: #ffffff;
+}
+
+.vestra-contact-details a {
+  color: var(--gold-300, #e6c875);
+  text-decoration: none;
+}
+
+.vestra-contact-details a:hover {
+  text-decoration: underline;
+}
+
+/* Vestra-style bottom statutory line */
+.foot-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 24px 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.02em;
+}
+
+.foot-stats-row {
+  display: flex;
+  gap: 16px;
+  row-gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.foot-stats-row a {
+  font-family: var(--font-label, 'Cabinet Grotesk', system-ui, sans-serif);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+
+.foot-stats-row a:hover {
+  color: var(--gold-300, #dfaf45);
+}
+
+@media (max-width: 680px) {
+  .vestra-btn-row {
+    gap: 8px;
+  }
+  .vestra-nav-btn {
+    padding: 8px 14px;
+    font-size: 0.67rem;
+    letter-spacing: 0.08em;
+    gap: 6px;
+  }
+  .vestra-panel {
+    padding: 20px 18px;
+    border-radius: 14px;
+  }
+  .vestra-panel-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .foot-stats-row {
+    gap: 10px;
+  }
+  .foot-stats-row a {
+    font-size: 0.63rem;
+    letter-spacing: 0.1em;
+  }
+}
