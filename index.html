@@ -56,45 +56,25 @@
     "openingHours": "Mo-Sa 08:30-16:30"
   }
   </script>
+  <script>
+    if (sessionStorage.getItem('dps_logo_loaded_v1')) {
+      document.documentElement.classList.add('dps-loaded');
+    }
+  </script>
 </head>
 <body>
 
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <!-- IMPERIAL LIQUID GLASS CURTAIN STAGE & RECTANGULAR PRELOADER -->
-  <div id="gateLoader" class="dps-gate-loader dps-curtain-loader" aria-label="Welcome to Durga Public School Pilani" role="dialog" aria-modal="true">
-    <!-- Left Theatrical Curtain Panel -->
-    <div class="gate-leaf gate-leaf-left curtain-panel-left" aria-hidden="true">
-      <div class="curtain-fabric">
-        <div class="curtain-pleats"></div>
-        <div class="curtain-sheen"></div>
-        <div class="curtain-edge-braid"></div>
-      </div>
-    </div>
-
-    <!-- Right Theatrical Curtain Panel -->
-    <div class="gate-leaf gate-leaf-right curtain-panel-right" aria-hidden="true">
-      <div class="curtain-fabric">
-        <div class="curtain-pleats"></div>
-        <div class="curtain-sheen"></div>
-        <div class="curtain-edge-braid"></div>
-      </div>
-    </div>
-
-    <!-- Top Valance Drapery Pelmet -->
-    <div class="curtain-top-valance" aria-hidden="true">
-      <div class="valance-swag"></div>
-      <div class="valance-gold-fringe"></div>
-    </div>
-
-    <!-- Central Liquid Glass Rectangular Console Card (Wise Horizontal Space Layout) -->
+  <!-- DURGA PUBLIC SCHOOL BRANDED LOGO & NAME PRELOADER -->
+  <div id="gateLoader" class="dps-gate-loader dps-logo-loader" aria-label="Welcome to Durga Public School Pilani" role="dialog" aria-modal="true">
+    <!-- Central Liquid Glass Rectangular Console Card -->
     <div class="gate-center-stage gate-rect-stage">
       <!-- Left Column: School Crest Disc & Estd Badge -->
       <div class="gate-rect-left">
         <div class="gate-emblem-wrap">
-          <div class="gate-emblem-halo" aria-hidden="true"></div>
           <div class="gate-emblem-disc">
-            <img decoding="async" src="assets/logo-badge.png" alt="Durga Public School Crest" class="gate-crest-img" width="54" height="54" style="width: 54px; height: 54px; max-width: 54px; max-height: 54px; object-fit: contain; display: block;">
+            <img decoding="async" src="assets/logo-badge.png" alt="Durga Public School Crest" class="gate-crest-img" width="56" height="56">
           </div>
         </div>
         <span class="gate-rect-estd-pill">ESTD. 2006</span>
@@ -115,7 +95,7 @@
         <div class="gate-rect-controls">
           <div class="gate-loader-bar-wrap">
             <div class="gate-loader-status">
-              <span class="gate-status-text">Opening Campus Stage...</span>
+              <span class="gate-status-text">Entering Campus...</span>
               <span class="gate-status-percent" id="gateLoaderPercent">0%</span>
             </div>
             <div class="gate-loader-track">
@@ -123,7 +103,7 @@
             </div>
           </div>
 
-          <button type="button" class="gate-skip-btn" id="gateSkipBtn" aria-label="Open Curtain">
+          <button type="button" class="gate-skip-btn" id="gateSkipBtn" aria-label="Enter Campus">
             <span>Enter Campus</span>
             <span class="gate-btn-arrow" aria-hidden="true">&rarr;</span>
           </button>

@@ -337,7 +337,7 @@
     const status = gate.querySelector('.gate-status-text');
     const skipBtn = document.getElementById('gateSkipBtn');
 
-    const SESSION_KEY = 'dps_curtain_stage_v4';
+    const SESSION_KEY = 'dps_logo_loaded_v1';
     const startHero = function () { playHeroReveal(); };
 
     // If already seen in this session or prefers reduced motion, dismiss immediately
@@ -362,9 +362,9 @@
       if (percent) percent.textContent = Math.round(currentPercent) + '%';
     }
 
-    // Smooth buttery 60fps loading progress bar
+    // Smooth buttery 60fps loading progress bar (1.4s so user can feel and appreciate the branded logo animation)
     const startTime = performance.now();
-    const loadingDuration = 700; // Fast smooth fill
+    const loadingDuration = 1400;
 
     function stepLoading(now) {
       if (isOpening) return;
@@ -391,14 +391,14 @@
       if (status) status.textContent = "Welcome to Durga Public School";
 
       gate.classList.add('gate-open');
-      setTimeout(startHero, 250);
+      setTimeout(startHero, 200);
 
-      // Remove from DOM after doors part
+      // Smoothly fade out and remove from DOM
       setTimeout(function () {
         gate.classList.add('gate-done');
         if (gate.parentNode) gate.remove();
         document.body.style.overflow = '';
-      }, 650);
+      }, 500);
     };
 
     if (skipBtn) {
@@ -417,7 +417,7 @@
     setTimeout(function () {
       document.body.style.overflow = '';
       openGate();
-    }, 1200);
+    }, 2200);
   }
 
   function initRevealAnimations() {

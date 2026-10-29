@@ -4738,8 +4738,16 @@
    IMPERIAL THEATRICAL CURTAIN OPENING & RECTANGULAR LIQUID GLASS PRELOADER
    (Liquid Glassmorphism, Butter Yellow #FFD98A / #FFF3B0, Deep Wine #7D1D3F / #2E0815)
    ========================================================================= */
+html.dps-loaded #gateLoader,
+html.dps-loaded .dps-gate-loader,
+html.dps-loaded .dps-curtain-loader,
+html.dps-loaded .dps-logo-loader {
+  display: none !important;
+}
+
 .dps-gate-loader,
-.dps-curtain-loader {
+.dps-curtain-loader,
+.dps-logo-loader {
   position: fixed;
   inset: 0;
   z-index: 999999;
@@ -4747,163 +4755,40 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  perspective: 1400px;
-  background: radial-gradient(circle at 50% 50%, rgba(255, 217, 138, 0.12) 0%, rgba(46, 8, 21, 0.88) 65%, #18030B 100%);
+  background: radial-gradient(circle at 50% 45%, rgba(255, 252, 246, 0.98) 0%, rgba(250, 244, 232, 0.96) 60%, rgba(245, 236, 222, 0.98) 100%);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
   pointer-events: auto;
-  transition: opacity 0.6s ease, visibility 0.6s ease;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
 .dps-gate-loader.gate-open,
 .dps-curtain-loader.gate-open,
-.dps-gate-loader.gate-done,
-.dps-curtain-loader.gate-done {
+.dps-logo-loader.gate-open {
+  opacity: 0 !important;
   pointer-events: none !important;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scale(1.02);
 }
 
 .dps-gate-loader.gate-done,
-.dps-curtain-loader.gate-done {
+.dps-curtain-loader.gate-done,
+.dps-logo-loader.gate-done {
   opacity: 0 !important;
   visibility: hidden !important;
-}
-
-/* ---------------------------------------------------------
-   Theatrical Stage Curtains (Gathering & Pleating Physics)
-   --------------------------------------------------------- */
-.curtain-panel-left,
-.curtain-panel-right {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 52vw;
-  height: 100vh;
-  overflow: hidden;
-  z-index: 1;
-  will-change: transform, opacity;
-  transition: transform 1.25s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.9s ease 0.2s;
-}
-
-.curtain-panel-left {
-  left: 0;
-  transform-origin: left center;
-}
-
-.curtain-panel-right {
-  right: 0;
-  transform-origin: right center;
-}
-
-/* Luxurious Silk-Velvet Pleated Fabric with Liquid Glass Shimmer */
-.curtain-fabric {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.5) 0%, transparent 60%),
-    repeating-linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.96) 0px,
-      rgba(255, 250, 238, 0.93) 14px,
-      rgba(255, 238, 185, 0.88) 28px,
-      rgba(235, 195, 120, 0.78) 42px,
-      rgba(125, 29, 63, 0.14) 54px,
-      rgba(255, 248, 230, 0.94) 68px
-    );
-  backdrop-filter: blur(28px) saturate(180%);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
-  box-shadow: inset 0 0 24px rgba(46, 8, 21, 0.04);
-}
-
-/* Soft 3D Cylindrical Shadow Folds */
-.curtain-pleats {
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    90deg,
-    transparent 0px,
-    rgba(46, 8, 21, 0.04) 16px,
-    rgba(46, 8, 21, 0.11) 32px,
-    rgba(255, 255, 255, 0.15) 36px,
-    transparent 52px
-  );
-  pointer-events: none;
-}
-
-/* Fabric Sheen (Disabled - Clean Texture Without Glow Sweep) */
-.curtain-sheen {
+  pointer-events: none !important;
   display: none !important;
-  animation: none !important;
-  pointer-events: none;
 }
 
-/* Golden Braided Edge Seam where Curtains Meet (Clean Metallic Seam) */
-.curtain-panel-left .curtain-edge-braid {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: 3px;
-  background: linear-gradient(180deg, #E6D7B8 0%, #D8C39D 50%, #CBB084 100%);
-  box-shadow: 1px 0 3px rgba(46, 8, 21, 0.12) !important;
-}
-
-.curtain-panel-right .curtain-edge-braid {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 3px;
-  background: linear-gradient(180deg, #E6D7B8 0%, #D8C39D 50%, #CBB084 100%);
-  box-shadow: -1px 0 3px rgba(46, 8, 21, 0.12) !important;
-}
-
-/* Top Valance Drapery Pelmet */
-.curtain-top-valance {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 52px;
-  z-index: 3;
-  pointer-events: none;
-  transition: transform 0.85s cubic-bezier(0.7, 0, 0.25, 1), opacity 0.65s ease;
-}
-
-.valance-swag {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(255, 250, 238, 0.96) 0%, rgba(255, 240, 195, 0.92) 80%, rgba(245, 215, 145, 0.88) 100%);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 2px solid rgba(255, 217, 138, 0.9);
-  box-shadow: 0 8px 24px rgba(46, 8, 21, 0.2);
-}
-
-.valance-gold-fringe {
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: repeating-linear-gradient(90deg, #FFD98A 0px, #C9962E 3px, #FFD98A 6px);
-  box-shadow: 0 1px 2px rgba(46, 8, 21, 0.08);
-}
-
-/* Curtain Opening State - Theatrical Gathering / Bunching to the Wings */
-.dps-gate-loader.gate-open .curtain-panel-left,
-.dps-curtain-loader.gate-open .curtain-panel-left {
-  transform: translateX(-88%) scaleX(0.18) skewY(-2.5deg);
-  opacity: 0.9;
-}
-
-.dps-gate-loader.gate-open .curtain-panel-right,
-.dps-curtain-loader.gate-open .curtain-panel-right {
-  transform: translateX(88%) scaleX(0.18) skewY(2.5deg);
-  opacity: 0.9;
-}
-
-.dps-gate-loader.gate-open .curtain-top-valance,
-.dps-curtain-loader.gate-open .curtain-top-valance {
-  transform: translateY(-110%);
-  opacity: 0;
+/* Permanent disable of theatrical stage curtains: loading animation is the School Logo with Name */
+.curtain-panel-left,
+.curtain-panel-right,
+.curtain-top-valance,
+.curtain-fabric,
+.curtain-pleats,
+.curtain-sheen,
+.curtain-edge-braid {
+  display: none !important;
 }
 
 /* ---------------------------------------------------------
