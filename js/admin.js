@@ -455,6 +455,9 @@
       document.querySelectorAll('.admin-view-panel').forEach(function (p) {
         p.classList.toggle('active', p.id === 'view-' + tabId);
       });
+      document.querySelectorAll('.mobile-dock-item[data-tab]').forEach(function (btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
+      });
 
       // Update header
       const titleEl = document.getElementById('currentViewTitle');
@@ -508,6 +511,12 @@
 
       const photosBadge = document.getElementById('badgePhotosCount');
       if (photosBadge) photosBadge.textContent = this.state.gallery.length;
+
+      const dockBadge = document.getElementById('dockLeadsCount');
+      if (dockBadge) {
+        dockBadge.textContent = this.state.leads.length;
+        dockBadge.style.display = this.state.leads.length > 0 ? 'inline-flex' : 'none';
+      }
     },
 
     renderTab: function (tabId) {
@@ -845,7 +854,7 @@
         return `
           <div class="house-card house-${k}">
             <div class="house-header">
-              <div class="house-crest-badge">${k === 'vivekanand' ? '🏆' : (k === 'gandhi' ? '🌿' : (k === 'raman' ? '🔬' : '⚔️'))}</div>
+              <div class="house-crest-badge">${k === 'vivekanand' ? 'VH' : (k === 'gandhi' ? 'GH' : (k === 'raman' ? 'RH' : 'BH'))}</div>
               <div>
                 <div class="house-name">${h.name}</div>
                 <div class="house-motto">${h.motto}</div>
@@ -1207,6 +1216,271 @@
       this.render();
     },
 
+
+    // ==================== NEW FULL CRUD EXTENSIONS ====================
+    openAddLeadModal: function () {
+      const studentEl = document.getElementById('newLeadStudent');
+      if (studentEl) studentEl.value = '';
+      const gradeEl = document.getElementById('newLeadGrade');
+      if (gradeEl) gradeEl.value = 'Class 11 Science';
+      const parentEl = document.getElementById('newLeadParent');
+      if (parentEl) parentEl.value = '';
+      const phoneEl = document.getElementById('newLeadPhone');
+      if (phoneEl) phoneEl.value = '';
+      const emailEl = document.getElementById('newLeadEmail');
+      if (emailEl) emailEl.value = '';
+      const statusEl = document.getElementById('newLeadStatus');
+      if (statusEl) statusEl.value = 'New';
+      const msgEl = document.getElementById('newLeadMessage');
+      if (msgEl) msgEl.value = '';
+      document.getElementById('addLeadModal')?.classList.add('active');
+    },
+
+    submitNewLead: function () {
+      const student = document.getElementById('newLeadStudent')?.value.trim();
+      const parent = document.getElementById('newLeadParent')?.value.trim();
+      const phone = document.getElementById('newLeadPhone')?.value.trim();
+      if (!student || !parent || !phone) {
+        this.toast('Please provide Student Name, Parent Name, and Phone.', 'error');
+        return;
+      }
+      const grade = document.getElementById('newLeadGrade')?.value || 'Class 1';
+      const email = document.getElementById('newLeadEmail')?.value.trim() || '';
+      const status = document.getElementById('newLeadStatus')?.value || 'New';
+      const msg = document.getElementById('newLeadMessage')?.value.trim() || 'Direct application created via Admin Portal';
+
+      const randId = Math.floor(1000 + Math.random() * 9000);
+      const newLead = {
+        id: 'DPS-2026-' + randId,
+        studentName: student,
+        grade: grade,
+        parentName: parent,
+        phone: phone,
+        email: email,
+        address: 'Pilani, Rajasthan',
+        message: msg,
+        date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) + ', ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        timestamp: Date.now(),
+        status: status,
+        source: 'Admin Direct Entry',
+        notes: ['Application created manually in Admin Console on ' + new Date().toLocaleDateString()]
+      };
+
+      this.state.leads.unshift(newLead);
+      this.saveLeads();
+      this.saveAudit('Created new admission lead ' + newLead.id + ' for ' + student + ' (' + grade + ')');
+      this.toast('Application ' + newLead.id + ' created successfully!', 'success');
+      this.updateCounters();
+      this.renderLeadsTable();
+      document.getElementById('addLeadModal')?.classList.remove('active');
+    },
+
+    deleteLeadFromModal: function () {
+      const modal = document.getElementById('leadDetailModal');
+      const leadId = modal.getAttribute('data-current-id');
+      if (!leadId) return;
+      if (!confirm('Are you sure you want to permanently delete application ' + leadId + '?')) return;
+      this.state.leads = this.state.leads.filter(l => l.id !== leadId);
+      this.saveLeads();
+      this.saveAudit('Deleted admission lead ' + leadId + ' from modal view');
+      this.toast('Record ' + leadId + ' deleted.', 'info');
+      this.updateCounters();
+      this.renderLeadsTable();
+      modal.classList.remove('active');
+    },
+
+    openAddCircularModal: function () {
+      const nextNum = (this.state.circulars.length + 1).toString().padStart(2, '0');
+      document.getElementById('newCircId').value = 'CIRC-2026-' + nextNum;
+      document.getElementById('newCircTitle').value = '';
+      document.getElementById('newCircCategory').value = 'General';
+      document.getElementById('newCircDate').value = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+      document.getElementById('newCircStatus').value = 'Active';
+      document.getElementById('newCircUrl').value = 'assets/docs/Fee-Structure-2026-27.pdf';
+      document.getElementById('addCircularModal')?.classList.add('active');
+    },
+
+    submitNewCircular: function () {
+      const id = document.getElementById('newCircId')?.value.trim();
+      const title = document.getElementById('newCircTitle')?.value.trim();
+      if (!id || !title) {
+        this.toast('Please provide Circular Reference ID and Title.', 'error');
+        return;
+      }
+      const category = document.getElementById('newCircCategory')?.value || 'General';
+      const date = document.getElementById('newCircDate')?.value.trim() || new Date().toLocaleDateString();
+      const status = document.getElementById('newCircStatus')?.value || 'Active';
+      const fileUrl = document.getElementById('newCircUrl')?.value.trim() || '#';
+
+      this.state.circulars.unshift({ id, title, category, date, fileUrl, status });
+      this.saveCirculars();
+      this.saveAudit('Published new circular ' + id + ': "' + title + '"');
+      this.toast('Circular ' + id + ' published successfully!', 'success');
+      this.renderCircularsTable();
+      document.getElementById('addCircularModal')?.classList.remove('active');
+    },
+
+    openAddFacultyModal: function () {
+      const nextNum = (this.state.faculty.length + 1).toString().padStart(2, '0');
+      document.getElementById('newFacId').value = 'FAC-' + nextNum;
+      document.getElementById('newFacName').value = '';
+      document.getElementById('newFacDesignation').value = '';
+      document.getElementById('newFacDept').value = 'Humanities & Languages';
+      document.getElementById('newFacQual').value = '';
+      document.getElementById('newFacExp').value = '';
+      document.getElementById('addFacultyModal')?.classList.add('active');
+    },
+
+    submitNewFaculty: function () {
+      const id = document.getElementById('newFacId')?.value.trim();
+      const name = document.getElementById('newFacName')?.value.trim();
+      const designation = document.getElementById('newFacDesignation')?.value.trim();
+      if (!id || !name || !designation) {
+        this.toast('Please provide Faculty ID, Name, and Designation.', 'error');
+        return;
+      }
+      const dept = document.getElementById('newFacDept')?.value || 'Science';
+      const qual = document.getElementById('newFacQual')?.value.trim() || 'Post Graduate';
+      const exp = document.getElementById('newFacExp')?.value.trim() || '5+ Years';
+
+      this.state.faculty.push({ id, name, designation, dept, qual, exp });
+      this.saveFaculty();
+      this.saveAudit('Added faculty profile ' + id + ' (' + name + ')');
+      this.toast('Faculty member ' + name + ' added!', 'success');
+      this.renderFacultyTable();
+      document.getElementById('addFacultyModal')?.classList.remove('active');
+    },
+
+    openAddPhotoModal: function () {
+      document.getElementById('newPhotoTitle').value = '';
+      document.getElementById('newPhotoCat').value = 'campus';
+      document.getElementById('newPhotoSrc').value = 'assets/photos/karate-students-ground.jpg';
+      document.getElementById('newPhotoDesc').value = '';
+      document.getElementById('addPhotoModal')?.classList.add('active');
+    },
+
+    submitNewPhoto: function () {
+      const title = document.getElementById('newPhotoTitle')?.value.trim();
+      const src = document.getElementById('newPhotoSrc')?.value.trim();
+      if (!title || !src) {
+        this.toast('Please provide Photo Title and Image URL/Path.', 'error');
+        return;
+      }
+      const cat = document.getElementById('newPhotoCat')?.value || 'campus';
+      const catLabels = {
+        campus: 'Campus & Architecture',
+        sports: 'Sports Day & Athletics',
+        republic: 'Republic & Independence Day',
+        saraswati: 'Saraswati Puja & Assemblies',
+        labs: 'Science Labs & IT',
+        classroom: 'Classroom Life & Activities'
+      };
+      const desc = document.getElementById('newPhotoDesc')?.value.trim() || 'Campus life archival capture at Durga Public School, Pilani.';
+      const newId = (this.state.gallery.length > 0 ? Math.max(...this.state.gallery.map(g => g.id || 0)) + 1 : 1);
+
+      this.state.gallery.unshift({
+        id: newId,
+        title: title,
+        cat: cat,
+        catLabel: catLabels[cat] || cat,
+        src: src,
+        desc: desc
+      });
+
+      this.saveGallery();
+      this.saveAudit('Added photograph #' + newId + ' to gallery (' + title + ')');
+      this.toast('Photograph #' + newId + ' added to gallery!', 'success');
+      this.updateCounters();
+      this.renderGalleryCatalog();
+      document.getElementById('addPhotoModal')?.classList.remove('active');
+    },
+
+    openAddContactModal: function () {
+      document.getElementById('newContactName').value = '';
+      document.getElementById('newContactRole').value = 'Prospective Parent';
+      document.getElementById('newContactPhone').value = '';
+      document.getElementById('newContactEmail').value = '';
+      document.getElementById('newContactMessage').value = '';
+      document.getElementById('addContactModal')?.classList.add('active');
+    },
+
+    submitNewContact: function () {
+      const name = document.getElementById('newContactName')?.value.trim();
+      const phone = document.getElementById('newContactPhone')?.value.trim();
+      const message = document.getElementById('newContactMessage')?.value.trim();
+      if (!name || !phone || !message) {
+        this.toast('Please provide Name, Phone, and Inquiry Message.', 'error');
+        return;
+      }
+      const role = document.getElementById('newContactRole')?.value || 'Prospective Parent';
+      const email = document.getElementById('newContactEmail')?.value.trim() || '';
+      const randId = Math.floor(100 + Math.random() * 900);
+      const newMsg = {
+        id: 'MSG-2026-' + randId,
+        name: name,
+        role: role,
+        phone: phone,
+        email: email,
+        message: message,
+        date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+        status: 'Unread'
+      };
+
+      this.state.contacts.unshift(newMsg);
+      this.saveContacts();
+      this.saveAudit('Logged visitor inquiry ' + newMsg.id + ' from ' + name);
+      this.toast('Inquiry ' + newMsg.id + ' recorded!', 'success');
+      this.updateCounters();
+      this.renderContactsTable();
+      document.getElementById('addContactModal')?.classList.remove('active');
+    },
+
+    clearNoticeBanner: function () {
+      this.state.config.noticeBanner.enabled = false;
+      this.state.config.noticeBanner.message = '';
+      const toggle = document.getElementById('noticeToggle');
+      if (toggle) toggle.checked = false;
+      const msgInput = document.getElementById('noticeMessage');
+      if (msgInput) msgInput.value = '';
+      this.saveConfig();
+      this.saveAudit('Disabled live top alert banner across website');
+      this.toast('Live Alert Banner cleared and disabled.', 'info');
+      this.updateNoticePreview();
+    },
+
+    openAwardPointsModal: function (houseKey) {
+      if (houseKey && document.getElementById('awardHouseSelect')) {
+        document.getElementById('awardHouseSelect').value = houseKey;
+      }
+      if (document.getElementById('awardHousePoints')) {
+        document.getElementById('awardHousePoints').value = '10';
+      }
+      if (document.getElementById('awardHouseEvent')) {
+        document.getElementById('awardHouseEvent').value = '';
+      }
+      document.getElementById('awardPointsModal')?.classList.add('active');
+    },
+
+    submitAwardPoints: function () {
+      const houseKey = document.getElementById('awardHouseSelect')?.value || 'vivekanand';
+      const cat = document.getElementById('awardHouseCategory')?.value || 'athletics';
+      const pts = parseInt(document.getElementById('awardHousePoints')?.value, 10) || 0;
+      const eventName = document.getElementById('awardHouseEvent')?.value.trim() || 'Competition Points';
+
+      const house = this.state.houses[houseKey];
+      if (!house) return;
+
+      house[cat] = Math.max(0, (house[cat] || 0) + pts);
+      house.total = (house.athletics || 0) + (house.academics || 0) + (house.cultural || 0) + (house.discipline || 0);
+
+      this.saveHouses();
+      this.saveAudit('Awarded ' + (pts > 0 ? '+' : '') + pts + ' points to ' + house.name + ' (' + cat + ') for ' + eventName);
+      this.toast((pts > 0 ? '+' : '') + pts + ' pts awarded to ' + house.name + '!', 'success');
+      this.renderHouseLeaderboard();
+      this.renderDashboard();
+      document.getElementById('awardPointsModal')?.classList.remove('active');
+    },
+
     // TOAST NOTIFICATIONS
     toast: function (msg, type) {
       const container = document.getElementById('toastContainer');
@@ -1214,7 +1488,7 @@
       const el = document.createElement('div');
       el.className = 'toast toast-' + (type || 'info');
       el.innerHTML = `
-        <span>${type === 'success' ? '✓' : (type === 'error' ? '✕' : 'ℹ')}</span>
+        <span>${type === 'success' ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>' : (type === 'error' ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>' : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>')}</span>
         <span>${msg}</span>
       `;
       container.appendChild(el);
@@ -1244,6 +1518,29 @@
       });
 
       document.getElementById('sidebarBackdrop')?.addEventListener('click', function () {
+        document.getElementById('adminSidebar')?.classList.remove('open');
+        document.getElementById('sidebarBackdrop')?.classList.remove('active');
+      });
+
+
+      // Mobile Bottom Dock Items
+      document.querySelectorAll('.mobile-dock-item[data-tab]').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          const tabId = btn.getAttribute('data-tab');
+          self.switchTab(tabId);
+        });
+      });
+
+      // Mobile Dock "More / Menu" Toggle
+      document.getElementById('btnOpenMobileMenu')?.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.getElementById('adminSidebar')?.classList.toggle('open');
+        document.getElementById('sidebarBackdrop')?.classList.toggle('active');
+      });
+
+      // Mobile Sidebar Close Button (X)
+      document.getElementById('sidebarCloseBtn')?.addEventListener('click', function () {
         document.getElementById('adminSidebar')?.classList.remove('open');
         document.getElementById('sidebarBackdrop')?.classList.remove('active');
       });

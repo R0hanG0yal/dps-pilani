@@ -51,6 +51,7 @@
     <!-- SIDEBAR NAVIGATION -->
     <aside id="adminSidebar" class="admin-sidebar">
       <div class="sidebar-brand">
+        <button type="button" id="sidebarCloseBtn" class="sidebar-close-btn" aria-label="Close Navigation Drawer">&times;</button>
         <img src="assets/logo-badge.png" alt="Crest" class="sidebar-crest">
         <div class="brand-info">
           <div class="brand-title">Durga Public School</div>
@@ -166,7 +167,7 @@
             <div class="stat-card">
               <div class="stat-header">
                 <span class="stat-title">Total Admissions Leads</span>
-                <div class="stat-icon-wrap icon-wine">&#128221;</div>
+                <div class="stat-icon-wrap icon-wine"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></div>
               </div>
               <div id="statTotalLeads" class="stat-value">6</div>
               <div class="stat-subtext"><span id="statNewLeads" style="color:#C45B18;font-weight:700;">2</span> new inquiries require tele-counseling</div>
@@ -175,7 +176,7 @@
             <div class="stat-card">
               <div class="stat-header">
                 <span class="stat-title">Confirmed Admissions</span>
-                <div class="stat-icon-wrap icon-emerald">&#127891;</div>
+                <div class="stat-icon-wrap icon-emerald"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg></div>
               </div>
               <div id="statAdmitted" class="stat-value">1</div>
               <div class="stat-subtext">Session 2026–27 enrolled scholars</div>
@@ -184,7 +185,7 @@
             <div class="stat-card">
               <div class="stat-header">
                 <span class="stat-title">House Leaderboard</span>
-                <div class="stat-icon-wrap icon-amber">&#127942;</div>
+                <div class="stat-icon-wrap icon-amber"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg></div>
               </div>
               <div id="statLeaderHouse" class="stat-value">Vivekanand</div>
               <div id="statLeaderPoints" class="stat-subtext">480 Points &bull; Current Champion</div>
@@ -193,7 +194,7 @@
             <div class="stat-card">
               <div class="stat-header">
                 <span class="stat-title">Archival Gallery</span>
-                <div class="stat-icon-wrap icon-blue">&#128247;</div>
+                <div class="stat-icon-wrap icon-blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg></div>
               </div>
               <div id="statGalleryCount" class="stat-value">271</div>
               <div class="stat-subtext">Curated archival photo prints online</div>
@@ -207,19 +208,19 @@
             </div>
             <div class="admin-card-body" style="display:flex;gap:12px;flex-wrap:wrap;">
               <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.switchTab('leads')">
-                <span>&#43; Review Admission Leads</span>
+                <span>+ Review Admission Leads</span>
               </button>
               <button type="button" class="btn btn-saffron" onclick="window.DPSAdmin.switchTab('notices')">
-                <span>&#128226; Broadcast Urgent Notice</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;vertical-align:middle;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg><span>Broadcast Urgent Notice</span>
               </button>
               <button type="button" class="btn btn-outline" onclick="window.DPSAdmin.switchTab('houses')">
-                <span>&#127942; Update House Scores</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;vertical-align:middle;"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg><span>Update House Scores</span>
               </button>
               <button type="button" class="btn btn-outline" onclick="window.DPSAdmin.switchTab('settings')">
-                <span>&#9881; Edit School Timings &amp; Phone</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;vertical-align:middle;"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0-.33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg><span>Edit School Timings &amp; Phone</span>
               </button>
               <button type="button" class="btn btn-outline" onclick="window.DPSAdmin.exportFullBackupJSON()">
-                <span>&#128190; Download Full Data Backup (.JSON)</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;vertical-align:middle;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg><span>Download Full Backup (.JSON)</span>
               </button>
             </div>
           </div>
@@ -273,6 +274,10 @@
                 <span id="leadsFilterCount" class="card-badge">Showing 6 Records</span>
               </div>
               <div class="admin-card-actions">
+                <button type="button" class="btn btn-sm btn-wine" onclick="window.DPSAdmin.openAddLeadModal()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  <span>+ New Application</span>
+                </button>
                 <button type="button" class="btn btn-sm btn-outline" onclick="window.DPSAdmin.exportLeadsCSV()">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                   <span>Export CSV</span>
@@ -284,7 +289,7 @@
               <!-- Toolbar -->
               <div class="toolbar-wrap">
                 <div class="search-box">
-                  <span class="search-icon">&#128269;</span>
+                  <svg class="search-icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                   <input type="text" id="leadsSearchInput" placeholder="Search by student, parent, phone or ID...">
                 </div>
 
@@ -382,10 +387,15 @@
                 </div>
               </div>
 
-              <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.saveNoticeBanner()">
-                <span>Save &amp; Broadcast to Live Website</span>
-                <span>&rarr;</span>
-              </button>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.saveNoticeBanner()">
+                  <span>Save &amp; Broadcast to Live Website</span>
+                  <span>&rarr;</span>
+                </button>
+                <button type="button" class="btn btn-outline" onclick="window.DPSAdmin.clearNoticeBanner()">
+                  <span>Clear / Disable Banner</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -395,6 +405,12 @@
           <div class="admin-card">
             <div class="admin-card-header">
               <span class="card-title">Four-House Championship &amp; Points Leaderboard</span>
+              <div class="admin-card-actions">
+                <button type="button" class="btn btn-sm btn-wine" onclick="window.DPSAdmin.openAwardPointsModal()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  <span>+ Award House Points</span>
+                </button>
+              </div>
             </div>
             <div class="admin-card-body">
               <p style="font-size:0.82rem;color:#475569;margin-bottom:20px;">
@@ -517,12 +533,18 @@
                 <span class="card-title">Campus Scrapbook &amp; Archival Gallery</span>
                 <span id="galleryFilterCount" class="card-badge">271 Prints</span>
               </div>
+              <div class="admin-card-actions">
+                <button type="button" class="btn btn-sm btn-wine" onclick="window.DPSAdmin.openAddPhotoModal()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  <span>+ Add Photograph</span>
+                </button>
+              </div>
             </div>
             <div class="admin-card-body">
               <!-- Toolbar -->
               <div class="toolbar-wrap">
                 <div class="search-box">
-                  <span class="search-icon">&#128269;</span>
+                  <svg class="search-icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                   <input type="text" id="gallerySearchInput" placeholder="Search photographs by title or description...">
                 </div>
 
@@ -552,6 +574,12 @@
           <div class="admin-card">
             <div class="admin-card-header">
               <span class="card-title">Circulars, Notices &amp; Public Guidelines</span>
+              <div class="admin-card-actions">
+                <button type="button" class="btn btn-sm btn-wine" onclick="window.DPSAdmin.openAddCircularModal()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  <span>+ Publish New Circular</span>
+                </button>
+              </div>
             </div>
             <div class="admin-card-body">
               <div class="table-responsive">
@@ -580,6 +608,12 @@
           <div class="admin-card">
             <div class="admin-card-header">
               <span class="card-title">Faculty &amp; Academic Administration Roster</span>
+              <div class="admin-card-actions">
+                <button type="button" class="btn btn-sm btn-wine" onclick="window.DPSAdmin.openAddFacultyModal()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  <span>+ Add Faculty Member</span>
+                </button>
+              </div>
             </div>
             <div class="admin-card-body">
               <div class="table-responsive">
@@ -609,6 +643,12 @@
           <div class="admin-card">
             <div class="admin-card-header">
               <span class="card-title">Public Inquiries &amp; Campus Tour Requests</span>
+              <div class="admin-card-actions">
+                <button type="button" class="btn btn-sm btn-wine" onclick="window.DPSAdmin.openAddContactModal()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  <span>+ Log Public Inquiry</span>
+                </button>
+              </div>
             </div>
             <div class="admin-card-body">
               <div class="table-responsive">
@@ -744,12 +784,369 @@
           Registered on: <span id="leadModalDate" style="font-weight:700;"></span>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline" onclick="document.getElementById('leadDetailModal').classList.remove('active')">Cancel</button>
-        <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.saveLeadModalDetail()">Save Changes</button>
+      <div class="modal-footer" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+        <button type="button" class="btn btn-danger btn-sm" onclick="window.DPSAdmin.deleteLeadFromModal()">Delete Record</button>
+        <div style="display:flex;gap:8px;">
+          <button type="button" class="btn btn-outline" onclick="document.getElementById('leadDetailModal').classList.remove('active')">Cancel</button>
+          <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.saveLeadModalDetail()">Save Changes</button>
+        </div>
       </div>
     </div>
   </div>
+
+
+  <!-- ADD LEAD MODAL -->
+  <div id="addLeadModal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 class="modal-title">New Admission Application</h3>
+        <button type="button" class="modal-close-btn" onclick="document.getElementById('addLeadModal').classList.remove('active')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="newLeadStudent">Student Full Name *</label>
+            <input type="text" id="newLeadStudent" class="form-input" placeholder="e.g. Aarav Sharma" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="newLeadGrade">Grade / Class Sought *</label>
+            <select id="newLeadGrade" class="form-select-full">
+              <option value="Nursery">Nursery</option>
+              <option value="LKG">LKG</option>
+              <option value="UKG">UKG</option>
+              <option value="Class 1">Class I</option>
+              <option value="Class 2">Class II</option>
+              <option value="Class 3">Class III</option>
+              <option value="Class 4">Class IV</option>
+              <option value="Class 5">Class V</option>
+              <option value="Class 6">Class VI</option>
+              <option value="Class 7">Class VII</option>
+              <option value="Class 8">Class VIII</option>
+              <option value="Class 9">Class IX</option>
+              <option value="Class 10">Class X</option>
+              <option value="Class 11 Science" selected>Class XI (Science)</option>
+              <option value="Class 11 Commerce">Class XI (Commerce)</option>
+              <option value="Class 12 Science">Class XII (Science)</option>
+              <option value="Class 12 Commerce">Class XII (Commerce)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="newLeadParent">Parent / Guardian Full Name *</label>
+            <input type="text" id="newLeadParent" class="form-input" placeholder="e.g. Rajesh Sharma" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="newLeadPhone">Contact Telephone *</label>
+            <input type="tel" id="newLeadPhone" class="form-input" placeholder="e.g. +91 94140 12345" required>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="newLeadEmail">Email Address</label>
+            <input type="email" id="newLeadEmail" class="form-input" placeholder="e.g. parent@example.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="newLeadStatus">Initial Status</label>
+            <select id="newLeadStatus" class="form-select-full">
+              <option value="New" selected>New</option>
+              <option value="Contacted">Contacted</option>
+              <option value="Interview Scheduled">Interview Scheduled</option>
+              <option value="Admitted">Admitted</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="newLeadMessage">Application Notes / Inquiry Message</label>
+          <textarea id="newLeadMessage" class="form-textarea" rows="3" placeholder="Enter inquiry context, coaching requirements, transport queries, etc."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('addLeadModal').classList.remove('active')">Cancel</button>
+        <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.submitNewLead()">Save Application</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD CIRCULAR MODAL -->
+  <div id="addCircularModal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 class="modal-title">Publish New Official Circular</h3>
+        <button type="button" class="modal-close-btn" onclick="document.getElementById('addCircularModal').classList.remove('active')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="newCircId">Reference ID *</label>
+            <input type="text" id="newCircId" class="form-input" placeholder="e.g. CIRC-2026-05" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="newCircCategory">Category *</label>
+            <select id="newCircCategory" class="form-select-full">
+              <option value="Admissions">Admissions</option>
+              <option value="Examinations">Examinations</option>
+              <option value="Sports">Sports</option>
+              <option value="General" selected>General</option>
+              <option value="Statutory">Statutory</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="newCircTitle">Circular Subject / Title *</label>
+          <input type="text" id="newCircTitle" class="form-input" placeholder="e.g. Schedule of Annual Practical &amp; Board Model Exams" required>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="newCircDate">Issue Date *</label>
+            <input type="text" id="newCircDate" class="form-input" placeholder="e.g. 30 Oct 2026">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="newCircStatus">Publication Status</label>
+            <select id="newCircStatus" class="form-select-full">
+              <option value="Active" selected>Active</option>
+              <option value="Upcoming">Upcoming</option>
+              <option value="Archived">Archived</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="newCircUrl">Document PDF / Web Link</label>
+          <input type="text" id="newCircUrl" class="form-input" placeholder="e.g. assets/docs/Fee-Structure-2026-27.pdf" value="assets/docs/Fee-Structure-2026-27.pdf">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('addCircularModal').classList.remove('active')">Cancel</button>
+        <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.submitNewCircular()">Publish Circular</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD FACULTY MODAL -->
+  <div id="addFacultyModal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 class="modal-title">Add Faculty Member Profile</h3>
+        <button type="button" class="modal-close-btn" onclick="document.getElementById('addFacultyModal').classList.remove('active')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="newFacId">Employee ID *</label>
+            <input type="text" id="newFacId" class="form-input" placeholder="e.g. FAC-07" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="newFacName">Faculty Full Name *</label>
+            <input type="text" id="newFacName" class="form-input" placeholder="e.g. Mr. Alok Pareek" required>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="newFacDesignation">Designation *</label>
+            <input type="text" id="newFacDesignation" class="form-input" placeholder="e.g. PGT English &amp; Literary Club Head" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="newFacDept">Department *</label>
+            <select id="newFacDept" class="form-select-full">
+              <option value="Science">Science</option>
+              <option value="Mathematics">Mathematics</option>
+              <option value="Commerce">Commerce</option>
+              <option value="Humanities &amp; Languages" selected>Humanities &amp; Languages</option>
+              <option value="Athletics &amp; Physical Ed">Athletics &amp; Physical Ed</option>
+              <option value="Primary Wing">Primary Wing</option>
+              <option value="Administration">Administration</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="newFacQual">Academic Qualifications *</label>
+            <input type="text" id="newFacQual" class="form-input" placeholder="e.g. M.A. (English), B.Ed., NET" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="newFacExp">Teaching Experience *</label>
+            <input type="text" id="newFacExp" class="form-input" placeholder="e.g. 10 Years" required>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('addFacultyModal').classList.remove('active')">Cancel</button>
+        <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.submitNewFaculty()">Save Faculty Profile</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD PHOTO MODAL -->
+  <div id="addPhotoModal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 class="modal-title">Add Archival Photo to Scrapbook</h3>
+        <button type="button" class="modal-close-btn" onclick="document.getElementById('addPhotoModal').classList.remove('active')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="newPhotoTitle">Photograph Title *</label>
+          <input type="text" id="newPhotoTitle" class="form-input" placeholder="e.g. Senior Secondary Physics Lab Practical Session" required>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="newPhotoCat">Category *</label>
+            <select id="newPhotoCat" class="form-select-full">
+              <option value="campus" selected>Campus &amp; Architecture</option>
+              <option value="sports">Sports Day &amp; Athletics</option>
+              <option value="republic">Republic &amp; Independence Day</option>
+              <option value="saraswati">Saraswati Puja &amp; Assemblies</option>
+              <option value="labs">Science Labs &amp; IT</option>
+              <option value="classroom">Classroom Life &amp; Activities</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="newPhotoSrc">Image File Path / URL *</label>
+            <input type="text" id="newPhotoSrc" class="form-input" placeholder="e.g. assets/photos/class-x-graduating-batch-turban.jpg" value="assets/photos/karate-students-ground.jpg" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="newPhotoDesc">Archival Caption / Story</label>
+          <textarea id="newPhotoDesc" class="form-textarea" rows="3" placeholder="Enter archival context, batch year, event details, or participants..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('addPhotoModal').classList.remove('active')">Cancel</button>
+        <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.submitNewPhoto()">Add to Gallery</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD PUBLIC INQUIRY MODAL -->
+  <div id="addContactModal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 class="modal-title">Log Public Inquiry / Tour Request</h3>
+        <button type="button" class="modal-close-btn" onclick="document.getElementById('addContactModal').classList.remove('active')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="newContactName">Visitor / Sender Full Name *</label>
+            <input type="text" id="newContactName" class="form-input" placeholder="e.g. Amit Singhania" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="newContactRole">Role / Relationship *</label>
+            <select id="newContactRole" class="form-select-full">
+              <option value="Prospective Parent" selected>Prospective Parent</option>
+              <option value="Alumni">Alumni</option>
+              <option value="Community Member">Community Member</option>
+              <option value="Campus Tour Visitor">Campus Tour Visitor</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="newContactPhone">Telephone *</label>
+            <input type="tel" id="newContactPhone" class="form-input" placeholder="e.g. +91 94140 98765" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="newContactEmail">Email Address</label>
+            <input type="email" id="newContactEmail" class="form-input" placeholder="e.g. visitor@example.com">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="newContactMessage">Inquiry / Campus Visit Request *</label>
+          <textarea id="newContactMessage" class="form-textarea" rows="3" placeholder="Enter inquiry message or campus appointment notes..." required></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('addContactModal').classList.remove('active')">Cancel</button>
+        <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.submitNewContact()">Log Inquiry</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AWARD HOUSE POINTS MODAL -->
+  <div id="awardPointsModal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 class="modal-title">Award / Adjust House Points</h3>
+        <button type="button" class="modal-close-btn" onclick="document.getElementById('awardPointsModal').classList.remove('active')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="awardHouseSelect">Target House *</label>
+            <select id="awardHouseSelect" class="form-select-full">
+              <option value="vivekanand" selected>Vivekanand House (Saffron Gold)</option>
+              <option value="gandhi">Gandhi House (Emerald Green)</option>
+              <option value="raman">Raman House (Royal Wine)</option>
+              <option value="bose">Bose House (Navy Blue)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="awardHouseCategory">Competition Category *</label>
+            <select id="awardHouseCategory" class="form-select-full">
+              <option value="athletics" selected>Athletics &amp; Sports</option>
+              <option value="academics">Academics &amp; Quizzing</option>
+              <option value="cultural">Cultural &amp; Arts</option>
+              <option value="discipline">Discipline &amp; Conduct</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="awardHousePoints">Points to Add *</label>
+            <input type="number" id="awardHousePoints" class="form-input" value="10" step="5" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="awardHouseEvent">Event / Reason *</label>
+            <input type="text" id="awardHouseEvent" class="form-input" placeholder="e.g. 1st Place in 400m Relay" required>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('awardPointsModal').classList.remove('active')">Cancel</button>
+        <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.submitAwardPoints()">Update Standings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE BOTTOM NAVIGATION DOCK -->
+  <nav id="adminMobileDock" class="admin-mobile-dock" aria-label="Mobile Administration Navigation">
+    <button type="button" class="mobile-dock-item active" data-tab="dashboard">
+      <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      <span class="dock-label">Dashboard</span>
+    </button>
+    <button type="button" class="mobile-dock-item" data-tab="leads">
+      <div class="dock-icon-wrap">
+        <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <span id="dockLeadsCount" class="dock-badge">6</span>
+      </div>
+      <span class="dock-label">Leads</span>
+    </button>
+    <button type="button" class="mobile-dock-item" data-tab="notices">
+      <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+      <span class="dock-label">Alerts</span>
+    </button>
+    <button type="button" class="mobile-dock-item" data-tab="settings">
+      <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0-.33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+      <span class="dock-label">CMS</span>
+    </button>
+    <button type="button" class="mobile-dock-item" id="btnOpenMobileMenu">
+      <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      <span class="dock-label">More</span>
+    </button>
+  </nav>
 
   <!-- TOAST CONTAINER -->
   <div id="toastContainer" class="toast-container"></div>
