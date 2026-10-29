@@ -2190,23 +2190,34 @@
   flex: 1;
 }
 
-/* Highlight Mini Chips */
+/* Highlight Mini Chips - Locked to 1 single line with 2 features */
 .pillar-card-chips {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 5px !important;
+  width: 100% !important;
+  margin-bottom: 16px !important;
+  box-sizing: border-box !important;
 }
 
 .pillar-chip {
-  background: rgba(116, 25, 94, 0.05);
-  color: var(--wine-800, #5c1636);
-  font-size: 0.74rem;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 8px;
-  border: 1px solid rgba(116, 25, 94, 0.08);
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  background: rgba(116, 25, 94, 0.06) !important;
+  color: var(--wine-800, #5c1636) !important;
+  font-size: clamp(0.55rem, 1.8vw, 0.72rem) !important;
+  font-weight: 600 !important;
+  padding: 3px 5px !important;
+  border-radius: 6px !important;
+  border: 1px solid rgba(116, 25, 94, 0.12) !important;
+  line-height: 1.25 !important;
 }
 
 /* Card Action Link */
@@ -3348,15 +3359,26 @@
   }
 
   .pillar-card-chips {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
     gap: 4px !important;
     margin-bottom: 8px !important;
-    display: flex !important;
-    flex-wrap: wrap !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .pillar-chip {
-    font-size: 0.58rem !important;
-    padding: 2px 5px !important;
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: clamp(0.50rem, 2.1vw, 0.62rem) !important;
+    padding: 2.5px 3px !important;
     border-radius: 5px !important;
     line-height: 1.2 !important;
   }
@@ -3392,7 +3414,10 @@
       font-size: 0.80rem !important;
     }
     .pillar-card-chips {
-      display: none !important;
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      gap: 3px !important;
     }
   }
 
