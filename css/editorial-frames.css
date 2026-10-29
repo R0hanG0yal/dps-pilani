@@ -9600,3 +9600,87 @@ details.apple-expandable-item[open] > summary::after {
     white-space: nowrap !important;
   }
 }
+
+/* =========================================================================
+   MOBILE HARDWARE ACCELERATION & ZERO-LAG PERFORMANCE ENGINE (<= 768px)
+   Eliminates multi-pass GPU blur bottlenecks, enables 60/120Hz smooth scrolling
+   ========================================================================= */
+@media (max-width: 768px) {
+  /* 1. Restore native touch inertia physics on mobile */
+  html, body {
+    scroll-behavior: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior-y: none;
+  }
+
+  /* 2. Remove GPU-saturating backdrop-filter on scrolling body cards */
+  .card:not(.dps-mega-card),
+  .metric-card,
+  .feature-card,
+  .facility-card,
+  .wing-card,
+  .stream-card,
+  .philosophy-card,
+  .scrapbook-polaroid,
+  .scrapbook-badge-meta,
+  .hero-float-card,
+  .hero-rank-card,
+  .hero-stat-card,
+  .editorial-frame,
+  .quote-block,
+  .faq-card,
+  .curriculum-card,
+  .founder-card,
+  .quick-enquiry-card,
+  .stream-box,
+  .stage-card,
+  .academic-card,
+  .scrapbook-frame-card,
+  .valance-swag {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  /* 3. Solidify backgrounds with lightweight luxury tint (looks identical, 0 GPU cost) */
+  .card:not(.card-wine):not(.dps-mega-card),
+  .metric-card,
+  .facility-card,
+  .wing-card,
+  .stream-card,
+  .philosophy-card,
+  .scrapbook-frame-card {
+    background: #FFFCF7 !important;
+  }
+
+  /* 4. Disable continuous floating keyframes that constantly repaint on mobile */
+  .hero-curve-frame,
+  .hero-float-card,
+  .hero-rank-card,
+  .hero-editorial-badge,
+  .dfb-pulse,
+  .dfb-wave {
+    animation: none !important;
+  }
+
+  /* 5. Hardware promote fixed navigation bars to isolated compositor layers */
+  .header-left-group,
+  .mobile-bottom-dock,
+  #dagerozFloatBtn {
+    will-change: transform;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+
+  /* 6. Containment for offscreen sections to eliminate layout thrashing */
+  .section,
+  .scrapbook-album-chapter {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 500px;
+  }
+
+  /* 7. Remove expensive 3D perspective compositing on gallery cards */
+  .scrapbook-item {
+    perspective: none !important;
+    transform: none !important;
+  }
+}

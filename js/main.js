@@ -653,21 +653,23 @@
         }
       });
 
-      // 2. Throttled window scroll listener backup
-      let scrollTimer = null;
-      window.addEventListener('scroll', function () {
-        if (scrollTimer) return;
-        scrollTimer = setTimeout(function () {
-          scrollTimer = null;
-          chapters.forEach(function (chap) {
-            if (chap.classList.contains('hidden-chapter') || chap.style.display === 'none') return;
-            const rect = chap.getBoundingClientRect();
-            if (rect.bottom <= window.innerHeight + 550) {
-              loadNextBatchForChapter(chap);
-            }
-          });
-        }, 120);
-      }, { passive: true });
+      // 2. Fallback scroll listener ONLY for ancient browsers without IntersectionObserver
+      if (!('IntersectionObserver' in window)) {
+        let scrollTimer = null;
+        window.addEventListener('scroll', function () {
+          if (scrollTimer) return;
+          scrollTimer = setTimeout(function () {
+            scrollTimer = null;
+            chapters.forEach(function (chap) {
+              if (chap.classList.contains('hidden-chapter') || chap.style.display === 'none') return;
+              const rect = chap.getBoundingClientRect();
+              if (rect.bottom <= window.innerHeight + 550) {
+                loadNextBatchForChapter(chap);
+              }
+            });
+          }, 200);
+        }, { passive: true });
+      }
     }
 
     // Filter Logic

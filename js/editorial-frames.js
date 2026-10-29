@@ -386,7 +386,7 @@
       const rect = floatBtn.getBoundingClientRect();
       initialLeft = rect.left;
       initialTop = rect.top;
-      // Do not unset right/bottom yet - wait until real drag threshold is crossed
+      attachDragListeners();
     }
 
     function onPointerMove(e) {
@@ -428,6 +428,7 @@
       if (!isPointerDown) return;
       isPointerDown = false;
 
+      detachDragListeners();
       if (isDragging) {
         isDragging = false;
         floatBtn.classList.remove('is-dragging');
@@ -440,15 +441,26 @@
       }
     }
 
-    // Attach mouse listeners
-    floatBtn.addEventListener('mousedown', onPointerStart);
-    window.addEventListener('mousemove', onPointerMove, { passive: false });
-    window.addEventListener('mouseup', onPointerEnd);
+    // Dynamic Window Event Attachment (Only during active drag, NEVER during normal scroll!)
+    function attachDragListeners() {
+      window.addEventListener('mousemove', onPointerMove);
+      window.addEventListener('mouseup', onPointerEnd);
+      window.addEventListener('touchmove', onPointerMove, { passive: false });
+      window.addEventListener('touchend', onPointerEnd);
+      window.addEventListener('touchcancel', onPointerEnd);
+    }
 
-    // Attach touch listeners
-    floatBtn.addEventListener('touchstart', onPointerStart, { passive: false });
-    window.addEventListener('touchmove', onPointerMove, { passive: false });
-    window.addEventListener('touchend', onPointerEnd);
+    function detachDragListeners() {
+      window.removeEventListener('mousemove', onPointerMove);
+      window.removeEventListener('mouseup', onPointerEnd);
+      window.removeEventListener('touchmove', onPointerMove);
+      window.removeEventListener('touchend', onPointerEnd);
+      window.removeEventListener('touchcancel', onPointerEnd);
+    }
+
+    // Attach lightweight pointerstart listeners only to the button itself
+    floatBtn.addEventListener('mousedown', onPointerStart);
+    floatBtn.addEventListener('touchstart', onPointerStart, { passive: true });
 
     // Keyboard trigger
     floatBtn.addEventListener('keydown', function (e) {
