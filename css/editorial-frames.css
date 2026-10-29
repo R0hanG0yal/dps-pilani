@@ -10930,3 +10930,375 @@ details.apple-expandable-item[open] > summary::after {
 [id="disclosure"] {
   scroll-margin-top: calc(var(--header-h, 72px) + 24px) !important;
 }
+
+/* ==========================================================================
+   OFFICIAL FEE STRUCTURE TABLE & PDF PREVIEW LIGHTBOX
+   ========================================================================== */
+.fee-highlight-ribbon {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+  margin: 24px 0 26px;
+}
+.fee-highlight-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(125, 29, 63, 0.14);
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 4px 14px rgba(46, 8, 21, 0.04);
+}
+.fee-highlight-kicker {
+  font-family: var(--font-label, 'Cabinet Grotesk', system-ui, sans-serif);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--wine-700);
+  font-weight: 700;
+}
+.fee-highlight-val {
+  font-family: var(--font-display, 'Cinzel', serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--ink-900);
+}
+.fee-highlight-sub {
+  font-size: 0.80rem;
+  color: var(--ink-500);
+  line-height: 1.35;
+}
+
+.fee-actions-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 26px;
+}
+.fee-actions-bar .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  padding: 10px 20px;
+}
+
+.fee-table-wrap {
+  border: 1px solid rgba(125, 29, 63, 0.16);
+  border-radius: 14px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(46, 8, 21, 0.06);
+}
+.fee-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.90rem;
+  min-width: 620px;
+}
+.fee-table thead th {
+  background: var(--wine-900);
+  color: #ffffff;
+  font-family: var(--font-label, 'Cabinet Grotesk', system-ui, sans-serif);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 14px 16px;
+  text-align: right;
+  border: none;
+  white-space: nowrap;
+}
+.fee-table thead th:first-child {
+  text-align: left;
+}
+.fee-table thead th:last-child {
+  background: #5a1027;
+  color: #fce7b6;
+}
+.fee-table tbody td {
+  padding: 12px 16px;
+  border-top: 1px solid rgba(125, 29, 63, 0.08);
+  color: var(--ink-800);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.92rem;
+}
+.fee-table tbody td:first-child {
+  text-align: left;
+  font-weight: 700;
+  color: var(--ink-900);
+}
+.fee-table tbody td:last-child {
+  font-weight: 800;
+  color: var(--wine-800);
+  background: rgba(125, 29, 63, 0.03);
+}
+.fee-table tbody tr:hover td {
+  background: rgba(125, 29, 63, 0.04);
+}
+.fee-table tbody tr:hover td:last-child {
+  background: rgba(125, 29, 63, 0.08);
+}
+.fee-stage-tag {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-family: var(--font-label, system-ui, sans-serif);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+.fee-stage-tag.tag-foundational {
+  background: rgba(217, 119, 6, 0.12);
+  color: #b45309;
+}
+.fee-stage-tag.tag-primary {
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
+}
+.fee-stage-tag.tag-middle {
+  background: rgba(59, 130, 246, 0.12);
+  color: #1d4ed8;
+}
+.fee-stage-tag.tag-secondary {
+  background: rgba(139, 92, 246, 0.12);
+  color: #6d28d9;
+}
+.fee-stage-tag.tag-senior {
+  background: rgba(190, 24, 93, 0.12);
+  color: #9d174d;
+}
+
+/* Document Showcase Card */
+.fee-doc-showcase-card {
+  margin-top: 36px;
+  background: linear-gradient(145deg, #ffffff 0%, #faf6f0 100%);
+  border: 1px solid rgba(125, 29, 63, 0.18);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 12px 35px rgba(46, 8, 21, 0.06);
+}
+.fee-doc-showcase-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(125, 29, 63, 0.1);
+}
+.fee-doc-showcase-meta h3 {
+  font-family: var(--font-display, 'Cinzel', serif);
+  font-size: 1.15rem;
+  color: var(--ink-900);
+  margin: 0 0 4px 0;
+}
+.fee-doc-showcase-meta p {
+  font-size: 0.84rem;
+  color: var(--ink-500);
+  margin: 0;
+}
+.fee-doc-showcase-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.fee-preview-thumbnail-wrap {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(125, 29, 63, 0.14);
+  background: #ffffff;
+  cursor: pointer;
+  max-width: 520px;
+  margin: 0 auto;
+  box-shadow: 0 8px 24px rgba(46, 8, 21, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.fee-preview-thumbnail-wrap:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(46, 8, 21, 0.14);
+}
+.fee-preview-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.fee-preview-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(46, 8, 21, 0.85) 0%, rgba(46, 8, 21, 0.25) 50%, transparent 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0.95;
+  transition: opacity 0.2s ease;
+}
+.fee-preview-thumbnail-wrap:hover .fee-preview-overlay {
+  opacity: 1;
+}
+.fee-overlay-badge {
+  background: rgba(255, 255, 255, 0.96);
+  color: var(--wine-900);
+  font-family: var(--font-label, 'Cabinet Grotesk', system-ui, sans-serif);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+/* Lightbox Modal */
+.fee-pdf-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+.fee-pdf-modal[hidden] {
+  display: none !important;
+}
+.fee-pdf-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 4, 9, 0.78);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.fee-pdf-modal-dialog {
+  position: relative;
+  z-index: 1;
+  background: #ffffff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 760px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  animation: feeModalZoom 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes feeModalZoom {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.fee-pdf-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: var(--wine-900);
+  color: #ffffff;
+}
+.fee-modal-kicker {
+  display: block;
+  font-family: var(--font-label, system-ui, sans-serif);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #fce7b6;
+  font-weight: 700;
+}
+.fee-modal-title {
+  font-family: var(--font-display, 'Cinzel', serif);
+  font-size: 1.15rem;
+  color: #ffffff;
+  margin: 2px 0;
+}
+.fee-modal-sub {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.78);
+}
+.fee-modal-close {
+  appearance: none;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.fee-modal-close:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+.fee-pdf-modal-body {
+  padding: 16px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: #f7f3ee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fee-modal-doc-img {
+  max-width: 100%;
+  height: auto;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+  border-radius: 6px;
+  display: block;
+}
+.fee-pdf-modal-footer {
+  padding: 12px 20px;
+  background: #ffffff;
+  border-top: 1px solid rgba(125, 29, 63, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+@media (max-width: 600px) {
+  .fee-actions-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .fee-actions-bar .btn {
+    justify-content: center;
+    width: 100%;
+  }
+  .fee-highlight-ribbon {
+    grid-template-columns: 1fr;
+  }
+  .fee-doc-showcase-card {
+    padding: 16px 14px;
+  }
+  .fee-doc-showcase-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .fee-pdf-modal {
+    padding: 8px;
+  }
+  .fee-pdf-modal-dialog {
+    max-height: 94vh;
+  }
+}

@@ -974,6 +974,7 @@
     initMobileCategoryDrawer();
     initLiveSiteConfig();
     initAdminShortcut();
+    initFeePdfModal();
 
     // Absolute mobile scrolling guarantee: Ensure body is never stuck in overflow: hidden
     setTimeout(function () {
@@ -1058,6 +1059,54 @@
         drawer.classList.remove('is-open');
         filterBar.classList.remove('is-drawer-open');
         toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  // 17. OFFICIAL FEE STRUCTURE PDF PREVIEW LIGHTBOX MODAL
+  function initFeePdfModal() {
+    const modal = document.getElementById('feePdfModal');
+    if (!modal) return;
+
+    function openModal(e) {
+      if (e) e.preventDefault();
+      modal.removeAttribute('hidden');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      const closeBtn = document.getElementById('closeFeePdfModal');
+      if (closeBtn) closeBtn.focus();
+    }
+
+    function closeModal() {
+      modal.setAttribute('hidden', '');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.fee-preview-trigger, #openFeePdfBtn, #feeDocThumbnail').forEach(function (trigger) {
+      trigger.addEventListener('click', openModal);
+      if (trigger.getAttribute('role') === 'button') {
+        trigger.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openModal(e);
+          }
+        });
+      }
+    });
+
+    const closeBtn = document.getElementById('closeFeePdfModal');
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+    const closeFooterBtn = document.getElementById('closeFeePdfModalBtn');
+    if (closeFooterBtn) closeFooterBtn.addEventListener('click', closeModal);
+
+    const backdrop = document.getElementById('feePdfModalBackdrop');
+    if (backdrop) backdrop.addEventListener('click', closeModal);
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !modal.hasAttribute('hidden')) {
+        closeModal();
       }
     });
   }
