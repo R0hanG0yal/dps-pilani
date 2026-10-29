@@ -331,6 +331,7 @@
     });
 
     function startAutoTimer() {
+      if (window.innerWidth <= 768) return; // Do not decode offscreen high-res images on mobile
       autoTimer = setInterval(function () {
         goToSlide(activeIndex + 1);
       }, 7000);
@@ -1398,6 +1399,7 @@ void main() {
   // Eye gallery discarded per user request
 
   function initLiquidGlassHeader() {
+    if (window.innerWidth <= 768) return; // Dedicated mobile Dynamic Island handles mobile; do not poll scroll
     const header = document.querySelector('.dps-header');
     if (!header) return;
 

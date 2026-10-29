@@ -9723,4 +9723,48 @@ details.apple-expandable-item[open] > summary::after {
     perspective: none !important;
     transform: none !important;
   }
+
+  /* 8. Instant mobile content rendering (eliminates scroll reveal jank & layer memory bloat) */
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    -webkit-transform: none !important;
+    transition: none !important;
+    will-change: auto !important;
+  }
+
+  /* 9. Lightweight single-layer mobile shadows (eliminates multi-pass Gaussian blur overhead) */
+  .client-curved-card,
+  .page-hero-stage-card,
+  .card,
+  .founder-card,
+  .facility-card,
+  .wing-card,
+  .stream-card,
+  .stat-band,
+  .editorial-frame,
+  .tile {
+    box-shadow: 0 4px 14px rgba(46, 8, 21, 0.08) !important;
+  }
+
+  /* 10. Hardware-only transitions on mobile: animate transform & opacity only (0 CPU repaints) */
+  .btn,
+  .hero-pill,
+  .photo-pill-btn,
+  .scrapbook-filter-btn,
+  .mobile-card-expand-btn,
+  .faq-icon,
+  details.apple-expandable-item > summary::after,
+  .scrapbook-mobile-category-toggle,
+  .dps-header {
+    transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.16s ease !important;
+  }
+
+  /* 11. GPU-smooth drawer & accordion expansions */
+  .scrapbook-filter-bar,
+  .mobile-expand-content,
+  .dps-mega-col .mega-link-list {
+    transition: opacity 0.20s ease, transform 0.20s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    will-change: opacity, transform;
+  }
 }

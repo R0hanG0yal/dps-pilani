@@ -478,7 +478,7 @@
       bar.setAttribute('aria-hidden', 'true');
       document.body.appendChild(bar);
     }
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion || window.innerWidth <= 768) return;
 
     // Cache scroll height to prevent synchronous layout recalculations on scroll frames
     let maxScroll = 1;
