@@ -341,11 +341,13 @@
       });
     });
 
+    const SLIDE_INTERVAL_MS = 4500; // Snappy 4.5s auto-advance on both mobile & desktop
+
     function startAutoTimer() {
-      if (window.innerWidth <= 768) return; // Do not decode offscreen high-res images on mobile
+      if (autoTimer) clearInterval(autoTimer);
       autoTimer = setInterval(function () {
         goToSlide(activeIndex + 1);
-      }, 7000);
+      }, SLIDE_INTERVAL_MS);
     }
 
     function resetAutoTimer() {
@@ -353,29 +355,17 @@
       startAutoTimer();
     }
 
-    // Preload hero slide images on idle for instantaneous switching
-    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-      window.requestIdleCallback(function () {
-        slides.forEach(function (s) {
-          if (s.img) {
-            const pre = new Image();
-            pre.src = s.img;
-          }
-        });
-      });
-    } else {
-      setTimeout(function () {
-        slides.forEach(function (s) {
-          if (s.img) {
-            const pre = new Image();
-            pre.src = s.img;
-          }
-        });
-      }, 1500);
-    }
+    // Preload ALL hero slide images immediately so transitions are instantaneous
+    slides.forEach(function (s) {
+      if (s.img) {
+        const pre = new Image();
+        pre.src = s.img;
+      }
+    });
 
+    // Pause on hover ONLY on genuine mouse devices (never touch screens!)
     const heroStage = document.querySelector('.inspire-hero-stage');
-    if (heroStage) {
+    if (heroStage && typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
       heroStage.addEventListener('mouseenter', function () {
         if (autoTimer) clearInterval(autoTimer);
       });
@@ -383,6 +373,15 @@
         startAutoTimer();
       });
     }
+
+    // Auto-resume if tab becomes visible
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) {
+        if (autoTimer) clearInterval(autoTimer);
+      } else {
+        startAutoTimer();
+      }
+    });
 
     startAutoTimer();
   }
@@ -1824,7 +1823,7 @@ void main() {
     document.body.appendChild(dock);
   }
 
-document.addEventListener('DOMContentLoaded', function () {
+  function bootEditorialComponents() {
     initMobileBottomDock();
     initHeroControls();
     initImageModeSwitcher();
@@ -1836,6 +1835,13 @@ document.addEventListener('DOMContentLoaded', function () {
     initLaptopMegaMenu();
     initLiquidGlassHeader();
     initUniversalMobileDrawers();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootEditorialComponents);
+  } else {
+    bootEditorialComponents();
+  }
 
   // Universal Mobile Category Drawer Controller (Liquid Glass Mega-Style)
   function initUniversalMobileDrawers() {
@@ -1893,6 +1899,5 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
     // Eye gallery discarded per user request
-  });
 
 })();

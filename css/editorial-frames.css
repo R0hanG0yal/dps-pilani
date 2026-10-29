@@ -8545,9 +8545,26 @@ details.apple-expandable-item[open] > summary::after {
   }
 
   /* --- 4. HERO SECTION MINIMALISM --- */
-  /* Hide multi-row photo pill buttons on mobile so screen doesn't feel cramped */
+  /* Sleek swipeable photo pill bar on mobile */
   .hero-photo-pills {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 6px !important;
+    padding: 4px 6px !important;
+    margin: 0 auto 16px auto !important;
+    max-width: 100% !important;
+    scrollbar-width: none !important;
+  }
+  .hero-photo-pills::-webkit-scrollbar {
     display: none !important;
+  }
+  .photo-pill-btn {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    font-size: 0.72rem !important;
+    padding: 6px 12px !important;
   }
 
   .hero-editorial-actions {
@@ -8824,20 +8841,26 @@ details.apple-expandable-item[open] > summary::after {
   /* Two Ergonomic Action Buttons */
   .hero-editorial-actions {
     display: flex !important;
+    flex-direction: row !important;
     align-items: center !important;
+    justify-content: center !important;
+    flex-wrap: nowrap !important;
     gap: 8px !important;
     margin-bottom: 16px !important;
     width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .btn-hero-primary {
     flex: 1 1 0 !important;
+    min-width: 0 !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 6px !important;
-    padding: 10px 14px !important;
-    font-size: 0.78rem !important;
+    padding: 11px 8px !important;
+    font-size: clamp(0.70rem, 3.1vw, 0.80rem) !important;
     font-weight: 700 !important;
     color: #FFFFFF !important;
     background: linear-gradient(135deg, #8C1D40 0%, #5A0E25 100%) !important;
@@ -8850,11 +8873,12 @@ details.apple-expandable-item[open] > summary::after {
 
   .btn-hero-secondary {
     flex: 1 1 0 !important;
+    min-width: 0 !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    padding: 10px 14px !important;
-    font-size: 0.78rem !important;
+    padding: 11px 8px !important;
+    font-size: clamp(0.70rem, 3.1vw, 0.80rem) !important;
     font-weight: 600 !important;
     color: #7D1D3F !important;
     background: rgba(255, 255, 255, 0.90) !important;
