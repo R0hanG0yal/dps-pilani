@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <radialGradient id="favBg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#5C131D"/>
+      <stop offset="70%" stop-color="#3D0B12"/>
+      <stop offset="100%" stop-color="#240407"/>
+    </radialGradient>
+    <linearGradient id="favGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFEAA7"/>
+      <stop offset="50%" stop-color="#D4AF37"/>
+      <stop offset="100%" stop-color="#996515"/>
+    </linearGradient>
+    <linearGradient id="favFlame" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#FF9E00"/>
+      <stop offset="50%" stop-color="#FFE27A"/>
+      <stop offset="100%" stop-color="#FFFFFF"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Circular Outer Disc -->
+  <circle cx="32" cy="32" r="31" fill="url(#favBg)"/>
+  <circle cx="32" cy="32" r="30" fill="none" stroke="url(#favGold)" stroke-width="1.8"/>
+  <circle cx="32" cy="32" r="27" fill="none" stroke="url(#favGold)" stroke-width="0.8" stroke-dasharray="1 2.2"/>
+  <circle cx="32" cy="32" r="24.5" fill="none" stroke="url(#favGold)" stroke-width="0.7"/>
+
+  <!-- Heraldic Shield -->
+  <path d="M 32 15 C 38 15 44 17 45 22 C 45 32 41 39 32 45 C 23 39 19 32 19 22 C 20 17 26 15 32 15 Z" 
+        fill="#1E0306" stroke="url(#favGold)" stroke-width="1.5" stroke-linejoin="round"/>
+
+  <!-- Golden Laurels -->
+  <path d="M 17 38 C 14 32 14 26 17 20" fill="none" stroke="url(#favGold)" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M 47 38 C 50 32 50 26 47 20" fill="none" stroke="url(#favGold)" stroke-width="1.2" stroke-linecap="round"/>
+
+  <!-- Open Manuscript -->
+  <path d="M 25 36 C 29 34 31 35 32 37 C 33 35 35 34 39 36 L 39 39 C 35 37 33 38 32 40 C 31 38 29 37 25 39 Z" fill="url(#favGold)"/>
+
+  <!-- Sacred Diya Base -->
+  <path d="M 28 34 C 29 36 31 37 32 37 C 33 37 35 36 36 34 Z" fill="url(#favGold)"/>
+
+  <!-- Sacred Diya Flame -->
+  <path d="M 32 24 C 35 28 35 32 32 34 C 29 32 29 28 32 24 Z" fill="url(#favFlame)"/>
+
+  <!-- Star of Excellence at Apex -->
+  <polygon points="32,10 33,13 36,13 33.5,15 34.5,18 32,16 29.5,18 30.5,15 28,13 31,13" fill="url(#favGold)"/>
+
+  <!-- Tiny Gold Subtext -->
+  <text x="32" y="54" font-family="'Outfit', -apple-system, sans-serif" font-size="5" font-weight="900" fill="url(#favGold)" text-anchor="middle" letter-spacing="1.2">PILANI</text>
+</svg>

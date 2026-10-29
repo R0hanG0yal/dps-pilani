@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administration Suite &bull; Durga Public School, Pilani</title>
+  <link rel="icon" type="image/png" href="assets/logo-badge.png">
+  <link rel="stylesheet" href="css/premium.css">
+  <link rel="stylesheet" href="css/editorial-frames.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+  <!-- ADMIN LOGIN OVERLAY -->
+  <div id="adminLoginOverlay" class="login-screen">
+    <div class="login-card">
+      <img src="assets/logo-badge.png" alt="Durga Public School Crest" class="login-crest">
+      <h1 class="login-title">Administration Portal</h1>
+      <p class="login-sub">Durga Public School &bull; Pilani, Rajasthan (CBSE #1730419)</p>
+
+      <form id="adminLoginForm" class="login-form">
+        <div class="form-group">
+          <label for="adminLoginEmail" class="form-label">Administrator Account</label>
+          <input type="email" id="adminLoginEmail" class="form-input" value="admin@durgapublicschool.com" readonly>
+        </div>
+        <div class="form-group">
+          <label for="adminLoginPassword" class="form-label">Master Access Password</label>
+          <input type="password" id="adminLoginPassword" class="form-input" placeholder="Enter password (default: dps@admin2026)" required autofocus>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;margin-top:10px;padding:11px;">
+          <span>Secure Sign In</span>
+          <span>&rarr;</span>
+        </button>
+        <button type="button" id="btnQuickDefaultLogin" class="btn btn-secondary" style="width:100%;margin-top:10px;font-size:0.75rem;">
+          <span>Quick 1-Click Login (Default Admin)</span>
+        </button>
+      </form>
+
+      <div style="margin-top:20px;font-size:0.70rem;color:#64748B;">
+        Protected Enterprise Console &bull; DPDP Act 2023 Compliant
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN ADMIN APP SHELL -->
+  <div class="admin-shell">
+
+    <!-- Mobile Sidebar Backdrop -->
+    <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+    <!-- SIDEBAR NAVIGATION -->
+    <aside id="adminSidebar" class="admin-sidebar">
+      <div class="sidebar-brand">
+        <img src="assets/logo-badge.png" alt="Crest" class="sidebar-crest">
+        <div class="brand-info">
+          <div class="brand-title">Durga Public School</div>
+          <div class="brand-badge">ADMIN SUITE 2026</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Operations &amp; CRM</div>
+        <button type="button" class="nav-item active" data-tab="dashboard">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          <span class="nav-label">Dashboard</span>
+        </button>
+
+        <button type="button" class="nav-item" data-tab="leads">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          <span class="nav-label">Admissions CRM</span>
+          <span id="badgeLeadsCount" class="nav-counter counter-urgent">6</span>
+        </button>
+
+        <button type="button" class="nav-item" data-tab="notices">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          <span class="nav-label">Live Alert Broadcast</span>
+        </button>
+
+        <button type="button" class="nav-item" data-tab="houses">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+          <span class="nav-label">House Championship</span>
+        </button>
+
+        <div class="nav-section-title">Live Site Management</div>
+        <button type="button" class="nav-item" data-tab="settings">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          <span class="nav-label">School Info &amp; CMS</span>
+        </button>
+
+        <button type="button" class="nav-item" data-tab="gallery">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+          <span class="nav-label">Gallery &amp; Scrapbook</span>
+          <span id="badgePhotosCount" class="nav-counter">271</span>
+        </button>
+
+        <button type="button" class="nav-item" data-tab="circulars">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          <span class="nav-label">Circulars &amp; Notices</span>
+        </button>
+
+        <button type="button" class="nav-item" data-tab="faculty">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span class="nav-label">Faculty &amp; Staff</span>
+        </button>
+
+        <button type="button" class="nav-item" data-tab="contacts">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          <span class="nav-label">Public Inquiries</span>
+          <span id="badgeMsgCount" class="nav-counter">2</span>
+        </button>
+
+        <div class="nav-section-title">System &amp; Data</div>
+        <button type="button" class="nav-item" data-tab="backup">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+          <span class="nav-label">Backups &amp; Logs</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="admin-avatar-wrap">
+          <div class="admin-avatar">AD</div>
+          <div class="admin-user-info">
+            <div class="admin-user-name">Administrator</div>
+            <div class="admin-user-role">Super Admin</div>
+          </div>
+        </div>
+        <button type="button" id="adminLogoutBtn" class="btn-logout" title="Sign Out">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN VIEW AREA -->
+    <main class="admin-main">
+
+      <!-- TOPBAR -->
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <button type="button" id="sidebarToggleBtn" class="sidebar-toggle-btn" aria-label="Toggle Sidebar Menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+          <div class="page-heading-group">
+            <h1 id="currentViewTitle" class="page-title">Operational Overview</h1>
+            <p id="currentViewSub" class="page-subtitle">Key school metrics, lead velocity &amp; live broadcasts</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="sync-status-pill">
+            <span class="sync-dot"></span>
+            <span>Live Site Sync Active</span>
+          </div>
+          <a href="index.html" target="_blank" class="btn-view-site">
+            <span>View Live Website</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+      </header>
+
+      <!-- CONTENT PANELS CONTAINER -->
+      <div class="admin-content">
+
+        <!-- ==================== 1. DASHBOARD VIEW ==================== -->
+        <div id="view-dashboard" class="admin-view-panel active">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-header">
+                <span class="stat-title">Total Admissions Leads</span>
+                <div class="stat-icon-wrap icon-wine">&#128221;</div>
+              </div>
+              <div id="statTotalLeads" class="stat-value">6</div>
+              <div class="stat-subtext"><span id="statNewLeads" style="color:#C45B18;font-weight:700;">2</span> new inquiries require tele-counseling</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <span class="stat-title">Confirmed Admissions</span>
+                <div class="stat-icon-wrap icon-emerald">&#127891;</div>
+              </div>
+              <div id="statAdmitted" class="stat-value">1</div>
+              <div class="stat-subtext">Session 2026–27 enrolled scholars</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <span class="stat-title">House Leaderboard</span>
+                <div class="stat-icon-wrap icon-amber">&#127942;</div>
+              </div>
+              <div id="statLeaderHouse" class="stat-value">Vivekanand</div>
+              <div id="statLeaderPoints" class="stat-subtext">480 Points &bull; Current Champion</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <span class="stat-title">Archival Gallery</span>
+                <div class="stat-icon-wrap icon-blue">&#128247;</div>
+              </div>
+              <div id="statGalleryCount" class="stat-value">271</div>
+              <div class="stat-subtext">Curated archival photo prints online</div>
+            </div>
+          </div>
+
+          <!-- Quick Action Buttons Strip -->
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <span class="card-title">Quick Administration Actions</span>
+            </div>
+            <div class="admin-card-body" style="display:flex;gap:12px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.switchTab('leads')">
+                <span>&#43; Review Admission Leads</span>
+              </button>
+              <button type="button" class="btn btn-saffron" onclick="window.DPSAdmin.switchTab('notices')">
+                <span>&#128226; Broadcast Urgent Notice</span>
+              </button>
+              <button type="button" class="btn btn-outline" onclick="window.DPSAdmin.switchTab('houses')">
+                <span>&#127942; Update House Scores</span>
+              </button>
+              <button type="button" class="btn btn-outline" onclick="window.DPSAdmin.switchTab('settings')">
+                <span>&#9881; Edit School Timings &amp; Phone</span>
+              </button>
+              <button type="button" class="btn btn-outline" onclick="window.DPSAdmin.exportFullBackupJSON()">
+                <span>&#128190; Download Full Data Backup (.JSON)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Two-column dashboard widgets -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(360px, 1fr));gap:20px;">
+            <!-- Recent Inquiries -->
+            <div class="admin-card">
+              <div class="admin-card-header">
+                <span class="card-title">Recent Inquiries</span>
+                <button type="button" class="btn btn-sm btn-outline" onclick="window.DPSAdmin.switchTab('leads')">View All &rarr;</button>
+              </div>
+              <div class="table-responsive" style="border:none;border-radius:0;">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Student / Parent</th>
+                      <th>Grade</th>
+                      <th>Phone</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dashboardRecentLeads">
+                    <!-- Populated by JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- House Points Standings -->
+            <div class="admin-card">
+              <div class="admin-card-header">
+                <span class="card-title">House Championship Standings</span>
+                <button type="button" class="btn btn-sm btn-outline" onclick="window.DPSAdmin.switchTab('houses')">Edit Points &rarr;</button>
+              </div>
+              <div class="admin-card-body" id="dashboardHouseBars">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== 2. ADMISSIONS CRM VIEW ==================== -->
+        <div id="view-leads" class="admin-view-panel">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <div class="card-title-group">
+                <span class="card-title">Admissions Registry &amp; Inquiries</span>
+                <span id="leadsFilterCount" class="card-badge">Showing 6 Records</span>
+              </div>
+              <div class="admin-card-actions">
+                <button type="button" class="btn btn-sm btn-outline" onclick="window.DPSAdmin.exportLeadsCSV()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  <span>Export CSV</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="admin-card-body">
+              <!-- Toolbar -->
+              <div class="toolbar-wrap">
+                <div class="search-box">
+                  <span class="search-icon">&#128269;</span>
+                  <input type="text" id="leadsSearchInput" placeholder="Search by student, parent, phone or ID...">
+                </div>
+
+                <div class="filter-group">
+                  <select id="leadsStatusFilter" class="filter-select">
+                    <option value="all">All Statuses</option>
+                    <option value="New">New</option>
+                    <option value="Contacted">Contacted</option>
+                    <option value="Interview Scheduled">Interview Scheduled</option>
+                    <option value="Admitted">Admitted</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Archived">Archived</option>
+                  </select>
+
+                  <select id="leadsGradeFilter" class="filter-select">
+                    <option value="all">All Grades</option>
+                    <option value="Nursery">Nursery / KG</option>
+                    <option value="Class 1">Primary (I–V)</option>
+                    <option value="Class 6">Middle (VI–VIII)</option>
+                    <option value="Class 9">Secondary (IX–X)</option>
+                    <option value="Class 11">Senior Sec (XI–XII)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Table -->
+              <div class="table-responsive">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>ID &bull; Date</th>
+                      <th>Student &bull; Parent</th>
+                      <th>Grade Level</th>
+                      <th>Contact Info</th>
+                      <th>Current Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="leadsTableBody">
+                    <!-- Populated by JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== 3. LIVE ALERT BROADCAST ==================== -->
+        <div id="view-notices" class="admin-view-panel">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <span class="card-title">Live Website Emergency Alert &amp; Banner Broadcast</span>
+            </div>
+            <div class="admin-card-body">
+              <p style="font-size:0.82rem;color:#475569;margin-bottom:20px;">
+                Broadcast urgent announcements (such as Admissions Last Date, Exam Results, Weather/Holiday Notices) at the top of the Durga Public School website across all 13 pages in real-time.
+              </p>
+
+              <!-- Live Preview -->
+              <div style="margin-bottom:24px;">
+                <label class="form-label">Live Preview On Website</label>
+                <div id="noticeLivePreview" style="border-radius:10px;overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--glass-border);transition:all 0.3s ease;">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom:20px;">
+                <label class="toggle-wrap">
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="noticeToggle">
+                    <span class="toggle-slider"></span>
+                  </div>
+                  <strong style="font-size:0.88rem;color:#2E0815;">Enable Live Top Alert Banner</strong>
+                </label>
+              </div>
+
+              <div class="form-group">
+                <label for="noticeMessage" class="form-label">Banner Announcement Message</label>
+                <input type="text" id="noticeMessage" class="form-input" placeholder="e.g. Admissions Open for Session 2026–27 (Nursery to Class XII) | Call +91 94140 37571">
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="noticeLink" class="form-label">Destination Link / Action</label>
+                  <input type="text" id="noticeLink" class="form-input" placeholder="admissions.html">
+                </div>
+
+                <div class="form-group">
+                  <label for="noticeTheme" class="form-label">Banner Color Style</label>
+                  <select id="noticeTheme" class="form-select-full">
+                    <option value="theme-wine">Royal Wine (Official &amp; Elegant)</option>
+                    <option value="theme-saffron">Saffron Gold (Admissions Celebration)</option>
+                    <option value="theme-amber">Amber Alert (Urgent Notice / Holiday)</option>
+                  </select>
+                </div>
+              </div>
+
+              <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.saveNoticeBanner()">
+                <span>Save &amp; Broadcast to Live Website</span>
+                <span>&rarr;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== 4. HOUSE CHAMPIONSHIP ==================== -->
+        <div id="view-houses" class="admin-view-panel">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <span class="card-title">Four-House Championship &amp; Points Leaderboard</span>
+            </div>
+            <div class="admin-card-body">
+              <p style="font-size:0.82rem;color:#475569;margin-bottom:20px;">
+                Update the live athletic, academic, cultural, and discipline points for all four houses. Total scores and leaderboards update automatically on the website.
+              </p>
+
+              <div id="housesGridContainer" class="houses-admin-grid">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== 5. SCHOOL SETTINGS & CMS ==================== -->
+        <div id="view-settings" class="admin-view-panel">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <span class="card-title">School Identity, Contact &amp; Live CMS Overrides</span>
+            </div>
+            <div class="admin-card-body">
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="setSchoolName">School Display Name</label>
+                  <input type="text" id="setSchoolName" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="setAffiliation">CBSE Affiliation Number</label>
+                  <input type="text" id="setAffiliation" class="form-input">
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="setSession">Current Academic Session</label>
+                  <input type="text" id="setSession" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="setAdmissionStatus">Admissions Callout Text</label>
+                  <input type="text" id="setAdmissionStatus" class="form-input">
+                </div>
+              </div>
+
+              <h3 style="font-family:var(--font-serif);font-size:1rem;font-weight:700;margin:20px 0 12px;color:#2E0815;">Official Contact &amp; Helpline Numbers</h3>
+              <div class="form-grid-3">
+                <div class="form-group">
+                  <label class="form-label" for="setPhonePrimary">Primary Telephone</label>
+                  <input type="text" id="setPhonePrimary" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="setPhoneSecondary">Secondary Telephone</label>
+                  <input type="text" id="setPhoneSecondary" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="setWhatsapp">WhatsApp Helpline</label>
+                  <input type="text" id="setWhatsapp" class="form-input">
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="setEmail">Official Email</label>
+                  <input type="email" id="setEmail" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="setAddress">Physical Address</label>
+                  <input type="text" id="setAddress" class="form-input">
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="setTimingsSummer">Summer Timings</label>
+                  <input type="text" id="setTimingsSummer" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="setTimingsWinter">Winter Timings</label>
+                  <input type="text" id="setTimingsWinter" class="form-input">
+                </div>
+              </div>
+
+              <h3 style="font-family:var(--font-serif);font-size:1rem;font-weight:700;margin:20px 0 12px;color:#2E0815;">Institutional Metrics &amp; Principal Desk</h3>
+              <div class="form-grid-3">
+                <div class="form-group">
+                  <label class="form-label" for="setStatLegacy">Years Legacy</label>
+                  <input type="text" id="setStatLegacy" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="setStatScholars">Scholars Count</label>
+                  <input type="text" id="setStatScholars" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="setStatBoardPass">Board Pass Rate</label>
+                  <input type="text" id="setStatBoardPass" class="form-input">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setPrincipalName">Head of Institution Name</label>
+                <input type="text" id="setPrincipalName" class="form-input">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setPrincipalQuote">Principal's Desk Message</label>
+                <textarea id="setPrincipalQuote" class="form-textarea" rows="3"></textarea>
+              </div>
+
+              <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.saveAllSettings()">
+                <span>Save All Site Settings</span>
+                <span>&rarr;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== 6. GALLERY & SCRAPBOOK ==================== -->
+        <div id="view-gallery" class="admin-view-panel">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <div class="card-title-group">
+                <span class="card-title">Campus Scrapbook &amp; Archival Gallery</span>
+                <span id="galleryFilterCount" class="card-badge">271 Prints</span>
+              </div>
+            </div>
+            <div class="admin-card-body">
+              <!-- Toolbar -->
+              <div class="toolbar-wrap">
+                <div class="search-box">
+                  <span class="search-icon">&#128269;</span>
+                  <input type="text" id="gallerySearchInput" placeholder="Search photographs by title or description...">
+                </div>
+
+                <div class="filter-group">
+                  <select id="galleryCategoryFilter" class="filter-select">
+                    <option value="all">All Categories</option>
+                    <option value="campus">Campus &amp; Architecture</option>
+                    <option value="sports">Sports Day &amp; Athletics</option>
+                    <option value="republic">Republic &amp; Independence Day</option>
+                    <option value="saraswati">Saraswati Puja &amp; Assemblies</option>
+                    <option value="labs">Science Labs &amp; IT</option>
+                    <option value="classroom">Classroom Life &amp; Activities</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Gallery Grid -->
+              <div id="galleryGridContainer" class="admin-gallery-grid">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== 7. CIRCULARS & NOTICES ==================== -->
+        <div id="view-circulars" class="admin-view-panel">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <span class="card-title">Circulars, Notices &amp; Public Guidelines</span>
+            </div>
+            <div class="admin-card-body">
+              <div class="table-responsive">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Ref Number</th>
+                      <th>Notice Subject</th>
+                      <th>Category</th>
+                      <th>Published Date</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="circularsTableBody">
+                    <!-- Populated by JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== 8. FACULTY ROSTER ==================== -->
+        <div id="view-faculty" class="admin-view-panel">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <span class="card-title">Faculty &amp; Academic Administration Roster</span>
+            </div>
+            <div class="admin-card-body">
+              <div class="table-responsive">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Emp ID</th>
+                      <th>Faculty Member</th>
+                      <th>Designation</th>
+                      <th>Department</th>
+                      <th>Qualifications</th>
+                      <th>Experience</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="facultyTableBody">
+                    <!-- Populated by JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== 9. CONTACT INQUIRIES ==================== -->
+        <div id="view-contacts" class="admin-view-panel">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <span class="card-title">Public Inquiries &amp; Campus Tour Requests</span>
+            </div>
+            <div class="admin-card-body">
+              <div class="table-responsive">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Ref &bull; Date</th>
+                      <th>Sender &bull; Role</th>
+                      <th>Contact Details</th>
+                      <th>Message Body</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="contactsTableBody">
+                    <!-- Populated by JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== 10. BACKUP & LOGS ==================== -->
+        <div id="view-backup" class="admin-view-panel">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <span class="card-title">Data Backup, Disaster Recovery &amp; System Reset</span>
+            </div>
+            <div class="admin-card-body">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:20px;margin-bottom:24px;">
+                <div style="background:#FFFFFF;border:1px solid var(--glass-border);border-radius:12px;padding:20px;">
+                  <h4 style="font-family:var(--font-serif);font-size:1rem;color:#2E0815;margin-bottom:8px;">Download Full Backup</h4>
+                  <p style="font-size:0.78rem;color:#64748B;margin-bottom:14px;">Exports all leads, site settings, house points, circulars, and gallery metadata into a single JSON file.</p>
+                  <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.exportFullBackupJSON()">
+                    <span>Download Complete Backup (.JSON)</span>
+                  </button>
+                </div>
+
+                <div style="background:#FFFFFF;border:1px solid var(--glass-border);border-radius:12px;padding:20px;">
+                  <h4 style="font-family:var(--font-serif);font-size:1rem;color:#2E0815;margin-bottom:8px;">Restore from Backup</h4>
+                  <p style="font-size:0.78rem;color:#64748B;margin-bottom:14px;">Select a previously downloaded backup JSON file to restore all school data.</p>
+                  <input type="file" id="backupFileInput" accept=".json" style="font-size:0.76rem;" onchange="window.DPSAdmin.restoreBackupJSON(event)">
+                </div>
+
+                <div style="background:#FFF1F2;border:1px solid #FECDD3;border-radius:12px;padding:20px;">
+                  <h4 style="font-family:var(--font-serif);font-size:1rem;color:#9F1239;margin-bottom:8px;">Danger Zone: Reset Data</h4>
+                  <p style="font-size:0.78rem;color:#64748B;margin-bottom:14px;">Resets all leads, house standings, and settings back to factory sample defaults.</p>
+                  <button type="button" class="btn btn-danger btn-sm" onclick="window.DPSAdmin.resetToFactoryData()">
+                    <span>Reset All to Defaults</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Audit Logs -->
+              <h3 style="font-family:var(--font-serif);font-size:1.05rem;color:#2E0815;margin-bottom:12px;">System Activity &amp; Audit Logs</h3>
+              <div id="auditLogsList" style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:10px;max-height:280px;overflow-y:auto;">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- LEAD DETAIL MODAL -->
+  <div id="leadDetailModal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 class="modal-title">Application Record &bull; <span id="leadModalId">DPS-2026-XXXX</span></h3>
+        <button type="button" class="modal-close-btn" onclick="document.getElementById('leadDetailModal').classList.remove('active')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="leadModalStudent">Student Full Name</label>
+            <input type="text" id="leadModalStudent" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="leadModalGrade">Grade / Class Sought</label>
+            <input type="text" id="leadModalGrade" class="form-input">
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="leadModalParent">Parent / Guardian Name</label>
+            <input type="text" id="leadModalParent" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="leadModalPhone">Contact Telephone</label>
+            <input type="text" id="leadModalPhone" class="form-input">
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="leadModalEmail">Email Address</label>
+            <input type="email" id="leadModalEmail" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="leadModalStatus">Application Status</label>
+            <select id="leadModalStatus" class="form-select-full">
+              <option value="New">New</option>
+              <option value="Contacted">Contacted</option>
+              <option value="Interview Scheduled">Interview Scheduled</option>
+              <option value="Admitted">Admitted</option>
+              <option value="Rejected">Rejected</option>
+              <option value="Archived">Archived</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Inquiry Message from Parent</label>
+          <div id="leadModalMessage" style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:10px 14px;font-size:0.80rem;color:#334155;line-height:1.4;"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Tele-Counseling &amp; Internal Notes History</label>
+          <ul id="leadModalNotesList" style="list-style:none;background:#FDFDFD;border:1px solid #E2E8F0;border-radius:8px;padding:10px 14px;max-height:120px;overflow-y:auto;">
+          </ul>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="leadModalNewNote">Add Note to Application History</label>
+          <input type="text" id="leadModalNewNote" class="form-input" placeholder="e.g. Called mother on phone, scheduled campus visit for Thursday 10 AM">
+        </div>
+
+        <div style="font-size:0.70rem;color:#64748B;">
+          Registered on: <span id="leadModalDate" style="font-weight:700;"></span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('leadDetailModal').classList.remove('active')">Cancel</button>
+        <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.saveLeadModalDetail()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- SCRIPTS -->
+  <script src="js/main.js"></script>
+  <script src="js/editorial-frames.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

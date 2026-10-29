@@ -1,0 +1,490 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%" class="dps-crest-svg" role="img" aria-label="Official Crest of Durga Public School Pilani">
+  <defs>
+    <!-- Metallic Imperial Gold Gradients -->
+    <linearGradient id="dpsGoldPrimary" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFEAA7" />
+      <stop offset="25%" stop-color="#D4AF37" />
+      <stop offset="50%" stop-color="#AA7C11" />
+      <stop offset="75%" stop-color="#F5D77F" />
+      <stop offset="100%" stop-color="#996515" />
+    </linearGradient>
+
+    <linearGradient id="dpsGoldLight" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFF3CC" />
+      <stop offset="50%" stop-color="#E5C158" />
+      <stop offset="100%" stop-color="#B8860B" />
+    </linearGradient>
+
+    <linearGradient id="dpsGoldDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#C59B27" />
+      <stop offset="70%" stop-color="#7A5200" />
+      <stop offset="100%" stop-color="#4D3300" />
+    </linearGradient>
+
+    <!-- Royal Velvet Burgundy Gradients -->
+    <radialGradient id="dpsBurgundyField" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#5C131D" />
+      <stop offset="65%" stop-color="#3D0B12" />
+      <stop offset="100%" stop-color="#240407" />
+    </radialGradient>
+
+    <linearGradient id="dpsShieldField" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4D0E16" />
+      <stop offset="60%" stop-color="#2D060B" />
+      <stop offset="100%" stop-color="#180204" />
+    </linearGradient>
+
+    <!-- Sacred Diya Flame Gradients -->
+    <radialGradient id="dpsFlameGlow" cx="50%" cy="60%" r="50%">
+      <stop offset="0%" stop-color="#FFFBEA" />
+      <stop offset="20%" stop-color="#FFE27A" />
+      <stop offset="55%" stop-color="#FF9E00" />
+      <stop offset="85%" stop-color="#E85D04" />
+      <stop offset="100%" stop-color="#9D0208" stop-opacity="0" />
+    </radialGradient>
+
+    <linearGradient id="dpsFlameCore" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#FFBA08" />
+      <stop offset="50%" stop-color="#FFF0BE" />
+      <stop offset="100%" stop-color="#FFFFFF" />
+    </linearGradient>
+
+    <!-- Specular Sheen Gradient -->
+    <linearGradient id="dpsSheenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0)" />
+      <stop offset="35%" stop-color="rgba(255,255,255,0.03)" />
+      <stop offset="50%" stop-color="rgba(255,245,210,0.55)" />
+      <stop offset="65%" stop-color="rgba(255,255,255,0.03)" />
+      <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+    </linearGradient>
+
+    <!-- Soft Ambient Halo Filter -->
+    <filter id="dpsFlameFilter" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <filter id="dpsStarFilter" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2.2" result="glow" />
+      <feComposite in="SourceGraphic" in2="glow" operator="over" />
+    </filter>
+
+    <filter id="dpsAmbientDrop" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.45" />
+    </filter>
+
+    <clipPath id="dpsCrestCircleClip">
+      <circle cx="250" cy="250" r="236" />
+    </clipPath>
+
+    <!-- Curved Text Paths -->
+    <!-- Top Arc for School Name -->
+    <path id="dpsTopArc" d="M 82 250 A 168 168 0 0 1 418 250" fill="none" />
+    <!-- Bottom Arc for Location & Established Year -->
+    <path id="dpsBottomArc" d="M 418 250 A 168 168 0 0 1 82 250" fill="none" />
+  </defs>
+
+  <style>
+    <![CDATA[
+    /* Embedded 60FPS Hardware-Accelerated Animations */
+    .dps-crest-svg {
+      overflow: visible;
+      transform: translateZ(0);
+    }
+    
+    /* Smooth 60s Celestial Sunburst Rotation */
+    .dps-sunburst-group {
+      transform-origin: 250px 250px;
+      animation: dpsSunburstSpin 72s linear infinite;
+      will-change: transform;
+    }
+    
+    @keyframes dpsSunburstSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Sacred Diya Living Flame Flicker and Breathing */
+    .dps-flame-motion {
+      transform-origin: 250px 248px;
+      animation: dpsFlameBreathe 3.4s ease-in-out infinite alternate;
+      will-change: transform, opacity;
+    }
+
+    @keyframes dpsFlameBreathe {
+      0% {
+        transform: scaleY(0.97) scaleX(0.98);
+        filter: drop-shadow(0 0 4px rgba(255, 183, 3, 0.6));
+      }
+      50% {
+        transform: scaleY(1.04) scaleX(1.02);
+        filter: drop-shadow(0 0 12px rgba(255, 158, 0, 0.9));
+      }
+      100% {
+        transform: scaleY(0.99) scaleX(0.96);
+        filter: drop-shadow(0 0 6px rgba(255, 183, 3, 0.7));
+      }
+    }
+
+    /* Core Flame Flicker Harmonic */
+    .dps-flame-core {
+      animation: dpsCoreFlicker 1.8s ease-in-out infinite alternate;
+    }
+    
+    @keyframes dpsCoreFlicker {
+      0% { opacity: 0.85; transform: translateY(0.5px); }
+      100% { opacity: 1; transform: translateY(-1px); }
+    }
+
+    /* Star of Excellence Twinkle */
+    .dps-star-beacon {
+      transform-origin: 250px 125px;
+      animation: dpsStarGleam 4.2s ease-in-out infinite;
+    }
+
+    @keyframes dpsStarGleam {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 2px rgba(255, 234, 167, 0.4));
+      }
+      50% {
+        transform: scale(1.12);
+        filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.9));
+      }
+    }
+
+    /* Specular Metallic Gold Light Sweep (Every 7.5 seconds) */
+    .dps-sheen-bar {
+      mix-blend-mode: color-dodge;
+      transform-origin: 250px 250px;
+      animation: dpsSheenSweep 8s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes dpsSheenSweep {
+      0%, 65% {
+        transform: translateX(-480px) rotate(32deg);
+        opacity: 0;
+      }
+      70% {
+        opacity: 0.55;
+      }
+      82% {
+        transform: translateX(480px) rotate(32deg);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(480px) rotate(32deg);
+        opacity: 0;
+      }
+    }
+
+    /* Laurel Leaves Specular Glint */
+    .dps-laurel-leaf {
+      transition: fill 0.3s ease;
+    }
+
+    /* Micro Hover Interactivity */
+    .dps-crest-svg:hover .dps-sunburst-group {
+      animation-duration: 30s;
+    }
+
+    .dps-crest-svg:hover .dps-star-beacon {
+      animation-duration: 2s;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .dps-sunburst-group,
+      .dps-flame-motion,
+      .dps-star-beacon,
+      .dps-sheen-bar {
+        animation: none !important;
+      }
+    }
+    ]]>
+  </style>
+
+  <!-- Ambient Shadow Base -->
+  <g filter="url(#dpsAmbientDrop)">
+    <circle cx="250" cy="250" r="236" fill="#140205" />
+  </g>
+
+  <!-- Main Crest Body Group with Clip -->
+  <g clip-path="url(#dpsCrestCircleClip)">
+    
+    <!-- Outer Deep Velvet Circular Background -->
+    <circle cx="250" cy="250" r="236" fill="url(#dpsBurgundyField)" />
+
+    <!-- 32-Ray Celestial Rajasthani Sunburst Halo (Rotating) -->
+    <g class="dps-sunburst-group" opacity="0.32">
+      <!-- 32 Symmetrical Radiant Tapered Rays -->
+      <g fill="url(#dpsGoldPrimary)">
+        <polygon points="250,15 253,195 247,195" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(11.25 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(22.5 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(33.75 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(45 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(56.25 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(67.5 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(78.75 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(90 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(101.25 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(112.5 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(123.75 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(135 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(146.25 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(157.5 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(168.75 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(180 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(191.25 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(202.5 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(213.75 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(225 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(236.25 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(247.5 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(258.75 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(270 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(281.25 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(292.5 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(303.75 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(315 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(326.25 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(337.5 250 250)" />
+        <polygon points="250,15 253,195 247,195" transform="rotate(348.75 250 250)" />
+      </g>
+    </g>
+
+    <!-- Outer Concentric Gold Beveled Borders -->
+    <!-- Heavy Outer Gold Rim -->
+    <circle cx="250" cy="250" r="234" fill="none" stroke="url(#dpsGoldDark)" stroke-width="4" />
+    <circle cx="250" cy="250" r="230" fill="none" stroke="url(#dpsGoldLight)" stroke-width="3" />
+    
+    <!-- Beaded Filigree Perlée Ring (56 Micro-Pearls) -->
+    <circle cx="250" cy="250" r="222" fill="none" stroke="url(#dpsGoldPrimary)" stroke-width="3.5" stroke-dasharray="1.5 10.9" stroke-linecap="round" />
+    
+    <!-- Inner Gold Channel -->
+    <circle cx="250" cy="250" r="214" fill="none" stroke="url(#dpsGoldDark)" stroke-width="2" />
+    <circle cx="250" cy="250" r="211" fill="none" stroke="url(#dpsGoldLight)" stroke-width="1.5" />
+
+    <!-- Text Ribbon Ring Wall -->
+    <circle cx="250" cy="250" r="148" fill="none" stroke="url(#dpsGoldDark)" stroke-width="2" />
+    <circle cx="250" cy="250" r="145" fill="none" stroke="url(#dpsGoldLight)" stroke-width="2.5" />
+    
+    <!-- Inner Beaded Ring -->
+    <circle cx="250" cy="250" r="140" fill="none" stroke="url(#dpsGoldPrimary)" stroke-width="2.5" stroke-dasharray="1.5 8" stroke-linecap="round" />
+    <circle cx="250" cy="250" r="135" fill="none" stroke="url(#dpsGoldDark)" stroke-width="1.5" />
+
+    <!-- CIRCULAR HERALDIC ENGRAVING -->
+    <!-- Top Arc: "DURGA PUBLIC SCHOOL" -->
+    <text fill="url(#dpsGoldLight)" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))">
+      <textPath href="#dpsTopArc" startOffset="50%" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-size="24.5" font-weight="900" letter-spacing="5">
+        DURGA PUBLIC SCHOOL
+      </textPath>
+    </text>
+
+    <!-- Flanking Star Separators -->
+    <g fill="url(#dpsGoldLight)">
+      <!-- Left Star Separator -->
+      <polygon points="76,250 80,248 83,250 80,252" />
+      <circle cx="79.5" cy="250" r="2" />
+      <!-- Right Star Separator -->
+      <polygon points="424,250 420,248 417,250 420,252" />
+      <circle cx="420.5" cy="250" r="2" />
+    </g>
+
+    <!-- Bottom Arc: "PILANI · ESTD 2006 · RAJASTHAN" -->
+    <text fill="url(#dpsGoldPrimary)" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))">
+      <textPath href="#dpsBottomArc" startOffset="50%" text-anchor="middle" font-family="'Plus Jakarta Sans', -apple-system, sans-serif" font-size="13" font-weight="800" letter-spacing="4.5">
+        PILANI &#8226; ESTD 2006 &#8226; RAJASTHAN
+      </textPath>
+    </text>
+
+    <!-- INNER SANCTUM: HERALDIC ESCUTCHEON (SHIELD) & SYMBOLS -->
+    <!-- Inner Field Deep Velvet Center -->
+    <circle cx="250" cy="250" r="133" fill="url(#dpsShieldField)" />
+
+    <!-- Classical Symmetrical Laurel Wreath of Academic Honor -->
+    <g fill="url(#dpsGoldPrimary)" stroke="url(#dpsGoldDark)" stroke-width="0.5">
+      <!-- Left Laurel Branch -->
+      <g id="dpsLaurelBranchLeft">
+        <path class="dps-laurel-leaf" d="M 160 270 C 145 255 145 240 162 238 C 168 250 166 262 160 270 Z" />
+        <path class="dps-laurel-leaf" d="M 152 248 C 138 235 140 220 156 218 C 160 230 158 240 152 248 Z" />
+        <path class="dps-laurel-leaf" d="M 150 224 C 138 210 142 196 158 196 C 161 208 158 218 150 224 Z" />
+        <path class="dps-laurel-leaf" d="M 155 200 C 144 186 150 173 166 175 C 167 186 163 195 155 200 Z" />
+        <path class="dps-laurel-leaf" d="M 166 178 C 158 165 166 153 182 158 C 180 168 175 175 166 178 Z" />
+        <path class="dps-laurel-leaf" d="M 183 160 C 178 148 188 138 203 145 C 199 154 193 160 183 160 Z" />
+        <!-- Laurel Stems -->
+        <path d="M 195 285 C 160 275 145 235 155 185 C 162 165 175 150 195 145" fill="none" stroke="url(#dpsGoldLight)" stroke-width="2.5" stroke-linecap="round" />
+        <!-- Berry Accents -->
+        <circle cx="162" cy="226" r="2.8" fill="url(#dpsGoldLight)" />
+        <circle cx="167" cy="190" r="2.8" fill="url(#dpsGoldLight)" />
+        <circle cx="180" cy="165" r="2.8" fill="url(#dpsGoldLight)" />
+      </g>
+
+      <!-- Right Laurel Branch (Mirrored) -->
+      <use href="#dpsLaurelBranchLeft" transform="translate(500, 0) scale(-1, 1)" />
+      
+      <!-- Laurel Tie Ribbon at Base -->
+      <path d="M 235 285 C 245 282 255 282 265 285 C 268 290 262 294 250 293 C 238 294 232 290 235 285 Z" fill="url(#dpsGoldLight)" />
+      <path d="M 242 292 C 236 300 232 308 230 314 C 234 314 242 306 246 295 Z" fill="url(#dpsGoldPrimary)" />
+      <path d="M 258 292 C 264 300 268 308 270 314 C 266 314 258 306 254 295 Z" fill="url(#dpsGoldPrimary)" />
+    </g>
+
+    <!-- THE ROYAL GOTHIC SHIELD (ESCUTCHEON) -->
+    <g filter="drop-shadow(0 6px 12px rgba(0,0,0,0.65))">
+      <!-- Shield Outer Gold Bevel -->
+      <path d="M 250 138 
+               C 285 138 316 146 324 175 
+               C 324 230 306 280 250 314 
+               C 194 280 176 230 176 175 
+               C 184 146 215 138 250 138 Z" 
+            fill="url(#dpsShieldField)" 
+            stroke="url(#dpsGoldPrimary)" 
+            stroke-width="5" 
+            stroke-linejoin="round" />
+
+      <!-- Shield Inner Inset Gold Rim -->
+      <path d="M 250 146 
+               C 278 146 304 153 312 176 
+               C 312 222 296 266 250 298 
+               C 204 266 188 222 188 176 
+               C 196 153 222 146 250 146 Z" 
+            fill="none" 
+            stroke="url(#dpsGoldLight)" 
+            stroke-width="1.8" />
+
+      <!-- Shield Micro Corner Studs -->
+      <circle cx="250" cy="149" r="2.2" fill="url(#dpsGoldLight)" />
+      <circle cx="197" cy="176" r="2.2" fill="url(#dpsGoldLight)" />
+      <circle cx="303" cy="176" r="2.2" fill="url(#dpsGoldLight)" />
+      <circle cx="250" cy="292" r="2.2" fill="url(#dpsGoldLight)" />
+    </g>
+
+    <!-- OPEN MANUSCRIPT / BOOK OF KNOWLEDGE -->
+    <g id="dpsBookOfKnowledge" filter="drop-shadow(0 3px 6px rgba(0,0,0,0.5))">
+      <!-- Outer Leather Binding -->
+      <path d="M 205 264 C 225 258 245 261 250 266 C 255 261 275 258 295 264 L 293 282 C 273 276 255 278 250 284 C 245 278 227 276 207 282 Z" 
+            fill="#30070B" stroke="url(#dpsGoldDark)" stroke-width="1.5" />
+      
+      <!-- Gilded Book Pages Base -->
+      <path d="M 207 262 C 226 256 245 259 250 264 C 255 259 274 256 293 262 L 291 279 C 272 273 255 276 250 281 C 245 276 228 273 209 279 Z" 
+            fill="url(#dpsGoldPrimary)" />
+
+      <!-- Left Page Surface (Sandstone Parchment) -->
+      <path d="M 209 260 C 226 254 244 257 249 263 L 249 278 C 244 273 228 270 211 276 Z" 
+            fill="#FAF6EE" />
+      
+      <!-- Right Page Surface (Sandstone Parchment) -->
+      <path d="M 291 260 C 274 254 256 257 251 263 L 251 278 C 256 273 272 270 289 276 Z" 
+            fill="#F4EDE0" />
+
+      <!-- Central Book Binding Seam -->
+      <line x1="250" y1="262" x2="250" y2="280" stroke="#7A5200" stroke-width="1.5" />
+
+      <!-- Elegant Text Inscription Lines on Pages -->
+      <g stroke="#8A6D3B" stroke-width="0.8" opacity="0.75" stroke-linecap="round">
+        <!-- Left Page Lines -->
+        <line x1="216" y1="264" x2="242" y2="262" />
+        <line x1="217" y1="267" x2="242" y2="265" />
+        <line x1="219" y1="270" x2="238" y2="268" />
+        
+        <!-- Right Page Lines -->
+        <line x1="258" y1="262" x2="284" y2="264" />
+        <line x1="258" y1="265" x2="283" y2="267" />
+        <line x1="262" y1="268" x2="281" y2="270" />
+      </g>
+    </g>
+
+    <!-- SACRED BRASS DIYA (TORCH OF KNOWLEDGE & TRUTH) -->
+    <g id="dpsDiyaPedestal" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.6))">
+      <!-- Diya Base Stem -->
+      <path d="M 245 258 L 255 258 L 253 262 L 247 262 Z" fill="url(#dpsGoldDark)" />
+      
+      <!-- Diya Bowl -->
+      <path d="M 226 244 
+               C 230 255 240 258 250 258 
+               C 260 258 270 255 274 244 
+               C 268 247 258 249 250 249 
+               C 242 249 232 247 226 244 Z" 
+            fill="url(#dpsGoldPrimary)" 
+            stroke="url(#dpsGoldDark)" 
+            stroke-width="1" />
+      
+      <!-- Diya Lip Highlight -->
+      <ellipse cx="250" cy="244.5" rx="24" ry="3" fill="url(#dpsGoldLight)" />
+      <ellipse cx="250" cy="244.5" rx="20" ry="1.8" fill="#4D2A00" />
+      <!-- Golden Oil Reservoir Center -->
+      <ellipse cx="250" cy="244.8" rx="16" ry="1.2" fill="#E5A100" />
+    </g>
+
+    <!-- SACRED DIYA LIVING FLAME (ANIMATED) -->
+    <g class="dps-flame-motion">
+      <!-- Outer Flame Glow Aura -->
+      <path d="M 250 188 
+               C 268 214 268 238 250 246 
+               C 232 238 232 214 250 188 Z" 
+            fill="url(#dpsFlameGlow)" 
+            opacity="0.95" 
+            filter="url(#dpsFlameFilter)" />
+
+      <!-- Middle Vibrant Golden Amber Flame -->
+      <path d="M 250 194 
+               C 263 216 262 236 250 244 
+               C 238 236 237 216 250 194 Z" 
+            fill="url(#dpsFlameCore)" />
+
+      <!-- Inner White-Hot Wisdom Core (Harmonic Flicker) -->
+      <path class="dps-flame-core" 
+            d="M 250 206 
+               C 256 220 255 234 250 241 
+               C 245 234 244 220 250 206 Z" 
+            fill="#FFFFFF" 
+            filter="drop-shadow(0 0 3px #FFFFFF)" />
+    </g>
+
+    <!-- STAR OF EXCELLENCE (8-POINT NORTH STAR CROWN) -->
+    <g class="dps-star-beacon" filter="url(#dpsStarFilter)">
+      <!-- 8-Point Faceted Diamond Star at (250, 125) -->
+      <!-- Vertical and Horizontal Major Points -->
+      <!-- Top Point Light/Dark Halves -->
+      <polygon points="250,105 250,125 244,122" fill="url(#dpsGoldLight)" />
+      <polygon points="250,105 256,122 250,125" fill="url(#dpsGoldDark)" />
+
+      <!-- Bottom Point -->
+      <polygon points="250,145 250,125 256,128" fill="url(#dpsGoldLight)" />
+      <polygon points="250,145 244,128 250,125" fill="url(#dpsGoldDark)" />
+
+      <!-- Right Point -->
+      <polygon points="270,125 250,125 253,119" fill="url(#dpsGoldLight)" />
+      <polygon points="270,125 253,131 250,125" fill="url(#dpsGoldDark)" />
+
+      <!-- Left Point -->
+      <polygon points="230,125 250,125 247,131" fill="url(#dpsGoldLight)" />
+      <polygon points="230,125 247,119 250,125" fill="url(#dpsGoldDark)" />
+
+      <!-- Diagonal Minor Points -->
+      <!-- Top-Right -->
+      <polygon points="263,112 250,125 254,120" fill="url(#dpsGoldLight)" />
+      <polygon points="263,112 250,125 257,125" fill="url(#dpsGoldDark)" />
+
+      <!-- Bottom-Right -->
+      <polygon points="263,138 250,125 257,125" fill="url(#dpsGoldLight)" />
+      <polygon points="263,138 250,125 254,130" fill="url(#dpsGoldDark)" />
+
+      <!-- Bottom-Left -->
+      <polygon points="237,138 250,125 246,130" fill="url(#dpsGoldLight)" />
+      <polygon points="237,138 250,125 243,125" fill="url(#dpsGoldDark)" />
+
+      <!-- Top-Left -->
+      <polygon points="237,112 250,125 243,125" fill="url(#dpsGoldLight)" />
+      <polygon points="237,112 250,125 246,120" fill="url(#dpsGoldDark)" />
+
+      <!-- Star Central Diamond Hub -->
+      <circle cx="250" cy="125" r="2.5" fill="#FFFFFF" />
+    </g>
+
+    <!-- METALLIC GOLD SPECULAR SHEEN SWEEP BAR -->
+    <rect class="dps-sheen-bar" x="0" y="0" width="160" height="600" fill="url(#dpsSheenGrad)" />
+
+  </g>
+</svg>

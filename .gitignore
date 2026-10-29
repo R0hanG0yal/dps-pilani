@@ -1,0 +1,8 @@
+# Scratch and development test files
+scratch/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+
