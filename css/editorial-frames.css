@@ -10903,3 +10903,30 @@ details.apple-expandable-item[open] > summary::after {
     gap: 3px !important;
   }
 }
+
+
+/* Universal Safe Scroll Margins for All Hash Targets (Header Breathing Room) */
+:target,
+[id="senior"],
+[id="senior-science"],
+[id="senior-commerce"],
+[id="secondary"],
+[id="middle"],
+[id="preparatory"],
+[id="foundational"],
+[id="leadership"],
+[id="history"],
+[id="location"],
+[id="fees"],
+[id="eligibility"],
+[id="enquiry"],
+[id="visit"],
+[id="houses"],
+[id="cultural"],
+[id="spiritual"],
+[id="library"],
+[id="labs"],
+[id="safety"],
+[id="disclosure"] {
+  scroll-margin-top: calc(var(--header-h, 72px) + 24px) !important;
+}

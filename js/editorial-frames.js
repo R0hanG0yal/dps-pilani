@@ -1549,10 +1549,36 @@ void main() {
       }
     });
 
-    // Close when clicking any link inside the menu
+    // Close when clicking any link inside the menu, with smooth same-page hash scrolling
     const menuLinks = overlay.querySelectorAll('.mega-link-list a, .mega-footer-actions a');
     menuLinks.forEach(function (link) {
-      link.addEventListener('click', closeMenu);
+      link.addEventListener('click', function (e) {
+        const href = link.getAttribute('href');
+        if (!href) return;
+
+        const currentPath = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+        const parts = href.split('#');
+        const targetPage = (parts[0] || '').toLowerCase();
+        const targetHash = parts[1] || '';
+
+        const isSamePage = !targetPage || targetPage === currentPath || 
+                           (currentPath === '' && targetPage === 'index.html') ||
+                           (currentPath === 'index.html' && targetPage === '');
+
+        if (isSamePage && targetHash) {
+          e.preventDefault();
+          closeMenu();
+          setTimeout(function () {
+            const targetEl = document.getElementById(targetHash);
+            if (targetEl) {
+              targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              try { history.pushState(null, '', '#' + targetHash); } catch (err) {}
+            }
+          }, 180);
+        } else {
+          closeMenu();
+        }
+      });
     });
 
     // =========================================================================

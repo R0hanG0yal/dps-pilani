@@ -454,7 +454,7 @@
     revealEls.forEach(function (el) { io.observe(el); });
   }
 
-  // 8. PAGE TRANSITIONS (fade out on internal navigation)
+  // 8. PAGE TRANSITIONS (fade out on internal navigation, with safe same-page hash support)
   function initPageTransitions() {
     document.addEventListener('click', function (e) {
       const link = e.target.closest('a[href]');
@@ -462,11 +462,49 @@
       const href = link.getAttribute('href') || '';
       if (link.target === '_blank' || link.hasAttribute('download')) return;
       if (href.startsWith('#') || href.startsWith('http') ||
-          href.startsWith('mailto:') || href.startsWith('tel:')) return;
+          href.startsWith('mailto:') || href.startsWith('tel:') ||
+          href.startsWith('javascript:')) return;
+
+      // Check if it links to a hash on the current page
+      const currentPath = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+      const parts = href.split('#');
+      const targetPage = (parts[0] || '').toLowerCase();
+      const targetHash = parts[1] || '';
+
+      const isSamePage = !targetPage || targetPage === currentPath || 
+                         (currentPath === '' && targetPage === 'index.html') ||
+                         (currentPath === 'index.html' && targetPage === '');
+
+      if (isSamePage) {
+        // Same-page navigation: NEVER fade out the page or lock it!
+        if (targetHash) {
+          const targetEl = document.getElementById(targetHash);
+          if (targetEl) {
+            e.preventDefault();
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            try { history.pushState(null, '', '#' + targetHash); } catch (err) {}
+          }
+        }
+        return;
+      }
+
       e.preventDefault();
       document.body.classList.add('page-exit');
-      setTimeout(function () { window.location.href = href; }, 280);
+      setTimeout(function () { window.location.href = href; }, 200);
     });
+
+    // Handle incoming URL hash navigation on page load
+    if (window.location.hash) {
+      const initialHash = window.location.hash.substring(1);
+      window.addEventListener('load', function () {
+        setTimeout(function () {
+          const targetEl = document.getElementById(initialHash);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 120);
+      });
+    }
   }
 
   // 9. SCROLL EFFECTS (progress bar + gentle hero parallax)
