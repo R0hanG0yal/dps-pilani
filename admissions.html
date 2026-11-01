@@ -568,8 +568,11 @@
             </div>
 
             <!-- Canvas Viewport with Dmitry Lepisov 3D Cylinder Curl -->
-            <div class="prospectus-canvas-viewport" id="prospectusViewport">
-              <img id="prospectusBaseImage" src="assets/prospectus/page-01.webp" onerror="this.onerror=null;this.src='assets/prospectus/page-01.jpg';" alt="Durga Public School Prospectus Page 1" class="prospectus-base-img" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;z-index:1;display:block;">
+            <div class="prospectus-canvas-viewport is-single" id="prospectusViewport">
+              <div class="prospectus-base-spread" id="prospectusBaseSpread" style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;z-index:1;overflow:hidden;background:#110208;">
+                <img id="prospectusBaseImgLeft" src="" alt="Left Prospectus Page" style="width:50%;height:100%;object-fit:contain;display:none;">
+                <img id="prospectusBaseImgRight" src="assets/prospectus/page-01.webp" onerror="this.onerror=null;this.src='assets/prospectus/page-01.jpg';" alt="Right Prospectus Page" style="width:100%;height:100%;object-fit:contain;display:block;">
+              </div>
               <canvas id="prospectusWebGLCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%;display:block;z-index:2;"></canvas>
 
               <!-- Loading spinner -->
@@ -593,11 +596,11 @@
             <!-- Bottom Master Controls Bar -->
             <div class="prospectus-bottom-controls">
               <div class="prospectus-page-counter">
-                <span>Page <strong id="prospectusCurrentPage">1</strong> of <strong id="prospectusTotalPages">20</strong></span>
+                <span>Page <strong id="prospectusCurrentPage">1 (Cover)</strong> of <strong id="prospectusTotalPages">20</strong></span>
               </div>
 
               <div class="prospectus-slider-track-wrap">
-                <input type="range" class="prospectus-scrubber" id="prospectusScrubber" min="1" max="20" value="1" aria-label="Prospectus page scrubber">
+                <input type="range" class="prospectus-scrubber" id="prospectusScrubber" min="0" max="10" value="0" aria-label="Prospectus spread scrubber">
               </div>
 
               <div class="prospectus-bottom-actions">
@@ -1096,7 +1099,7 @@
 
 <script src="js/main.js"></script>
   <script src="js/editorial-frames.js"></script>
-  <script src="js/folding-page-transition.js?v=20261102b"></script>
-  <script src="js/prospectus-viewer.js?v=20261102b"></script>
+  <script src="js/folding-page-transition.js?v=20261102c"></script>
+  <script src="js/prospectus-viewer.js?v=20261102c"></script>
 </body>
 </html>

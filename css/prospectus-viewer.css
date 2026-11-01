@@ -79,7 +79,7 @@
 
 .prospectus-viewer-container {
   position: relative;
-  max-width: 920px;
+  max-width: 1140px;
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -226,8 +226,8 @@
 .prospectus-canvas-viewport {
   position: relative;
   width: 100%;
-  max-width: 620px;
-  aspect-ratio: 595 / 780; /* Standard Prospectus page ratio ~ 1 : 1.31 */
+  max-width: 540px;
+  aspect-ratio: 595 / 780;
   margin: 0 auto;
   border-radius: 14px;
   overflow: hidden;
@@ -239,10 +239,50 @@
   touch-action: pan-y pinch-zoom;
   user-select: none;
   -webkit-user-select: none;
+  transition: max-width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), aspect-ratio 0.4s ease;
+}
+
+.prospectus-canvas-viewport.is-single {
+  max-width: 540px;
+  aspect-ratio: 595 / 780;
+}
+
+.prospectus-canvas-viewport.is-spread {
+  max-width: 1040px;
+  aspect-ratio: 1190 / 780;
 }
 
 .prospectus-canvas-viewport:active {
   cursor: grabbing;
+}
+
+.prospectus-base-spread {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  z-index: 1;
+  overflow: hidden;
+  background: #110208;
+}
+
+.prospectus-base-page {
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+.prospectus-base-page.is-left {
+  width: 50%;
+  border-right: 1px solid rgba(0, 0, 0, 0.18);
+}
+
+.prospectus-base-page.is-right {
+  width: 50%;
+}
+
+.prospectus-canvas-viewport.is-single .prospectus-base-page.is-right {
+  width: 100%;
 }
 
 #prospectusWebGLCanvas {
@@ -252,6 +292,7 @@
   width: 100%;
   height: 100%;
   display: block;
+  z-index: 2;
 }
 
 /* Loading Spinner on Canvas */
@@ -564,22 +605,43 @@
    FULLSCREEN MODE
    ========================================================================== */
 
-.prospectus-stage-wrap:fullscreen {
-  max-width: 100vw;
-  width: 100vw;
-  height: 100vh;
-  border-radius: 0;
-  padding: 20px 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.prospectus-stage-wrap:fullscreen,
+.prospectus-stage-wrap:-webkit-full-screen,
+.prospectus-stage-wrap:-moz-full-screen,
+.prospectus-stage-wrap:-ms-fullscreen {
+  max-width: 100vw !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  border-radius: 0 !important;
+  padding: 16px 32px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  background: #120207 !important;
 }
 
-.prospectus-stage-wrap:fullscreen .prospectus-canvas-viewport {
-  max-height: calc(100vh - 160px);
-  width: auto;
-  aspect-ratio: 595 / 780;
-  margin: auto;
+.prospectus-stage-wrap:fullscreen .prospectus-canvas-viewport.is-single,
+.prospectus-stage-wrap:-webkit-full-screen .prospectus-canvas-viewport.is-single,
+.prospectus-stage-wrap:-moz-full-screen .prospectus-canvas-viewport.is-single,
+.prospectus-stage-wrap:-ms-fullscreen .prospectus-canvas-viewport.is-single {
+  height: calc(100vh - 140px) !important;
+  max-height: calc(100vh - 140px) !important;
+  width: calc((100vh - 140px) * (595 / 780)) !important;
+  max-width: 95vw !important;
+  aspect-ratio: 595 / 780 !important;
+  margin: auto !important;
+}
+
+.prospectus-stage-wrap:fullscreen .prospectus-canvas-viewport.is-spread,
+.prospectus-stage-wrap:-webkit-full-screen .prospectus-canvas-viewport.is-spread,
+.prospectus-stage-wrap:-moz-full-screen .prospectus-canvas-viewport.is-spread,
+.prospectus-stage-wrap:-ms-fullscreen .prospectus-canvas-viewport.is-spread {
+  height: calc(100vh - 140px) !important;
+  max-height: calc(100vh - 140px) !important;
+  width: calc((100vh - 140px) * (1190 / 780)) !important;
+  max-width: 96vw !important;
+  aspect-ratio: 1190 / 780 !important;
+  margin: auto !important;
 }
 
 /* ==========================================================================

@@ -1,33 +1,20 @@
 /**
  * ============================================================================
- * PROSPECTUS FOLDING PAGE TRANSITION COMPONENT
+ * PROSPECTUS FOLDING PAGE TRANSITION COMPONENT (IPHONE DUO SPREAD ENGINE)
  * ============================================================================
- * Reusable WebGL / Shader page transition component based on the iPhone Duo
- * folding screen physics and progressive blur shader mathematics.
+ * Dual-Screen Unfolded iPhone Duo Page Transitions & Blurry Transparent Glass
+ * Physics for Digital School Prospectus.
+ * 
+ * - Spread 0: Single Page Front Cover
+ * - Spreads 1-9: Unfolded Dual-Screen Two-Page Spread with Virtual Center Hinge
+ * - Spread 10: Single Page Back Cover
+ * - Blurry Transparent Frosted Glass effect with zero dark shadows
  * 
  * Source Reference: https://github.com/chuspeeism/iphone-duo
  * 
  * MIT License
  * Copyright (c) 2026 jadon7 (chuspeeism)
  * Copyright (c) 2026 Durga Public School / Dageroz
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
  * ============================================================================
  */
 
@@ -43,10 +30,9 @@
   'use strict';
 
   // --------------------------------------------------------------------------
-  // GLSL SHADER SOURCES (Derived & adapted from chuspeeism/iphone-duo)
+  // GLSL SHADER SOURCES (Unfolded iPhone Duo Dual-Screen Virtual Hinge)
   // --------------------------------------------------------------------------
 
-  // Vertex Shader: Virtual Hinge Rotation, Hermite Spine Bending & 3D Perspective
   const VS_SOURCE = `
     attribute vec2 a_position;   // [0, 1] grid coords
     attribute vec2 a_texCoord;   // [0, 1] UV coords
@@ -56,6 +42,7 @@
     uniform float u_isBackground;// 1.0 = flat bottom page, 0.0 = folding top sheet
     uniform float u_perspective; // 3D camera foreshortening strength
     uniform float u_aspect;      // Viewport aspect ratio (width / height)
+    uniform float u_isSpread;    // 1.0 = dual-page unfolded spread, 0.0 = single page
 
     varying vec2 v_texCoord;
     varying float v_edgeDist;
@@ -75,26 +62,50 @@
         return;
       }
 
-      // Normalized coordinates: u is distance from the hinge
-      // Next (+1): Hinge is at left spine (x = 0), edge lifts from right (x = 1)
-      // Prev (-1): Hinge is at right spine (x = 1), edge lifts from left (x = 0)
-      float u = (u_direction > 0.0) ? a_position.x : (1.0 - a_position.x);
-      v_edgeDist = u;
-
-      // Fold angle: rotates from 0 to PI (0 to 180 deg)
       float foldAngle = u_progress * PI;
-
-      // Flexible spine strip using Hermite cubic spline (adapted from iPhone Duo bendStrip)
-      float halfWidth = 0.075;
+      float u = 0.0;
       float theta = foldAngle;
       float xRot = 0.0;
       float zRot = 0.0;
 
+      // Unfolded iPhone Duo Mode (Dual-Page Spread)
+      if (u_isSpread > 0.5) {
+        if (u_direction > 0.0) {
+          // NEXT: Left page (x < 0.5) stays flat; Right page (x >= 0.5) folds across center hinge
+          if (a_position.x < 0.5) {
+            vec2 flatPos = a_position * 2.0 - 1.0;
+            gl_Position = vec4(flatPos.x, flatPos.y, 0.0, 1.0);
+            v_edgeDist = 0.0;
+            v_foldZ = 0.0;
+            return;
+          }
+          // Distance from center hinge (x = 0.5) to right edge (x = 1.0) -> [0.0, 0.5]
+          u = a_position.x - 0.5;
+        } else {
+          // PREV: Right page (x >= 0.5) stays flat; Left page (x < 0.5) folds across center hinge
+          if (a_position.x >= 0.5) {
+            vec2 flatPos = a_position * 2.0 - 1.0;
+            gl_Position = vec4(flatPos.x, flatPos.y, 0.0, 1.0);
+            v_edgeDist = 0.0;
+            v_foldZ = 0.0;
+            return;
+          }
+          // Distance from center hinge (x = 0.5) to left edge (x = 0.0) -> [0.0, 0.5]
+          u = 0.5 - a_position.x;
+        }
+      } else {
+        // Single Page Mode (Cover / Back Cover)
+        u = (u_direction > 0.0) ? a_position.x : (1.0 - a_position.x);
+      }
+
+      v_edgeDist = clamp(u * 2.0, 0.0, 1.0);
+
+      // Flexible spine strip using Hermite cubic spline (iPhone Duo bendStrip)
+      float halfWidth = 0.055;
       if (u <= 0.0) {
         xRot = 0.0;
         zRot = 0.0;
       } else if (u < halfWidth) {
-        // Cubic Hermite transition across flexible spine
         float t = u / halfWidth;
         float t2 = t * t;
         float t3 = t2 * t;
@@ -102,35 +113,38 @@
         xRot = u * cos(localAngle);
         zRot = u * sin(localAngle);
       } else {
-        // Outer rigid sheet rotating around virtual hinge
         xRot = u * cos(theta);
         zRot = u * sin(theta);
       }
 
-      // Subtly bow top and bottom edges (physical paper deformation)
+      // Parabolic subtle paper/glass sheet curvature
       float yDist = abs(a_position.y - 0.5) * 2.0;
-      float bow = 0.024 * pow(yDist, 2.0) * sin(u_progress * PI);
+      float bow = 0.02 * pow(max(0.0001, yDist), 2.0) * sin(u_progress * PI);
       zRot += bow;
       v_foldZ = zRot;
 
-      // Reconstruct horizontal coordinate based on hinge side
-      float xFinal = (u_direction > 0.0) ? xRot : (1.0 - xRot);
+      float xFinal = 0.0;
+      if (u_isSpread > 0.5) {
+        // Pivot around center spine at x = 0.5
+        xFinal = (u_direction > 0.0) ? (0.5 + xRot) : (0.5 - xRot);
+      } else {
+        // Pivot around outer spine
+        xFinal = (u_direction > 0.0) ? xRot : (1.0 - xRot);
+      }
 
-      // Map to Normalized Device Coordinates [-1, 1]
       float ndcX = xFinal * 2.0 - 1.0;
       float ndcY = a_position.y * 2.0 - 1.0;
 
-      // Realistic 3D perspective foreshortening
-      // Points swinging towards camera (zRot > 0) expand; points further recede
+      // 3D perspective foreshortening
       float cameraDistance = 2.4;
-      float w = 1.0 - (zRot * 0.72) / cameraDistance;
-      w = max(w, 0.2);
+      float w = 1.0 - (zRot * 0.62) / cameraDistance;
+      w = max(w, 0.22);
 
-      gl_Position = vec4(ndcX / w, ndcY / w, zRot * 0.5, 1.0);
+      gl_Position = vec4(ndcX / w, ndcY / w, zRot * 0.4, 1.0);
     }
   `;
 
-  // Fragment Shader: Progressive Blur, Brightness Shading & Ray Projection
+  // Fragment Shader: Blurry Transparent Glass Effect (Zero dark shadows)
   const FS_SOURCE = `
 #ifdef GL_FRAGMENT_PRECISION_HIGH
   precision highp float;
@@ -156,32 +170,22 @@
       if (u_isBackground > 0.5) {
         vec4 bgCol = texture2D(u_nextTex, v_texCoord);
 
-        // Soft drop shadow cast by folding top page onto this revealed page
+        // Soft, luminous warm transmission reflection (NO BLACK SHADOW)
         float motion = sin(u_progress * PI);
-        float hingeX = (u_direction > 0.0) ? 0.0 : 1.0;
-        float distFromHinge = abs(v_texCoord.x - hingeX);
-        float dropShadow = smoothstep(0.45, 0.0, distFromHinge) * motion * 0.38;
-        bgCol.rgb = mix(bgCol.rgb, vec3(0.04, 0.01, 0.02), dropShadow);
+        float softLight = smoothstep(0.42, 0.0, v_edgeDist) * motion * 0.16;
+        bgCol.rgb += vec3(0.05, 0.04, 0.03) * softLight;
 
         gl_FragColor = bgCol;
         return;
       }
 
-      // CASE 2: FOLDING PAGE (With iPhone Duo progressive blur & shading)
+      // CASE 2: FOLDING PAGE WITH BLURRY TRANSPARENT GLASS EFFECT
       float edge = clamp(v_edgeDist, 0.0, 1.0);
-
-      // Motion curve (peak at midpoint of fold)
       float motion = sin(u_progress * PI);
 
-      // Progressive blur gradient: strongest at moving outer edge, 0 at hinge
-      // Direct mathematical reuse from iPhone Duo screenShader:
-      // float blurGradient = clamp(edge, 0.0, 1.0);
-      // float radius = 72.0 * motion * pow(blurGradient, 1.35);
+      // Progressive blur: strongest at outer moving edge, soft/zero at the hinge
       float blurGradient = clamp(edge, 0.0, 1.0);
-      float darkenGradient = clamp((edge - 0.15) / 0.85, 0.0, 1.0);
-
-      float effect = motion * pow(max(0.0001, darkenGradient), 1.35);
-      float radius = 56.0 * motion * pow(max(0.0001, blurGradient), 1.35);
+      float radius = 54.0 * motion * pow(max(0.0001, blurGradient), 1.25);
 
       vec2 sourceUV = v_texCoord;
       vec3 color = vec3(0.0);
@@ -207,21 +211,31 @@
         color = texture2D(u_currentTex, sourceUV).rgb;
       }
 
-      // Gradually reduce brightness during folding (iPhone Duo exact shading formula):
-      // return color * (1.0 - min(1.0, effect * 2.0));
-      color *= (1.0 - min(0.68, effect * 1.85));
+      // --- BLURRY TRANSPARENT GLASS SHADING (NO BLACK SHADOW) ---
 
-      // Specular crest highlight along the bend apex
-      float specular = pow(clamp(sin(u_progress * PI), 0.0, 1.0), 12.0) * (1.0 - edge) * 0.28;
-      color += vec3(specular * 0.95, specular * 0.90, specular * 0.80);
+      // 1. Frosted glass luminance transmission (brightens slightly during motion)
+      float glassLuminance = 1.0 + 0.14 * motion * blurGradient;
+      color *= glassLuminance;
 
-      // Opacity falloff as the page turns past 90 degrees (facing away from viewer)
-      float alpha = 1.0;
-      if (u_progress > 0.48) {
-        alpha = smoothstep(1.0, 0.48, u_progress);
+      // 2. Crystal glass specular sheen along the 3D bend apex
+      float specularSheen = pow(clamp(sin(u_progress * PI), 0.0, 1.0), 5.0) * pow(clamp(1.0 - abs(v_foldZ - 0.4), 0.0, 1.0), 3.0) * 0.42;
+      color += vec3(1.0, 0.98, 0.94) * specularSheen;
+
+      // 3. Prismatic chromatic edge glow along moving glass rim
+      float rimGlow = smoothstep(0.72, 1.0, edge) * motion * 0.28;
+      color.r += rimGlow * 1.08;
+      color.g += rimGlow * 1.02;
+      color.b += rimGlow * 1.18; // Crisp crystal refraction
+
+      // 4. Subtle frosted glass transparency: allows underlying sheet to refract through
+      float glassAlpha = mix(1.0, 0.82, motion * pow(max(0.0001, blurGradient), 0.85));
+
+      // 5. Smooth dissolution as the turning sheet passes 90 degrees
+      if (u_progress > 0.50) {
+        glassAlpha *= smoothstep(1.0, 0.50, u_progress);
       }
 
-      gl_FragColor = vec4(color, alpha);
+      gl_FragColor = vec4(color, glassAlpha);
     }
   `;
 
@@ -230,23 +244,15 @@
   // --------------------------------------------------------------------------
 
   class ProspectusFoldingTransition {
-    /**
-     * @param {Object} options
-     * @param {HTMLCanvasElement} options.canvas
-     * @param {number} [options.gridCols=48] - Geometry horizontal subdivisions
-     * @param {number} [options.gridRows=24] - Geometry vertical subdivisions
-     * @param {number} [options.duration=700] - Default transition duration in ms
-     * @param {Function} [options.onComplete] - Callback on transition completion
-     */
     constructor(options) {
       if (!options || !options.canvas) {
         throw new Error('[ProspectusFoldingTransition] A valid canvas element is required');
       }
 
       this.canvas = options.canvas;
-      this.gridCols = options.gridCols || 48;
-      this.gridRows = options.gridRows || 24;
-      this.duration = options.duration || 680;
+      this.gridCols = options.gridCols || 54;
+      this.gridRows = options.gridRows || 28;
+      this.duration = options.duration || 660;
       this.onComplete = options.onComplete || null;
 
       this.gl = null;
@@ -258,21 +264,20 @@
 
       this.currentTexture = null;
       this.nextTexture = null;
-      this.textureCache = new Map();
 
       this.progress = 0;
       this.direction = 1; // +1 = Next, -1 = Prev
+      this.isSpread = false;
       this.isAnimating = false;
       this.animationStartTime = 0;
       this.currentTween = null;
 
-      this.initWebGL();
+      if (!this.initWebGL()) {
+        throw new Error('WebGL initialization failed in ProspectusFoldingTransition');
+      }
       this.buildGeometry();
     }
 
-    /**
-     * Initialize WebGL Context and compile Shaders
-     */
     initWebGL() {
       const gl = this.canvas.getContext('webgl', { antialias: true, alpha: true, depth: false }) ||
                  this.canvas.getContext('experimental-webgl', { antialias: true, alpha: true, depth: false }) ||
@@ -285,7 +290,7 @@
 
       this.gl = gl;
 
-      // Enable standard blending for smooth page dissolve
+      // Enable standard blending for frosted glass translucency
       gl.enable(gl.BLEND);
       gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
@@ -337,9 +342,6 @@
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     }
 
-    /**
-     * Build subdivided plane geometry for smooth 3D curved bending
-     */
     buildGeometry() {
       const gl = this.gl;
       const cols = this.gridCols;
@@ -391,28 +393,22 @@
       gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
     }
 
-    /**
-     * Upload an image to a WebGL texture handle
-     */
-    uploadImage(tex, image) {
-      if (!this.gl || !tex || !image) return;
+    uploadImage(tex, imageOrCanvas) {
+      if (!this.gl || !tex || !imageOrCanvas) return;
       const gl = this.gl;
       gl.bindTexture(gl.TEXTURE_2D, tex);
       gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, imageOrCanvas);
       this.setupTextureParameters(tex);
     }
 
-    /**
-     * Synchronize canvas internal resolution with CSS pixel dimensions
-     */
     resize() {
       if (!this.canvas) return;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const w = Math.round(this.canvas.clientWidth * dpr);
       const h = Math.round(this.canvas.clientHeight * dpr);
 
-      if (this.canvas.width !== w || this.canvas.height !== h) {
+      if (w > 0 && h > 0 && (this.canvas.width !== w || this.canvas.height !== h)) {
         this.canvas.width = w;
         this.canvas.height = h;
         if (this.gl) {
@@ -421,12 +417,7 @@
       }
     }
 
-    /**
-     * Render the dual-layer folding frame at the given progress
-     * @param {number} progress - Transition progress (0.0 to 1.0)
-     * @param {number} direction - Direction (+1 = Next, -1 = Prev)
-     */
-    renderFrame(progress, direction) {
+    renderFrame(progress, direction, isSpread) {
       const gl = this.gl;
       if (!gl || !this.program) return;
 
@@ -443,15 +434,17 @@
       const uIsBackground = gl.getUniformLocation(this.program, 'u_isBackground');
       const uPerspective = gl.getUniformLocation(this.program, 'u_perspective');
       const uAspect = gl.getUniformLocation(this.program, 'u_aspect');
+      const uIsSpread = gl.getUniformLocation(this.program, 'u_isSpread');
       const uTexPixel = gl.getUniformLocation(this.program, 'u_texPixel');
       const uCurrentTex = gl.getUniformLocation(this.program, 'u_currentTex');
       const uNextTex = gl.getUniformLocation(this.program, 'u_nextTex');
 
       gl.uniform1f(uProgress, progress);
       gl.uniform1f(uDirection, direction);
+      gl.uniform1f(uIsSpread, isSpread ? 1.0 : 0.0);
       gl.uniform1f(uPerspective, 1.85);
-      gl.uniform1f(uAspect, this.canvas.width / this.canvas.height);
-      gl.uniform2f(uTexPixel, 1.0 / this.canvas.width, 1.0 / this.canvas.height);
+      gl.uniform1f(uAspect, (this.canvas.width || 1) / (this.canvas.height || 1));
+      gl.uniform2f(uTexPixel, 1.0 / Math.max(1, this.canvas.width), 1.0 / Math.max(1, this.canvas.height));
 
       // Bind Textures
       gl.activeTexture(gl.TEXTURE0);
@@ -475,41 +468,33 @@
 
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
 
-      // PASS 1: Draw underlying revealed sheet (if in progress)
+      // PASS 1: Draw underlying revealed spread (if in progress)
       if (progress > 0.001) {
         gl.uniform1f(uIsBackground, 1.0);
         gl.drawElements(gl.TRIANGLES, this.indexCount, gl.UNSIGNED_SHORT, 0);
       }
 
-      // PASS 2: Draw folding sheet with 3D rotation, progressive blur & shading
+      // PASS 2: Draw folding spread with 3D glass rotation & blur
       if (progress < 0.999) {
         gl.uniform1f(uIsBackground, 0.0);
         gl.drawElements(gl.TRIANGLES, this.indexCount, gl.UNSIGNED_SHORT, 0);
       }
     }
 
-    /**
-     * Trigger folding transition between two page images
-     * @param {HTMLImageElement} currentImage
-     * @param {HTMLImageElement} nextImage
-     * @param {number} direction - (+1 for Next, -1 for Previous)
-     * @param {number} [duration] - Animation duration in ms
-     * @param {Function} [callback] - Invoked on completion
-     */
-    transition(currentImage, nextImage, direction, duration, callback) {
+    transition(currentCanvas, nextCanvas, direction, isSpread, duration, callback) {
       if (this.isAnimating) return;
       this.isAnimating = true;
 
-      this.uploadImage(this.currentTexture, currentImage);
-      this.uploadImage(this.nextTexture, nextImage);
+      this.uploadImage(this.currentTexture, currentCanvas);
+      this.uploadImage(this.nextTexture, nextCanvas);
 
       this.direction = direction || 1;
-      const animDuration = (duration || this.duration) / 1000; // in seconds for GSAP
+      this.isSpread = !!isSpread;
+      const animDuration = (duration || this.duration) / 1000;
 
       const self = this;
       const state = { progress: 0 };
 
-      // Use GSAP if available in page environment
       if (typeof window !== 'undefined' && window.gsap) {
         this.currentTween = window.gsap.to(state, {
           progress: 1.0,
@@ -517,46 +502,36 @@
           ease: "power2.inOut",
           onUpdate: function () {
             self.progress = state.progress;
-            self.renderFrame(state.progress, self.direction);
+            self.renderFrame(state.progress, self.direction, self.isSpread);
           },
           onComplete: function () {
             self.isAnimating = false;
             self.progress = 0;
-            self.uploadImage(self.currentTexture, nextImage);
-            self.renderFrame(0, self.direction);
-            const baseImg = document.getElementById('prospectusBaseImage');
-            if (baseImg && nextImage.src) {
-              baseImg.src = nextImage.src;
-            }
+            self.uploadImage(self.currentTexture, nextCanvas);
+            self.renderFrame(0, self.direction, self.isSpread);
             if (typeof callback === 'function') callback();
             if (typeof self.onComplete === 'function') self.onComplete();
           }
         });
       } else {
-        // Built-in 60FPS Cubic Hermite animation engine
         const startTime = performance.now();
         const durMs = animDuration * 1000;
 
         function loop(now) {
           const elapsed = now - startTime;
           const t = Math.min(1.0, Math.max(0.0, elapsed / durMs));
-          // Cubic Hermite smoothstep ease-in-out: t^2 * (3 - 2t)
-          const ease = t * t * (3.0 - 2.0 * t);
+          const ease = t * t * (3.0 - 2.0 * t); // Smooth Hermite
 
           self.progress = ease;
-          self.renderFrame(ease, self.direction);
+          self.renderFrame(ease, self.direction, self.isSpread);
 
           if (t < 1.0) {
             requestAnimationFrame(loop);
           } else {
             self.isAnimating = false;
             self.progress = 0;
-            self.uploadImage(self.currentTexture, nextImage);
-            self.renderFrame(0, self.direction);
-            const baseImg = document.getElementById('prospectusBaseImage');
-            if (baseImg && nextImage.src) {
-              baseImg.src = nextImage.src;
-            }
+            self.uploadImage(self.currentTexture, nextCanvas);
+            self.renderFrame(0, self.direction, self.isSpread);
             if (typeof callback === 'function') callback();
             if (typeof self.onComplete === 'function') self.onComplete();
           }
@@ -565,19 +540,7 @@
         requestAnimationFrame(loop);
       }
     }
-
-    /**
-     * Interactively set fold progress during user drag / swipe gestures
-     * @param {number} progress - (0.0 to 1.0)
-     * @param {number} direction - (+1 or -1)
-     */
-    setProgress(progress, direction) {
-      this.progress = Math.min(1.0, Math.max(0.0, progress));
-      this.direction = direction || 1;
-      this.renderFrame(this.progress, this.direction);
-    }
   }
 
   return ProspectusFoldingTransition;
 });
-
