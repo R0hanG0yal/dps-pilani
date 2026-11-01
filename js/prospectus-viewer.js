@@ -56,7 +56,11 @@
 
   // Fragment Shader replicating Dmitry Lepisov's 3D Cylinder Roll
   const FS_SOURCE = `
-    precision highp float;
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+  precision highp float;
+#else
+  precision mediump float;
+#endif
     varying vec2 v_texCoord;
     uniform sampler2D u_currentTex;
     uniform sampler2D u_targetTex;
@@ -370,8 +374,8 @@
         return;
       }
 
-      // Delegate to ProspectusFoldingTransition if loaded
-      if (foldingEngine) {
+      // Delegate to ProspectusFoldingTransition if loaded and valid
+      if (foldingEngine && foldingEngine.gl && foldingEngine.program) {
         foldingEngine.transition(imgs[0], imgs[1], direction, animationDuration, function () {
           currentPage = toPage;
           isAnimating = false;
@@ -676,8 +680,13 @@
           gridRows: 28,
           duration: 660
         });
+        if (!foldingEngine.gl || !foldingEngine.program) {
+          console.warn('[Prospectus] Folding engine shader compile failed, falling back to built-in curl');
+          foldingEngine = null;
+        }
       } catch (err) {
         console.warn('[Prospectus] ProspectusFoldingTransition init fallback:', err);
+        foldingEngine = null;
       }
     }
 

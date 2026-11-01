@@ -132,7 +132,11 @@
 
   // Fragment Shader: Progressive Blur, Brightness Shading & Ray Projection
   const FS_SOURCE = `
-    precision highp float;
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+  precision highp float;
+#else
+  precision mediump float;
+#endif
 
     varying vec2 v_texCoord;
     varying float v_edgeDist;
@@ -176,8 +180,8 @@
       float blurGradient = clamp(edge, 0.0, 1.0);
       float darkenGradient = clamp((edge - 0.15) / 0.85, 0.0, 1.0);
 
-      float effect = motion * pow(darkenGradient, 1.35);
-      float radius = 56.0 * motion * pow(blurGradient, 1.35);
+      float effect = motion * pow(max(0.0001, darkenGradient), 1.35);
+      float radius = 56.0 * motion * pow(max(0.0001, blurGradient), 1.35);
 
       vec2 sourceUV = v_texCoord;
       vec3 color = vec3(0.0);
@@ -185,12 +189,14 @@
       // 5x5 Binomial weighted progressive blur (iPhone Duo exact weights: 1, 4, 6, 4, 1)
       if (radius > 0.08) {
         float totalWeight = 0.0;
-        for (int y = -2; y <= 2; y++) {
-          for (int x = -2; x <= 2; x++) {
-            float wx = (x == 0) ? 6.0 : ((abs(x) == 1) ? 4.0 : 1.0);
-            float wy = (y == 0) ? 6.0 : ((abs(y) == 1) ? 4.0 : 1.0);
+        for (int y = 0; y < 5; y++) {
+          for (int x = 0; x < 5; x++) {
+            float fx = float(x) - 2.0;
+            float fy = float(y) - 2.0;
+            float wx = (x == 2) ? 6.0 : ((x == 1 || x == 3) ? 4.0 : 1.0);
+            float wy = (y == 2) ? 6.0 : ((y == 1 || y == 3) ? 4.0 : 1.0);
             float w = wx * wy;
-            vec2 offset = vec2(float(x), float(y)) * u_texPixel * radius * 0.42;
+            vec2 offset = vec2(fx, fy) * u_texPixel * radius * 0.42;
             vec2 sampleUV = clamp(sourceUV + offset, vec2(0.001), vec2(0.999));
             color += texture2D(u_currentTex, sampleUV).rgb * w;
             totalWeight += w;
@@ -268,8 +274,9 @@
      * Initialize WebGL Context and compile Shaders
      */
     initWebGL() {
-      const gl = this.canvas.getContext('webgl2', { antialias: true, alpha: true, depth: false }) ||
-                 this.canvas.getContext('webgl', { antialias: true, alpha: true, depth: false });
+      const gl = this.canvas.getContext('webgl', { antialias: true, alpha: true, depth: false }) ||
+                 this.canvas.getContext('experimental-webgl', { antialias: true, alpha: true, depth: false }) ||
+                 this.canvas.getContext('webgl2', { antialias: true, alpha: true, depth: false });
 
       if (!gl) {
         console.error('[ProspectusFoldingTransition] WebGL not supported on this device.');
