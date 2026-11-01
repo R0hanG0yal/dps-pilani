@@ -22,6 +22,7 @@
   let dragProgress = 0;
   let curlDirection = 1; // 1 = forward (to next), -1 = backward (to prev)
   let animationProgress = 0;
+  let foldingEngine = null;
   let animationStartTime = 0;
   let animationDuration = 620; // ms
   let animationEasing = null;
@@ -350,7 +351,7 @@
     gl.drawArrays(gl.TRIANGLES, 0, 6);
   }
 
-  // Smooth Animation Loop
+  // Smooth Animation Loop with iPhone Duo folding shader engine
   function startTransition(fromPage, toPage, direction, duration, startProg) {
     if (isAnimating) return;
     isAnimating = true;
@@ -358,7 +359,7 @@
     currentPage = fromPage;
     targetPage = toPage;
     curlDirection = direction;
-    animationDuration = duration || 620;
+    animationDuration = duration || 640;
     animationStartProgress = typeof startProg === 'number' ? startProg : 0;
     animationTargetProgress = 1;
     animationStartTime = performance.now();
@@ -366,6 +367,20 @@
     Promise.all([loadPageImage(fromPage), loadPageImage(toPage)]).then(function (imgs) {
       if (!imgs[0] || !imgs[1]) {
         isAnimating = false;
+        return;
+      }
+
+      // Delegate to ProspectusFoldingTransition if loaded
+      if (foldingEngine) {
+        foldingEngine.transition(imgs[0], imgs[1], direction, animationDuration, function () {
+          currentPage = toPage;
+          isAnimating = false;
+          updateUI();
+          if (typeof onAnimationComplete === 'function') {
+            onAnimationComplete();
+            onAnimationComplete = null;
+          }
+        });
         return;
       }
 
@@ -518,6 +533,16 @@
       }
 
       // Render interactive drag position in real-time
+      if (foldingEngine) {
+        Promise.all([loadPageImage(currentPage), loadPageImage(targetPage)]).then(function (imgs) {
+          if (!imgs[0] || !imgs[1]) return;
+          foldingEngine.uploadImage(foldingEngine.currentTexture, imgs[0]);
+          foldingEngine.uploadImage(foldingEngine.nextTexture, imgs[1]);
+          foldingEngine.setProgress(dragProgress, curlDirection);
+        });
+        return;
+      }
+
       Promise.all([loadPageImage(currentPage), loadPageImage(targetPage)]).then(function (imgs) {
         if (!imgs[0] || !imgs[1]) return;
         uploadTexture(currentTexture, imgs[0]);
@@ -637,18 +662,40 @@
     loaderEl = document.getElementById('prospectusLoader');
     fullscreenBtn = document.getElementById('prospectusFullscreenBtn');
 
-    const ok = initWebGL();
-    if (!ok) {
-      console.warn('[Prospectus] WebGL initialization unsuccessful.');
-      return;
+    // Initialize iPhone Duo folding transition component
+    if (typeof ProspectusFoldingTransition !== 'undefined') {
+      try {
+        foldingEngine = new ProspectusFoldingTransition({
+          canvas: canvas,
+          gridCols: 54,
+          gridRows: 28,
+          duration: 660
+        });
+      } catch (err) {
+        console.warn('[Prospectus] ProspectusFoldingTransition init fallback:', err);
+      }
+    }
+
+    if (!foldingEngine) {
+      const ok = initWebGL();
+      if (!ok) {
+        console.warn('[Prospectus] WebGL initialization unsuccessful.');
+        return;
+      }
     }
 
     // Preload first 3 pages
     Promise.all([loadPageImage(1), loadPageImage(2), loadPageImage(3)]).then(function (imgs) {
       if (imgs[0]) {
-        uploadTexture(currentTexture, imgs[0]);
-        if (imgs[1]) uploadTexture(targetTexture, imgs[1]);
-        renderFrame(0, 1);
+        if (foldingEngine) {
+          foldingEngine.uploadImage(foldingEngine.currentTexture, imgs[0]);
+          if (imgs[1]) foldingEngine.uploadImage(foldingEngine.nextTexture, imgs[1]);
+          foldingEngine.renderFrame(0, 1);
+        } else {
+          uploadTexture(currentTexture, imgs[0]);
+          if (imgs[1]) uploadTexture(targetTexture, imgs[1]);
+          renderFrame(0, 1);
+        }
       }
       if (loaderEl) loaderEl.classList.add('is-hidden');
     });
