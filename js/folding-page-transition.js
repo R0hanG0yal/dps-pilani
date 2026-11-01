@@ -393,6 +393,7 @@
       gl.bindTexture(gl.TEXTURE_2D, tex);
       gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+      this.setupTextureParameters(tex);
     }
 
     /**
@@ -424,7 +425,7 @@
 
       this.resize();
 
-      gl.clearColor(0.08, 0.02, 0.04, 1.0);
+      gl.clearColor(0.0, 0.0, 0.0, 0.0);
       gl.clear(gl.COLOR_BUFFER_BIT);
 
       gl.useProgram(this.program);
@@ -513,8 +514,13 @@
           },
           onComplete: function () {
             self.isAnimating = false;
-            self.progress = 1.0;
-            self.renderFrame(1.0, self.direction);
+            self.progress = 0;
+            self.uploadImage(self.currentTexture, nextImage);
+            self.renderFrame(0, self.direction);
+            const baseImg = document.getElementById('prospectusBaseImage');
+            if (baseImg && nextImage.src) {
+              baseImg.src = nextImage.src;
+            }
             if (typeof callback === 'function') callback();
             if (typeof self.onComplete === 'function') self.onComplete();
           }
@@ -537,8 +543,13 @@
             requestAnimationFrame(loop);
           } else {
             self.isAnimating = false;
-            self.progress = 1.0;
-            self.renderFrame(1.0, self.direction);
+            self.progress = 0;
+            self.uploadImage(self.currentTexture, nextImage);
+            self.renderFrame(0, self.direction);
+            const baseImg = document.getElementById('prospectusBaseImage');
+            if (baseImg && nextImage.src) {
+              baseImg.src = nextImage.src;
+            }
             if (typeof callback === 'function') callback();
             if (typeof self.onComplete === 'function') self.onComplete();
           }
@@ -562,3 +573,4 @@
 
   return ProspectusFoldingTransition;
 });
+

@@ -172,7 +172,7 @@
       }
 
       const img = new Image();
-      img.crossOrigin = 'anonymous';
+      // Same-origin relative image
 
       // Prefer WebP with fallback to JPG
       const webpSrc = `${BASE_ASSET_PATH}page-${padNum(pageNum)}.webp`;
@@ -186,7 +186,7 @@
       img.onerror = function () {
         // Fallback to JPG
         const fallbackImg = new Image();
-        fallbackImg.crossOrigin = 'anonymous';
+        // Same-origin relative image
         fallbackImg.onload = function () {
           textureCache.set(pageNum, fallbackImg);
           resolve(fallbackImg);
@@ -442,6 +442,11 @@
 
     if (prevBtn) prevBtn.disabled = currentPage <= 1;
     if (nextBtn) nextBtn.disabled = currentPage >= TOTAL_PAGES;
+
+    const baseImg = document.getElementById('prospectusBaseImage');
+    if (baseImg) {
+      baseImg.src = BASE_ASSET_PATH + 'page-' + padNum(currentPage) + '.webp';
+    }
 
     // Update active thumb
     if (thumbsDrawer) {
