@@ -117,7 +117,7 @@
   const DEFAULT_CONFIG = {
     schoolName: 'Durga Public School',
     regName: 'Durga Devi Public School',
-    affiliationNo: '1730419',
+    affiliationNo: 'RBSE / State Board',
     schoolCode: '10764',
     sessionYear: '2026–2027',
     admissionStatus: 'Open for Nursery to Class XII',
@@ -217,7 +217,7 @@
     },
     {
       id: 'CIRC-2026-02',
-      title: 'CBSE Secondary & Senior Secondary Practical Examination Guidelines',
+      title: 'RBSE Secondary & Senior Secondary Practical Examination Guidelines',
       category: 'Examinations',
       date: '15 Oct 2026',
       fileUrl: '#',
