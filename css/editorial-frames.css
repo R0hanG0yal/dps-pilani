@@ -3348,14 +3348,12 @@
   }
 
   .pillar-card-desc {
-    font-size: 0.70rem !important;
-    line-height: 1.35 !important;
+    font-size: 0.74rem !important;
+    line-height: 1.4 !important;
     margin-bottom: 8px !important;
-    display: -webkit-box !important;
-    -webkit-line-clamp: 2 !important;
-    -webkit-box-orient: vertical !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+    display: block !important;
+    color: var(--ink-700, #46303a) !important;
+    text-overflow: clip !important;
   }
 
   .pillar-card-chips {
@@ -11388,5 +11386,68 @@ details.apple-expandable-item[open] > summary::after {
     object-position: center 22% !important;
     display: block;
     border-radius: inherit;
+  }
+}
+
+
+/* Dynamic Island Smart Auto-Hide on Mobile Scroll Down */
+@media (max-width: 768px) {
+  .header-left-group {
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, box-shadow 0.24s ease, background 0.24s ease !important;
+  }
+  .header-left-group.island-hidden {
+    transform: translate(-50%, -150%) scale(0.92) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  /* Safe breathing room for section headings */
+  .section, section[id], .showcase-header, .section-head-center {
+    scroll-margin-top: 76px !important;
+  }
+}
+
+/* Mobile Table Horizontal Swipe Hint & Sticky First Column */
+.mobile-table-hint {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(125, 29, 63, 0.06);
+  border: 1px dashed rgba(125, 29, 63, 0.22);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-family: var(--font-label, monospace);
+  font-size: 0.74rem;
+  color: var(--wine-900, #47102a);
+  font-weight: 600;
+  margin-bottom: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .mobile-table-hint {
+    display: flex;
+  }
+
+  .fee-table thead th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    background: var(--wine-900) !important;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .fee-table tbody td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: #FFFFFF !important;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .fee-table tbody tr:hover td:first-child {
+    background: #FAF5F0 !important;
   }
 }

@@ -1436,15 +1436,32 @@ void main() {
     let isScrolled = false;
     let ticking = false;
 
+    let lastScrollY = window.scrollY || window.pageYOffset;
+
     function handleScroll() {
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(function () {
+        const currentY = window.scrollY || window.pageYOffset;
+
         if (window.innerWidth <= 768) {
+          const dynamicIsland = document.querySelector('.header-left-group');
+          if (dynamicIsland && !document.body.classList.contains('dps-menu-active')) {
+            const scrollDelta = currentY - lastScrollY;
+            if (currentY > 70 && scrollDelta > 6) {
+              // Scrolling down: smoothly hide capsule so headings are never covered
+              dynamicIsland.classList.add('island-hidden');
+            } else if (scrollDelta < -6 || currentY <= 30) {
+              // Scrolling up or near top: smoothly reveal capsule
+              dynamicIsland.classList.remove('island-hidden');
+            }
+          }
+          lastScrollY = currentY;
           ticking = false;
           return;
         }
-        const shouldBeScrolled = (window.scrollY || window.pageYOffset) > 15;
+
+        const shouldBeScrolled = currentY > 15;
         if (shouldBeScrolled !== isScrolled) {
           isScrolled = shouldBeScrolled;
           if (isScrolled) {
@@ -1453,6 +1470,7 @@ void main() {
             header.classList.remove('is-scrolled');
           }
         }
+        lastScrollY = currentY;
         ticking = false;
       });
     }

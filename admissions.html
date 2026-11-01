@@ -15,6 +15,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/premium.css">
   <link rel="stylesheet" href="css/editorial-frames.css">
+  <link rel="stylesheet" href="css/prospectus-viewer.css">
 </head>
 <body>
 
@@ -144,7 +145,7 @@
               <span class="mega-col-title">Admissions &amp; Services</span>
             </div>
             <div class="mega-col-meta">
-              <span class="mega-col-count">6</span>
+              <span class="mega-col-count">7</span>
               <span class="mega-col-caret" aria-hidden="true">&#9662;</span>
             </div>
           </div>
@@ -152,6 +153,7 @@
             <li><a href="admissions.html">Admissions Open 2026-27</a></li>
             <li><a href="admissions.html#eligibility">Nursery &ndash; XII Eligibility Criteria</a></li>
             <li><a href="admissions.html#fees">Transparent Fee Structure</a></li>
+            <li><a href="admissions.html#prospectus">Official Prospectus (Interactive 3D)</a></li>
             <li><a href="admissions.html#enquiry">Online Admission Enquiry Form</a></li>
             <li><a href="contact.html#visit">Schedule a Personalized Campus Visit</a></li>
                         <li><a href="privacy-policy.html">Student Data Protection (DPDP)</a></li>
@@ -189,6 +191,7 @@
             <h1>Admission Guidelines & <em>Enrollment</em></h1>
             <p class="hero-lead">Transparent eligibility norms, statutory age criteria, verified documentation requirements, and regulated fee schedules for prospective scholar families.</p>
             <div class="hero-badge-row">
+              <a href="#prospectus" class="hero-pill">Official Prospectus (Interactive)</a>
               <a href="#enquiry" class="hero-pill">Online Admission Enquiry</a>
               <a href="#eligibility" class="hero-pill">Eligibility & Criteria</a>
               <a href="#fees" class="hero-pill">Fee Structure Regulations</a>
@@ -307,6 +310,11 @@
           </a>
         </div>
 
+                <!-- Mobile Table Scroll Cue -->
+        <div class="mobile-table-hint">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          <span>Scroll horizontally to view Term 1, Term 2, Term 3 &amp; Annual Total</span>
+        </div>
         <!-- 17-Grade Real Fee Structure Table -->
         <div class="fee-table-wrap">
           <table class="fee-table">
@@ -517,6 +525,102 @@
       </div>
     </div>
 
+    
+    <!-- INTERACTIVE 3D PROSPECTUS VIEWER -->
+    <section id="prospectus" class="prospectus-section">
+      <div class="container">
+        <div class="prospectus-header-wrap">
+          <div class="prospectus-kicker-pill">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            <span>Official Institutional Publication // 20 Pages</span>
+          </div>
+          <h2 class="prospectus-title">Institutional <em>Prospectus</em> (2026–27)</h2>
+          <p class="prospectus-lead">Experience our complete 20-page institutional prospectus with realistic 3D cylinder curl animation. Slide, drag, or tap the arrows to turn pages, or download the official publication.</p>
+        </div>
+
+        <div class="prospectus-viewer-container">
+          <div class="prospectus-stage-wrap">
+            <!-- Top Utility Bar -->
+            <div class="prospectus-top-bar">
+              <div class="prospectus-doc-info">
+                <div class="prospectus-seal-badge">
+                  <img src="assets/logo-badge.png" alt="Durga Public School Emblem">
+                </div>
+                <div class="prospectus-doc-titles">
+                  <span class="prospectus-doc-heading">Durga Public School, Pilani</span>
+                  <span class="prospectus-doc-sub">Information Brochure &bull; Session 2026–27</span>
+                </div>
+              </div>
+              <div class="prospectus-top-actions">
+                <button type="button" class="p-tool-btn" id="prospectusThumbsToggle" aria-expanded="false" aria-label="Toggle all 20 pages thumbnail view">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                  <span>All Pages</span>
+                </button>
+                <button type="button" class="p-tool-btn" id="prospectusFullscreenBtn" aria-label="Toggle fullscreen reading mode">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                  <span>Fullscreen</span>
+                </button>
+                <a href="assets/docs/Durga-Public-School-Prospectus.pdf" download="Durga-Public-School-Prospectus-2026-27.pdf" class="p-tool-btn p-download-pill">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>Download PDF (7.6MB)</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Canvas Viewport with Dmitry Lepisov 3D Cylinder Curl -->
+            <div class="prospectus-canvas-viewport" id="prospectusViewport">
+              <canvas id="prospectusWebGLCanvas"></canvas>
+
+              <!-- Loading spinner -->
+              <div class="prospectus-loader" id="prospectusLoader">
+                <div class="prospectus-spinner"></div>
+                <span class="prospectus-loader-text">Loading High-Res Pages...</span>
+              </div>
+
+              <!-- Real-time swipe indicator -->
+              <div class="prospectus-drag-hint">Drag or swipe to curl page &harr;</div>
+
+              <!-- Prev / Next circular buttons matching video -->
+              <button type="button" class="prospectus-nav-btn prospectus-nav-prev" id="prospectusPrevBtn" aria-label="Previous Page">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+              <button type="button" class="prospectus-nav-btn prospectus-nav-next" id="prospectusNextBtn" aria-label="Next Page">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+
+            <!-- Bottom Master Controls Bar -->
+            <div class="prospectus-bottom-controls">
+              <div class="prospectus-page-counter">
+                <span>Page <strong id="prospectusCurrentPage">1</strong> of <strong id="prospectusTotalPages">20</strong></span>
+              </div>
+
+              <div class="prospectus-slider-track-wrap">
+                <input type="range" class="prospectus-scrubber" id="prospectusScrubber" min="1" max="20" value="1" aria-label="Prospectus page scrubber">
+              </div>
+
+              <div class="prospectus-bottom-actions">
+                <a href="assets/docs/Durga-Public-School-Prospectus.pdf" target="_blank" rel="noopener noreferrer" class="p-tool-btn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                  <span>Open in Browser Tab</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Expandable Thumbnails Drawer -->
+            <div class="prospectus-thumbs-drawer is-collapsed" id="prospectusThumbsDrawer">
+              <div class="prospectus-thumbs-header">
+                <span class="prospectus-thumbs-title">Document Page Directory (Click to jump)</span>
+              </div>
+              <div class="prospectus-thumbs-strip">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ENQUIRY FORM -->
     <section id="enquiry" class="section section-cream">
       <div class="container-narrow">
@@ -690,6 +794,7 @@
                 <ul class="vestra-list">
                   <li><a href="admissions.html">Admission Criteria &amp; Procedures</a></li>
                   <li><a href="admissions.html#fees">Annual Fee Schedule Breakdown</a></li>
+                  <li><a href="admissions.html#prospectus">Institutional Prospectus (2026–27)</a></li>
                   <li><a href="admissions.html#enquiry">Online Admission Enquiry 2026&ndash;27</a></li>
                   <li><a href="contact.html">Schedule Guided Campus Tour</a></li>
                 </ul>
@@ -990,5 +1095,6 @@
 
 <script src="js/main.js"></script>
   <script src="js/editorial-frames.js"></script>
+  <script src="js/prospectus-viewer.js"></script>
 </body>
 </html>

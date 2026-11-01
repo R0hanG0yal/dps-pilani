@@ -1,0 +1,658 @@
+/* ==========================================================================
+   DURGA PUBLIC SCHOOL - 3D CYLINDER CURL INTERACTIVE PROSPECTUS VIEWER
+   Replicates the exact Dmitry Lepisov 3D cylinder page curl animation
+   with specular highlight crest, crease drop shadow, and touch drag gestures.
+   ========================================================================== */
+
+.prospectus-section {
+  position: relative;
+  padding: 80px 0;
+  background: radial-gradient(circle at 50% 15%, #FAF5EE 0%, #F5ECE0 60%, #EFE3D3 100%);
+  overflow: hidden;
+}
+
+.prospectus-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(125, 29, 63, 0.2) 50%, transparent 100%);
+}
+
+.prospectus-header-wrap {
+  text-align: center;
+  max-width: 780px;
+  margin: 0 auto 36px auto;
+  padding: 0 20px;
+}
+
+.prospectus-kicker-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(125, 29, 63, 0.08);
+  border: 1px solid rgba(125, 29, 63, 0.2);
+  color: var(--wine-800, #5a142d);
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-family: var(--font-label, monospace);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.prospectus-kicker-pill svg {
+  color: var(--saffron-600, #d97706);
+}
+
+.prospectus-title {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: clamp(2rem, 4vw, 2.85rem);
+  color: var(--wine-950, #2e0815);
+  font-weight: 800;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.prospectus-title em {
+  font-style: italic;
+  color: var(--wine-700, #7d1d3f);
+  font-weight: 400;
+}
+
+.prospectus-lead {
+  font-family: var(--font-body, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: clamp(0.95rem, 1.6vw, 1.08rem);
+  line-height: 1.65;
+  color: var(--ink-700, #46303a);
+  margin-bottom: 24px;
+}
+
+/* ==========================================================================
+   VIEWER CONTAINER & LUXURY MATTE STAGE
+   ========================================================================== */
+
+.prospectus-viewer-container {
+  position: relative;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.prospectus-stage-wrap {
+  position: relative;
+  background: linear-gradient(145deg, #2D0817 0%, #1A040D 100%);
+  border-radius: 24px;
+  padding: 30px 24px 24px 24px;
+  box-shadow:
+    0 24px 60px -12px rgba(46, 8, 21, 0.35),
+    0 10px 25px -5px rgba(0, 0, 0, 0.2),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(217, 184, 138, 0.3);
+  overflow: hidden;
+}
+
+/* Atmospheric Ambient Glow behind book */
+.prospectus-stage-wrap::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 75%;
+  height: 75%;
+  background: radial-gradient(circle, rgba(217, 184, 138, 0.12) 0%, rgba(125, 29, 63, 0.08) 50%, transparent 75%);
+  pointer-events: none;
+  filter: blur(40px);
+}
+
+/* Top utility bar inside stage */
+.prospectus-top-bar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.prospectus-doc-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.prospectus-seal-badge {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #FFF;
+  border: 1.5px solid #D9B88A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
+}
+
+.prospectus-seal-badge img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.prospectus-doc-titles {
+  display: flex;
+  flex-direction: column;
+}
+
+.prospectus-doc-heading {
+  font-family: var(--font-display, serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #FFF8EE;
+  letter-spacing: 0.01em;
+}
+
+.prospectus-doc-sub {
+  font-family: var(--font-label, monospace);
+  font-size: 0.68rem;
+  color: #D9B88A;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.prospectus-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.p-tool-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #FFF;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  font-family: var(--font-ui, sans-serif);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.p-tool-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(217, 184, 138, 0.4);
+  color: #FDE68A;
+  transform: translateY(-1px);
+}
+
+.p-tool-btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.p-download-pill {
+  background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #FFF !important;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.35);
+}
+
+.p-download-pill:hover {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  color: #FFF !important;
+  box-shadow: 0 6px 16px rgba(217, 119, 6, 0.45);
+}
+
+/* ==========================================================================
+   CANVAS DISPLAY AREA & 3D CYLINDER ROTATION STAGE
+   ========================================================================== */
+
+.prospectus-canvas-viewport {
+  position: relative;
+  width: 100%;
+  max-width: 620px;
+  aspect-ratio: 595 / 780; /* Standard Prospectus page ratio ~ 1 : 1.31 */
+  margin: 0 auto;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow:
+    0 22px 50px -10px rgba(0, 0, 0, 0.6),
+    0 8px 20px rgba(0, 0, 0, 0.35);
+  background: #110208;
+  cursor: grab;
+  touch-action: pan-y pinch-zoom;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.prospectus-canvas-viewport:active {
+  cursor: grabbing;
+}
+
+#prospectusWebGLCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Loading Spinner on Canvas */
+.prospectus-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(26, 4, 13, 0.85);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  z-index: 20;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.prospectus-loader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.prospectus-spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgba(217, 184, 138, 0.25);
+  border-top-color: #D9B88A;
+  border-radius: 50%;
+  animation: pSpin 0.9s cubic-bezier(0.5, 0.1, 0.5, 0.9) infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes pSpin {
+  to { transform: rotate(360deg); }
+}
+
+.prospectus-loader-text {
+  font-family: var(--font-label, monospace);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  color: #F5ECE0;
+  text-transform: uppercase;
+}
+
+/* Floating Navigation Chevrons matching Dmitry Lepisov Video */
+.prospectus-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(125, 29, 63, 0.2);
+  color: var(--wine-900, #47102a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 15;
+  box-shadow:
+    0 10px 24px -4px rgba(46, 8, 21, 0.35),
+    0 4px 8px rgba(0, 0, 0, 0.12);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.prospectus-nav-btn:hover {
+  background: #FFF;
+  transform: translateY(-50%) scale(1.1);
+  color: var(--wine-700, #7d1d3f);
+  box-shadow:
+    0 14px 30px -4px rgba(46, 8, 21, 0.45),
+    0 6px 12px rgba(0, 0, 0, 0.18);
+}
+
+.prospectus-nav-btn:active {
+  transform: translateY(-50%) scale(0.96);
+}
+
+.prospectus-nav-btn:disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.prospectus-nav-prev {
+  left: -24px;
+}
+
+.prospectus-nav-next {
+  right: -24px;
+}
+
+/* Real-time page drag indicator pill */
+.prospectus-drag-hint {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.65);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #FFF;
+  font-family: var(--font-label, monospace);
+  font-size: 0.70rem;
+  letter-spacing: 0.08em;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  pointer-events: none;
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+  z-index: 12;
+}
+
+.prospectus-canvas-viewport:hover .prospectus-drag-hint {
+  opacity: 0.3;
+}
+
+/* ==========================================================================
+   BOTTOM MASTER CONTROLS BAR
+   ========================================================================== */
+
+.prospectus-bottom-controls {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.prospectus-page-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-family: var(--font-label, monospace);
+  font-size: 0.80rem;
+  color: #FFF8EE;
+  font-weight: 600;
+}
+
+.prospectus-page-counter strong {
+  color: #FDE68A;
+  font-weight: 700;
+}
+
+.prospectus-slider-track-wrap {
+  flex: 1;
+  min-width: 140px;
+  max-width: 320px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.prospectus-scrubber {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.prospectus-scrubber:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.prospectus-scrubber::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #D9B88A;
+  border: 2px solid #FFF;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.prospectus-scrubber::-webkit-slider-thumb:hover {
+  transform: scale(1.25);
+  background: #FDE68A;
+}
+
+.prospectus-scrubber::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #D9B88A;
+  border: 2px solid #FFF;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+.prospectus-bottom-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ==========================================================================
+   THUMBNAILS DRAWER (EXPANDABLE GRID)
+   ========================================================================== */
+
+.prospectus-thumbs-drawer {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  overflow: hidden;
+}
+
+.prospectus-thumbs-drawer.is-collapsed {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  border-top: none;
+  pointer-events: none;
+}
+
+.prospectus-thumbs-drawer:not(.is-collapsed) {
+  max-height: 480px;
+  opacity: 1;
+}
+
+.prospectus-thumbs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.prospectus-thumbs-title {
+  font-family: var(--font-label, monospace);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #D9B88A;
+  font-weight: 600;
+}
+
+.prospectus-thumbs-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 10px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.prospectus-thumb-item {
+  position: relative;
+  aspect-ratio: 595 / 780;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  background: #000;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.prospectus-thumb-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.prospectus-thumb-num {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #FFF;
+  font-family: var(--font-label, monospace);
+  font-size: 0.60rem;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+.prospectus-thumb-item:hover {
+  transform: translateY(-2px) scale(1.04);
+  border-color: #D9B88A;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.prospectus-thumb-item.is-active {
+  border-color: #FDE68A;
+  box-shadow: 0 0 0 2px rgba(253, 230, 138, 0.4), 0 4px 14px rgba(217, 184, 138, 0.5);
+  transform: scale(1.03);
+}
+
+/* ==========================================================================
+   FULLSCREEN MODE
+   ========================================================================== */
+
+.prospectus-stage-wrap:fullscreen {
+  max-width: 100vw;
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0;
+  padding: 20px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.prospectus-stage-wrap:fullscreen .prospectus-canvas-viewport {
+  max-height: calc(100vh - 160px);
+  width: auto;
+  aspect-ratio: 595 / 780;
+  margin: auto;
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVENESS
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .prospectus-section {
+    padding: 48px 0;
+  }
+
+  .prospectus-stage-wrap {
+    padding: 16px 14px 14px 14px;
+    border-radius: 18px;
+  }
+
+  .prospectus-top-bar {
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+  }
+
+  .prospectus-doc-heading {
+    font-size: 0.82rem;
+  }
+
+  .prospectus-doc-sub {
+    font-size: 0.60rem;
+  }
+
+  .p-tool-btn {
+    padding: 4px 8px;
+    font-size: 0.70rem;
+  }
+
+  .prospectus-canvas-viewport {
+    max-width: 100%;
+    border-radius: 10px;
+  }
+
+  .prospectus-nav-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .prospectus-nav-prev {
+    left: 8px;
+  }
+
+  .prospectus-nav-next {
+    right: 8px;
+  }
+
+  .prospectus-bottom-controls {
+    margin-top: 14px;
+    padding-top: 12px;
+    gap: 8px;
+  }
+
+  .prospectus-page-counter {
+    font-size: 0.72rem;
+    padding: 4px 10px;
+  }
+
+  .prospectus-slider-track-wrap {
+    order: 3;
+    max-width: 100%;
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  .prospectus-thumbs-strip {
+    grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+    gap: 6px;
+    max-height: 180px;
+  }
+}
