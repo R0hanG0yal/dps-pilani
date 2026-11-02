@@ -11723,3 +11723,11 @@ details.apple-expandable-item[open] > summary::after {
   display: block !important;
   border-radius: inherit !important;
 }
+
+/* Coordinator Portrait Framing (Ensures Head and Face are Fully Visible) */
+.coordinator-portrait-img,
+.coordinator-portrait-frame img,
+img[src*="coordinator.jpg"] {
+  object-fit: cover !important;
+  object-position: center top !important;
+}
