@@ -485,9 +485,12 @@
     if (typeof IntersectionObserver !== 'undefined') {
       this.observer = new IntersectionObserver(function (entries) {
         self.visible = entries[0].isIntersecting;
-        if (self.visible && !self.rafId) {
-          prev = performance.now();
-          self.rafId = requestAnimationFrame(frame);
+        if (self.visible) {
+          self.updateSizes();
+          if (!self.rafId) {
+            prev = performance.now();
+            self.rafId = requestAnimationFrame(frame);
+          }
         }
       });
       this.observer.observe(this.root);

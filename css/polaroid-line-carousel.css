@@ -314,3 +314,347 @@
   }
 }
 
+/* ==========================================================================
+   GALLERY POLAROID LINE CAROUSEL THEME INTEGRATION
+   Durga Public School - Archival Photo Album Experience
+   ========================================================================== */
+
+/* Global Presentation Mode Bar */
+.scrapbook-view-mode-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 18px;
+  margin: 18px 0 28px 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(251, 247, 239, 0.95) 100%);
+  border: 1px solid rgba(217, 184, 138, 0.55);
+  border-radius: 999px;
+  box-shadow: 0 4px 18px rgba(46, 8, 21, 0.05);
+  flex-wrap: wrap;
+}
+
+.svmb-label {
+  font-family: var(--font-label, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #7A263A;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.svmb-btn-group {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(46, 8, 21, 0.06);
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid rgba(217, 184, 138, 0.4);
+  gap: 2px;
+}
+
+.svmb-btn {
+  border: none;
+  background: transparent;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-family: var(--font-label, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #5C4B43;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.svmb-btn:hover {
+  color: #2E0815;
+}
+
+.svmb-btn.active {
+  background: #2E0815;
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(46, 8, 21, 0.25);
+}
+
+/* Category Chapter Carousel Container */
+.gallery-polaroid-line-wrap {
+  position: relative;
+  margin: 0 0 32px 0;
+  border-radius: 20px;
+  border: 1.5px solid rgba(217, 184, 138, 0.55);
+  background: linear-gradient(180deg, #FDFCF9 0%, #F7F1E4 100%);
+  box-shadow: 0 10px 32px -10px rgba(46, 8, 21, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  overflow: hidden;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Chapter Carousel Header Bar */
+.gallery-polaroid-line-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(217, 184, 138, 0.35);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.gpl-header-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.gpl-pill-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(180, 83, 9, 0.12);
+  color: #92400E;
+  font-family: var(--font-label, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid rgba(180, 83, 9, 0.28);
+}
+
+.gpl-peg-mini {
+  display: inline-block;
+  width: 7px;
+  height: 15px;
+  border-radius: 1px;
+  background: linear-gradient(90deg, #C9A67A 0%, #E3C9A1 45%, #B8915F 100%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.gpl-peg-mini::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 2px;
+  width: 2px;
+  height: 5px;
+  background: rgba(80, 60, 30, 0.7);
+  border-radius: 1px;
+}
+
+.gpl-hint {
+  font-size: 0.80rem;
+  color: #6B5B52;
+  font-style: italic;
+  font-family: var(--font-body, system-ui, sans-serif);
+}
+
+/* Chapter Local View Toggle */
+.gpl-view-actions {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(46, 8, 21, 0.06);
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid rgba(217, 184, 138, 0.4);
+  gap: 2px;
+}
+
+.gpl-view-btn {
+  border: none;
+  background: transparent;
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-family: var(--font-label, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #5C4B43;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.gpl-view-btn:hover {
+  color: #2E0815;
+}
+
+.gpl-view-btn.active {
+  background: #2E0815;
+  color: #FFFFFF;
+  box-shadow: 0 2px 6px rgba(46, 8, 21, 0.2);
+}
+
+/* Carousel Stage */
+.gallery-polaroid-stage {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  min-height: 480px;
+  border-radius: 0 0 20px 20px;
+  overflow: hidden;
+}
+
+/* View State Toggling */
+.gpl-grid-hidden {
+  display: none !important;
+}
+
+.gpl-stage-hidden {
+  display: none !important;
+}
+
+/* ==========================================================================
+   AUTHENTIC POLAROID PRINT THEME FOR GRID CARDS
+   Transforms .scrapbook-frame-card & .scrapbook-photo-card into pegged polaroid prints
+   ========================================================================== */
+
+.scrapbook-item {
+  perspective: 1000px;
+}
+
+.scrapbook-frame-card,
+.scrapbook-photo-card {
+  position: relative;
+  background: #FCFBF9 !important;
+  border: 1.5px solid rgba(217, 184, 138, 0.55) !important;
+  border-radius: 6px !important;
+  padding: 12px 12px 18px 12px !important;
+  box-shadow:
+    0 4px 14px rgba(46, 8, 21, 0.08),
+    0 18px 32px -14px rgba(46, 8, 21, 0.22) !important;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+              box-shadow 0.4s ease,
+              border-color 0.4s ease !important;
+}
+
+/* Realistic Wooden Clothespin Peg at Top Center */
+.scrapbook-frame-card::before,
+.scrapbook-photo-card::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 12px;
+  height: 28px;
+  margin-left: -6px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #C9A67A 0%, #E3C9A1 45%, #B8915F 100%);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.32);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.scrapbook-frame-card::after,
+.scrapbook-photo-card::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 2px;
+  height: 8px;
+  margin-left: -1px;
+  background: rgba(80, 60, 30, 0.65);
+  border-radius: 1px;
+  z-index: 11;
+  pointer-events: none;
+}
+
+/* Remove legacy tape & brass corner clips */
+.scrapbook-frame-card .scrapbook-washi-tape,
+.scrapbook-frame-card .scrapbook-corner-clip,
+.scrapbook-photo-card .scrapbook-tape-top-center {
+  display: none !important;
+}
+
+/* Photo Aperture */
+.scrapbook-media,
+.scrapbook-photo-viewport {
+  position: relative;
+  border-radius: 3px !important;
+  overflow: hidden !important;
+  background: #EAE6DD !important;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.15) !important;
+}
+
+.scrapbook-photo {
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.6s ease;
+}
+
+/* Italic Serif Polaroid Title */
+.scrapbook-frame-card .scrapbook-title,
+.scrapbook-photo-card .scrapbook-title {
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif !important;
+  font-style: italic !important;
+  font-weight: 700 !important;
+  font-size: 1.05rem !important;
+  line-height: 1.3 !important;
+  color: #2E0815 !important;
+  margin-top: 8px !important;
+}
+
+/* Badge Row Styling */
+.scrapbook-badge-row,
+.scrapbook-caption-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.scrapbook-cat-chip,
+.scrapbook-print-num {
+  font-weight: 700;
+  color: #B45309;
+}
+
+.scrapbook-date-chip,
+.scrapbook-date-stamp {
+  color: #7A6B63;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+}
+
+/* Hover Lift with Organic Realism */
+.scrapbook-item:hover .scrapbook-frame-card,
+.scrapbook-frame-item:hover .scrapbook-photo-card {
+  transform: translateY(-9px) scale(1.025) rotate(0deg) !important;
+  border-color: rgba(180, 83, 9, 0.75) !important;
+  box-shadow:
+    0 14px 32px rgba(46, 8, 21, 0.18),
+    0 32px 55px -14px rgba(46, 8, 21, 0.35),
+    0 0 20px rgba(217, 184, 138, 0.35) !important;
+}
+
+.scrapbook-item:hover .scrapbook-photo,
+.scrapbook-frame-item:hover .scrapbook-photo {
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .scrapbook-view-mode-bar {
+    border-radius: 16px;
+    padding: 10px 14px;
+  }
+  .gallery-polaroid-stage {
+    height: 420px;
+    min-height: 380px;
+  }
+  .gallery-polaroid-line-header {
+    padding: 10px 14px;
+  }
+}
+
+
