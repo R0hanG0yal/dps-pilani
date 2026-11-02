@@ -2,11 +2,13 @@
  * Gallery Polaroid Line Carousel Initializer
  * Durga Public School, Pilani, Rajasthan
  *
- * Mounts interactive pegged line carousels for EVERY category on gallery.html:
+ * Exclusively powers the gallery experience across all 7 heritage chapters:
  * Campus, Academics, Labs, Cultural, Sports, Student Life, and News Cuttings.
- * Features realistic string sagging, spring damping, angular momentum swing,
- * idle breeze swaying, view switcher (both / line only / grid only), and
- * high-resolution lightbox integration.
+ * Features:
+ * - Dynamic sub-category string filtering (re-hangs matching prints on the line)
+ * - Ultra-premium liquid glass floating controls dock
+ * - Separated button functions: Story Card, Counter Capsule, Standalone Prev/Next buttons, and Stage Flank Chevrons
+ * - Full high-resolution lightbox modal with keyboard navigation
  */
 
 (function () {
@@ -15,6 +17,8 @@
   if (typeof window === 'undefined') return;
 
   window.galleryPolaroidCarousels = {};
+  const masterSlidesByChapter = {};
+  const activeSlidesByChapter = {};
 
   const CHAPTER_CONFIGS = [
     {
@@ -31,13 +35,13 @@
     },
     {
       id: 'labs',
-      title: 'Experiential Science, ICT & Language Labs',
+      title: 'Science Laboratories & Innovation Hubs',
       note: 'Science & IT Labs',
       containFit: false
     },
     {
       id: 'cultural',
-      title: 'Cultural Heritage & Stage Arts',
+      title: 'Cultural Festivals & Performing Arts',
       note: 'Cultural Heritage',
       containFit: false
     },
@@ -49,13 +53,13 @@
     },
     {
       id: 'student-life',
-      title: 'Student Life & Morning Assemblies',
+      title: 'Student Life, Fleet & Heritage Archive',
       note: 'Student Life',
       containFit: false
     },
     {
       id: 'news-cuttings',
-      title: 'News Cutting Corner & Press Clippings',
+      title: 'News Cutting Corner & Media News',
       note: 'Press Clipping',
       containFit: true
     }
@@ -67,6 +71,8 @@
       return;
     }
 
+    const dataCatalog = window.DPS_GALLERY_DATA || {};
+
     CHAPTER_CONFIGS.forEach(function (conf) {
       const chapterEl = document.getElementById('chapter-' + conf.id);
       if (!chapterEl) return;
@@ -74,17 +80,22 @@
       const stageEl = document.getElementById('polaroidStage-' + conf.id);
       if (!stageEl) return;
 
-      let slides = [];
+      // Retrieve full category prints from DPS_GALLERY_DATA
+      let slides = (dataCatalog[conf.id] || []).slice();
 
-      if (conf.id === 'news-cuttings') {
+      // Fallback for news-cuttings if not in dataCatalog
+      if (slides.length === 0 && conf.id === 'news-cuttings') {
         const cuttingsData = (typeof DEFAULT_NEWS_CUTTINGS !== 'undefined' ? DEFAULT_NEWS_CUTTINGS : (window.DEFAULT_NEWS_CUTTINGS || []));
         if (Array.isArray(cuttingsData) && cuttingsData.length > 0) {
           slides = cuttingsData.map(function (c, idx) {
+            const paper = c.newspaper || 'Rajasthan Press';
+            const paperSubcat = paper.toLowerCase().replace(/\s+/g, '-').replace(/[()]/g, '').trim();
             return {
               image: c.fullImage || c.image,
               title: c.title,
-              caption: (c.date ? c.date + ' &bull; ' : '') + (c.newspaper || 'Rajasthan Press'),
-              note: (c.newspaper || 'Rajasthan Press') + (c.date ? ' ' + c.date : ''),
+              caption: (c.date ? c.date + ' &bull; ' : '') + paper,
+              note: paper + (c.date ? ' ' + c.date : ''),
+              subcat: paperSubcat,
               id: c.id,
               index: idx
             };
@@ -92,37 +103,10 @@
         }
       }
 
-      // If no cuttings or standard chapters, extract from existing DOM items
-      if (slides.length === 0) {
-        const items = Array.from(chapterEl.querySelectorAll('.scrapbook-item, .scrapbook-frame-item'));
-        slides = items.map(function (item, idx) {
-          const fullImg = item.getAttribute('data-full') ||
-            (item.querySelector('.scrapbook-photo-card') && item.querySelector('.scrapbook-photo-card').getAttribute('data-lightbox-src')) ||
-            (item.querySelector('img') && item.querySelector('img').src) || '';
-
-          const title = item.getAttribute('data-title') ||
-            (item.querySelector('.scrapbook-title') && item.querySelector('.scrapbook-title').textContent.trim()) || '';
-
-          const desc = item.getAttribute('data-desc') ||
-            (item.querySelector('.scrapbook-desc') && item.querySelector('.scrapbook-desc').textContent.trim()) || '';
-
-          const chip = item.querySelector('.scrapbook-cat-chip, .scrapbook-print-num');
-          const noteText = chip ? chip.textContent.trim() : (item.getAttribute('data-subcat') ? item.getAttribute('data-subcat').replace(/-/g, ' ') : conf.note);
-
-          return {
-            image: fullImg,
-            title: title,
-            caption: desc,
-            note: noteText,
-            subcat: item.getAttribute('data-subcat') || '',
-            id: item.getAttribute('data-print') || (conf.id + '-' + idx),
-            itemEl: item,
-            index: idx
-          };
-        });
-      }
-
       if (slides.length === 0) return;
+
+      masterSlidesByChapter[conf.id] = slides;
+      activeSlidesByChapter[conf.id] = slides;
 
       // Instantiate PolaroidLineCarousel
       try {
@@ -137,181 +121,227 @@
           background: 'linear-gradient(180deg, rgba(254, 252, 248, 0.96) 0%, rgba(247, 241, 230, 0.98) 100%)',
           ink: '#2E0815',
           ariaLabel: conf.title + ' Pegged Line Carousel',
-          onSlideClick: function (slide) {
-            if (conf.id === 'news-cuttings') {
-              if (typeof window.openCuttingModal === 'function') {
-                window.openCuttingModal(slide.id);
-                return;
-              }
-              const targetCutting = document.querySelector('[data-print="' + (slide.id ? slide.id.replace('cutting-', 'NC-') : '') + '"] .scrapbook-photo-card');
-              if (targetCutting) {
-                targetCutting.click();
-                return;
-              }
+          onSlideClick: function (slide, idx) {
+            if (conf.id === 'news-cuttings' && typeof window.openCuttingModal === 'function') {
+              window.openCuttingModal(slide.id);
+              return;
             }
-            if (typeof window.openGalleryLightbox === 'function' && typeof window.getGalleryCurrentVisibleItems === 'function' && slide.itemEl) {
-              const visibleList = window.getGalleryCurrentVisibleItems();
-              const idx = visibleList.indexOf(slide.itemEl);
-              if (idx !== -1) {
-                window.openGalleryLightbox(idx);
-                return;
-              }
-            }
-            if (slide.itemEl) {
-              slide.itemEl.click();
-            } else {
-              const target = document.querySelector('[data-print="' + slide.id + '"], [data-category="' + conf.id + '"][data-index="' + slide.index + '"]');
-              if (target) target.click();
-            }
+            openLightboxModal(activeSlidesByChapter[conf.id] || slides, idx !== undefined ? idx : carousel.active);
           }
         });
 
         window.galleryPolaroidCarousels[conf.id] = carousel;
+
+        // Wire sub-category filter pills for this chapter
+        setupChapterSubcatFilter(chapterEl, conf.id, carousel);
       } catch (err) {
         console.error('Error mounting carousel for chapter ' + conf.id + ':', err);
       }
     });
 
-    setupViewToggles();
-    setupSubcategorySync();
-    setupFilterTabSync();
+    setupCategoryFilterTabs();
   }
 
-  // Local Chapter View Toggles & Global View Presentation Switcher
-  function setupViewToggles() {
-    // 1. Local View Toggles in Each Chapter
-    document.querySelectorAll('.gallery-polaroid-line-wrap').forEach(function (wrap) {
-      const chapter = wrap.closest('.scrapbook-chapter');
-      if (!chapter) return;
-      const catId = wrap.getAttribute('data-carousel-chapter');
-      const stage = wrap.querySelector('.gallery-polaroid-stage');
-      const grid = chapter.querySelector('.scrapbook-grid');
+  // Dynamic Subcategory String Filter: Clicking a sub-filter pill re-hangs matching photos on the line
+  function setupChapterSubcatFilter(chapterEl, catId, carousel) {
+    const subcatPills = chapterEl.querySelectorAll('.scrapbook-subcat-pill');
+    if (subcatPills.length === 0) return;
 
-      const btns = wrap.querySelectorAll('.gpl-view-btn');
-      btns.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          const view = btn.getAttribute('data-view');
-          btns.forEach(function (b) { b.classList.remove('active'); });
-          btn.classList.add('active');
+    subcatPills.forEach(function (pill) {
+      pill.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
 
-          if (view === 'both') {
-            if (stage) stage.classList.remove('gpl-stage-hidden');
-            if (grid) grid.classList.remove('gpl-grid-hidden');
-          } else if (view === 'carousel') {
-            if (stage) stage.classList.remove('gpl-stage-hidden');
-            if (grid) grid.classList.add('gpl-grid-hidden');
-          } else if (view === 'grid') {
-            if (stage) stage.classList.add('gpl-stage-hidden');
-            if (grid) grid.classList.remove('gpl-grid-hidden');
-          }
+        subcatPills.forEach(function (p) { p.classList.remove('active'); });
+        pill.classList.add('active');
 
-          if (catId && window.galleryPolaroidCarousels[catId]) {
-            setTimeout(function () {
-              window.galleryPolaroidCarousels[catId].updateSizes();
-            }, 60);
-          }
-        });
+        const targetSubcat = pill.getAttribute('data-subcat');
+        const allCategorySlides = masterSlidesByChapter[catId] || [];
+
+        let filteredSlides;
+        if (!targetSubcat || targetSubcat === 'all') {
+          filteredSlides = allCategorySlides;
+        } else {
+          filteredSlides = allCategorySlides.filter(function (s) {
+            return s.subcat === targetSubcat;
+          });
+        }
+
+        activeSlidesByChapter[catId] = filteredSlides;
+
+        // Update the chapter count pill in the header
+        const countPill = chapterEl.querySelector('.chapter-count-pill');
+        if (countPill) {
+          const unit = catId === 'news-cuttings' ? 'Authentic Press Clippings' : 'Archival Prints';
+          countPill.textContent = filteredSlides.length + ' ' + unit;
+        }
+
+        // Re-hang the filtered photos on the string carousel!
+        carousel.setItems(filteredSlides);
       });
     });
+  }
 
-    // 2. Global Presentation Switcher in Control Dock
-    const globalBtns = document.querySelectorAll('.svmb-btn');
-    if (globalBtns.length > 0) {
-      globalBtns.forEach(function (gBtn) {
-        gBtn.addEventListener('click', function () {
-          const globalView = gBtn.getAttribute('data-global-view');
-          globalBtns.forEach(function (b) { b.classList.remove('active'); });
-          gBtn.classList.add('active');
+  // Top Category Tabs Filter: Show/hide chapters & smooth scroll
+  function setupCategoryFilterTabs() {
+    const filterBtns = document.querySelectorAll('.scrapbook-filter-btn, .gal-filter-btn');
+    if (filterBtns.length === 0) return;
 
-          document.querySelectorAll('.gallery-polaroid-line-wrap').forEach(function (wrap) {
-            const chapter = wrap.closest('.scrapbook-chapter');
-            if (!chapter) return;
-            const stage = wrap.querySelector('.gallery-polaroid-stage');
-            const grid = chapter.querySelector('.scrapbook-grid');
-            const localBtns = wrap.querySelectorAll('.gpl-view-btn');
+    const chapters = Array.from(document.querySelectorAll('.scrapbook-chapter'));
 
-            localBtns.forEach(function (b) {
-              b.classList.toggle('active', b.getAttribute('data-view') === globalView);
-            });
+    function applyCategory(cat) {
+      filterBtns.forEach(function (btn) {
+        const isActive = btn.getAttribute('data-category') === cat;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
 
-            if (globalView === 'both') {
-              if (stage) stage.classList.remove('gpl-stage-hidden');
-              if (grid) grid.classList.remove('gpl-grid-hidden');
-            } else if (globalView === 'carousel') {
-              if (stage) stage.classList.remove('gpl-stage-hidden');
-              if (grid) grid.classList.add('gpl-grid-hidden');
-            } else if (globalView === 'grid') {
-              if (stage) stage.classList.add('gpl-stage-hidden');
-              if (grid) grid.classList.remove('gpl-grid-hidden');
-            }
-          });
+      // Update mobile drawer active label
+      const mobileLabel = document.getElementById('smctActiveCategoryLabel');
+      if (mobileLabel) {
+        const activeBtn = Array.from(filterBtns).find(function (b) { return b.getAttribute('data-category') === cat; });
+        if (activeBtn) {
+          const labelText = activeBtn.querySelector('.btn-tab-label') ? activeBtn.querySelector('.btn-tab-label').textContent.trim() : activeBtn.textContent.trim();
+          const countText = activeBtn.querySelector('.btn-tab-count') ? activeBtn.querySelector('.btn-tab-count').textContent.trim() : '';
+          mobileLabel.textContent = labelText + (countText ? ' (' + countText + ')' : '');
+        }
+      }
 
-          // Recalibrate all carousels
+      // Filter Chapters
+      chapters.forEach(function (chapter) {
+        const chapCat = chapter.getAttribute('data-chapter');
+        const matches = (cat === 'all' || chapCat === cat);
+        if (matches) {
+          chapter.classList.remove('hidden-chapter');
+          chapter.style.display = '';
+        } else {
+          chapter.classList.add('hidden-chapter');
+          chapter.style.display = 'none';
+        }
+      });
+
+      // Recalibrate carousel dimensions for visible chapters
+      setTimeout(function () {
+        if (cat === 'all') {
           Object.keys(window.galleryPolaroidCarousels).forEach(function (k) {
             if (window.galleryPolaroidCarousels[k]) {
-              setTimeout(function () {
-                window.galleryPolaroidCarousels[k].updateSizes();
-              }, 80);
+              window.galleryPolaroidCarousels[k].updateSizes();
             }
           });
-        });
-      });
-    }
-  }
-
-  // Smooth Navigation: Clicking a subcategory pill slides carousel to that topic
-  function setupSubcategorySync() {
-    document.querySelectorAll('.scrapbook-chapter').forEach(function (chap) {
-      const catId = chap.getAttribute('data-chapter');
-      const carousel = window.galleryPolaroidCarousels[catId];
-      if (!carousel) return;
-
-      const subcatPills = chap.querySelectorAll('.scrapbook-subcat-pill');
-      subcatPills.forEach(function (pill) {
-        pill.addEventListener('click', function () {
-          const subcat = pill.getAttribute('data-subcat');
-          if (!subcat || subcat === 'all') return;
-
-          // Find first slide matching this subcategory
-          const targetIdx = carousel.slides.findIndex(function (s) {
-            return s.subcat === subcat;
-          });
-          if (targetIdx !== -1) {
-            carousel.goTo(targetIdx);
+        } else if (window.galleryPolaroidCarousels[cat]) {
+          window.galleryPolaroidCarousels[cat].updateSizes();
+          const targetChap = document.getElementById('chapter-' + cat);
+          if (targetChap) {
+            const navOffset = 90;
+            const targetY = targetChap.getBoundingClientRect().top + window.pageYOffset - navOffset;
+            window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
           }
-        });
-      });
-    });
-  }
+        }
+      }, 120);
+    }
 
-  // Filter Tabs & Hash Synchronizer: When a category tab is activated, recalibrate carousel sizes
-  function setupFilterTabSync() {
-    const filterBtns = document.querySelectorAll('.scrapbook-filter-btn, .gal-filter-btn');
     filterBtns.forEach(function (btn) {
       btn.addEventListener('click', function () {
         const cat = btn.getAttribute('data-category');
-        triggerCategoryCarouselResize(cat);
+        applyCategory(cat);
+        if (history.pushState) {
+          history.pushState(null, null, cat === 'all' ? window.location.pathname : '#' + cat);
+        }
       });
     });
 
-    window.addEventListener('hashchange', function () {
-      const hashCat = window.location.hash.replace('#', '') || 'all';
-      triggerCategoryCarouselResize(hashCat);
-    });
+    // Hash deep-link on load and hashchange
+    function checkHash() {
+      if (window.location.hash) {
+        const hashCat = window.location.hash.replace('#', '');
+        const matchingBtn = document.querySelector('.scrapbook-filter-btn[data-category="' + hashCat + '"], .gal-filter-btn[data-category="' + hashCat + '"]');
+        if (matchingBtn) {
+          applyCategory(hashCat);
+        }
+      }
+    }
+
+    checkHash();
+    window.addEventListener('hashchange', checkHash);
   }
 
-  function triggerCategoryCarouselResize(cat) {
-    setTimeout(function () {
-      if (cat === 'all') {
-        Object.keys(window.galleryPolaroidCarousels).forEach(function (k) {
-          if (window.galleryPolaroidCarousels[k]) {
-            window.galleryPolaroidCarousels[k].updateSizes();
-          }
-        });
-      } else if (window.galleryPolaroidCarousels[cat]) {
-        window.galleryPolaroidCarousels[cat].updateSizes();
+  // Lightbox Modal Controller for Line Carousels
+  function openLightboxModal(slidesList, startIndex) {
+    const modal = document.getElementById('galleryLightboxModal');
+    if (!modal || !slidesList || slidesList.length === 0) return;
+
+    let currentIndex = (startIndex + slidesList.length) % slidesList.length;
+
+    function renderModal(idx) {
+      currentIndex = (idx + slidesList.length) % slidesList.length;
+      const cur = slidesList[currentIndex];
+      const mainImg = modal.querySelector('.lightbox-main-img');
+      const titleEl = modal.querySelector('.lightbox-title');
+      const captionEl = modal.querySelector('.lightbox-caption');
+      const catChip = modal.querySelector('.lightbox-category-chip');
+      const counterEl = modal.querySelector('.lightbox-counter');
+
+      if (mainImg) {
+        mainImg.src = cur.image;
+        mainImg.alt = cur.title || '';
       }
-    }, 120);
+      if (titleEl) titleEl.textContent = cur.title || '';
+      if (captionEl) captionEl.innerHTML = cur.caption || '';
+      if (catChip) catChip.textContent = cur.catLabel || cur.note || '';
+      if (counterEl) counterEl.textContent = (currentIndex + 1) + ' of ' + slidesList.length;
+    }
+
+    renderModal(currentIndex);
+
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+
+    const prevBtn = modal.querySelector('[data-lightbox-prev], .lightbox-nav-arrow.prev');
+    const nextBtn = modal.querySelector('[data-lightbox-next], .lightbox-nav-arrow.next');
+    const closeBtn = modal.querySelector('[data-lightbox-close], .lightbox-btn-close');
+
+    function onPrev(e) {
+      if (e) e.stopPropagation();
+      renderModal(currentIndex - 1);
+    }
+
+    function onNext(e) {
+      if (e) e.stopPropagation();
+      renderModal(currentIndex + 1);
+    }
+
+    function onClose(e) {
+      if (e) e.stopPropagation();
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      cleanup();
+    }
+
+    function onKey(e) {
+      if (e.key === 'Escape') onClose();
+      else if (e.key === 'ArrowLeft') onPrev();
+      else if (e.key === 'ArrowRight') onNext();
+    }
+
+    function onBackdrop(e) {
+      if (e.target === modal) onClose();
+    }
+
+    function cleanup() {
+      if (prevBtn) prevBtn.removeEventListener('click', onPrev);
+      if (nextBtn) nextBtn.removeEventListener('click', onNext);
+      if (closeBtn) closeBtn.removeEventListener('click', onClose);
+      window.removeEventListener('keydown', onKey);
+      modal.removeEventListener('click', onBackdrop);
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', onPrev);
+    if (nextBtn) nextBtn.addEventListener('click', onNext);
+    if (closeBtn) closeBtn.addEventListener('click', onClose);
+    window.addEventListener('keydown', onKey);
+    modal.addEventListener('click', onBackdrop);
   }
 
   if (document.readyState === 'loading') {

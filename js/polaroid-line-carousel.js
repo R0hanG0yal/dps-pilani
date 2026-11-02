@@ -180,16 +180,17 @@
 
     this.opts = Object.assign({}, DEFAULT_OPTIONS, options || {});
     this.slides = (this.opts.slides || []).map(function (s, i) {
-      return {
+      return Object.assign({
+        palette: s.palette || 'dawn',
+        seed: s.seed !== undefined ? s.seed : (i + 1)
+      }, s, {
         image: s.image || s.src || s.fullImage || '',
         title: s.title || '',
         caption: s.caption || s.sub || s.desc || '',
         note: s.note || s.newspaper || s.tag || s.title || '',
         alt: s.alt || s.title || '',
-        palette: s.palette || 'dawn',
-        seed: s.seed !== undefined ? s.seed : (i + 1),
         raw: s
-      };
+      });
     });
 
     this.n = this.slides.length;
@@ -304,35 +305,64 @@
       self.cards.push(card);
     });
 
-    // Control bar at bottom
-    this.bar = document.createElement('div');
-    this.bar.className = 'pl-bar';
+    // Liquid Glass Floating Controls Dock at bottom
+    this.dock = document.createElement('div');
+    this.dock.className = 'pl-dock pl-bar';
+    this.bar = this.dock;
+
+    // 1. Liquid Glass Caption / Story Card
+    this.capPill = document.createElement('div');
+    this.capPill.className = 'pl-cap-pill';
 
     this.cap = document.createElement('div');
     this.cap.className = 'pl-cap';
     this.cap.setAttribute('aria-hidden', 'true');
-    this.bar.appendChild(this.cap);
+    this.capPill.appendChild(this.cap);
+    this.dock.appendChild(this.capPill);
 
-    this.countEl = document.createElement('span');
-    this.countEl.className = 'pl-count';
+    // 2. Liquid Glass Separated Navigation Pod
+    this.navPod = document.createElement('div');
+    this.navPod.className = 'pl-nav-pod';
+
+    // 2a. Standalone Liquid Glass Counter Capsule
+    this.countEl = document.createElement('div');
+    this.countEl.className = 'pl-count-capsule pl-count';
     this.countEl.setAttribute('aria-hidden', 'true');
-    this.bar.appendChild(this.countEl);
+    this.navPod.appendChild(this.countEl);
 
+    // 2b. Standalone Liquid Glass Circular Prev Button
     this.prevBtn = document.createElement('button');
     this.prevBtn.type = 'button';
     this.prevBtn.className = 'pl-btn pl-btn-prev';
-    this.prevBtn.setAttribute('aria-label', 'Previous');
-    this.prevBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 3 5 8l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    this.bar.appendChild(this.prevBtn);
+    this.prevBtn.setAttribute('aria-label', 'Previous photo');
+    this.prevBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>';
+    this.navPod.appendChild(this.prevBtn);
 
+    // 2c. Standalone Liquid Glass Circular Next Button
     this.nextBtn = document.createElement('button');
     this.nextBtn.type = 'button';
     this.nextBtn.className = 'pl-btn pl-btn-next';
-    this.nextBtn.setAttribute('aria-label', 'Next');
-    this.nextBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m6 3 5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    this.bar.appendChild(this.nextBtn);
+    this.nextBtn.setAttribute('aria-label', 'Next photo');
+    this.nextBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>';
+    this.navPod.appendChild(this.nextBtn);
 
-    this.root.appendChild(this.bar);
+    this.dock.appendChild(this.navPod);
+    this.root.appendChild(this.dock);
+
+    // 3. Floating Liquid Glass Stage Flank Paddles (Left & Right)
+    this.flankPrev = document.createElement('button');
+    this.flankPrev.type = 'button';
+    this.flankPrev.className = 'pl-flank-arrow prev';
+    this.flankPrev.setAttribute('aria-label', 'Previous photo');
+    this.flankPrev.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>';
+    this.root.appendChild(this.flankPrev);
+
+    this.flankNext = document.createElement('button');
+    this.flankNext.type = 'button';
+    this.flankNext.className = 'pl-flank-arrow next';
+    this.flankNext.setAttribute('aria-label', 'Next photo');
+    this.flankNext.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>';
+    this.root.appendChild(this.flankNext);
 
     // Screen reader live status
     this.srEl = document.createElement('div');
@@ -535,7 +565,7 @@
 
     // Pointer events (drag, throw, click)
     const onDown = function (e) {
-      if (e.target.closest('.pl-bar')) return;
+      if (e.target.closest('.pl-dock, .pl-bar, .pl-flank-arrow, .pl-btn')) return;
       self.lastTouch = performance.now();
       self.drag = {
         x: e.clientX,
@@ -616,6 +646,20 @@
       self.step(1);
     });
 
+    if (this.flankPrev) {
+      this.flankPrev.addEventListener('click', function (e) {
+        e.stopPropagation();
+        self.step(-1);
+      });
+    }
+
+    if (this.flankNext) {
+      this.flankNext.addEventListener('click', function (e) {
+        e.stopPropagation();
+        self.step(1);
+      });
+    }
+
     // Keyboard arrow navigation
     this.root.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowRight') {
@@ -636,20 +680,24 @@
     if (this.observer) this.observer.disconnect();
 
     this.slides = (newSlides || []).map(function (s, i) {
-      return {
+      return Object.assign({
+        palette: s.palette || 'dawn',
+        seed: s.seed !== undefined ? s.seed : (i + 1)
+      }, s, {
         image: s.image || s.src || s.fullImage || '',
         title: s.title || '',
         caption: s.caption || s.sub || s.desc || '',
         note: s.note || s.newspaper || s.tag || s.title || '',
         alt: s.alt || s.title || '',
-        palette: s.palette || 'dawn',
-        seed: s.seed !== undefined ? s.seed : (i + 1),
         raw: s
-      };
+      });
     });
     this.n = this.slides.length;
     this.active = 0;
     this.activeRef = 0;
+    this.sim.off = 0;
+    this.sim.vel = 0;
+    this.sim.target = 0;
     this.sim.a = new Float64Array(this.n);
     this.sim.w = new Float64Array(this.n);
     this.init();

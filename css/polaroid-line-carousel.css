@@ -158,28 +158,60 @@
   border-radius: 1px;
 }
 
-/* Bottom Controls & Metadata Bar */
+/* ==========================================================================
+   LIQUID GLASS FLOATING CONTROLS DOCK
+   Transforms bottom bar into crystalline frosted glass with separated functions
+   ========================================================================== */
+
+.pl-dock,
 .pl-bar {
   position: absolute;
-  left: clamp(16px, 4vw, 44px);
-  right: clamp(16px, 4vw, 44px);
-  bottom: clamp(16px, 3vh, 28px);
+  left: clamp(14px, 3.5vw, 36px);
+  right: clamp(14px, 3.5vw, 36px);
+  bottom: clamp(14px, 2.5vh, 26px);
   display: flex;
   align-items: center;
-  gap: clamp(10px, 2vw, 20px);
+  justify-content: space-between;
+  gap: 14px;
   cursor: default;
   z-index: 35;
-  background: rgba(46, 8, 21, 0.88);
-  border: 1px solid rgba(217, 184, 138, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  pointer-events: none;
+}
+
+/* 1. Liquid Glass Caption Card (Title & Subtitle) */
+.pl-cap-pill {
+  pointer-events: auto;
+  flex: 1;
+  min-width: 0;
+  max-width: clamp(280px, 68%, 780px);
+  padding: 10px 22px;
   border-radius: 999px;
-  padding: 8px 18px;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.84) 0%, rgba(252, 248, 240, 0.68) 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  box-shadow:
+    0 14px 38px -8px rgba(46, 8, 21, 0.16),
+    0 4px 12px rgba(46, 8, 21, 0.05),
+    inset 0 1px 2px rgba(255, 255, 255, 1),
+    inset 0 -1px 2px rgba(217, 184, 138, 0.28);
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+}
+
+.pl-cap-pill:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 18px 46px -8px rgba(46, 8, 21, 0.22),
+    inset 0 1px 2px #fff;
 }
 
 .pl-cap {
-  flex: 1;
+  width: 100%;
   min-width: 0;
   overflow: hidden;
   padding-bottom: 0.1em;
@@ -193,66 +225,148 @@
 .pl-title {
   font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
   font-weight: 700;
-  font-size: clamp(15px, 1.8vw, 20px);
-  line-height: 1.2;
-  color: #FFFFFF;
+  font-size: clamp(15px, 1.7vw, 19px);
+  line-height: 1.25;
+  color: #2E0815 !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .pl-sub {
-  margin-top: 2px;
+  margin-top: 3px;
   font-size: 13px;
   line-height: 1.35;
-  color: rgba(255, 255, 255, 0.82);
+  color: #5C4B43 !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* Monospace Page / Print Counter */
-.pl-count {
-  font-family: 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
-  font-weight: 600;
-  font-size: 13px;
-  letter-spacing: 0.12em;
-  color: rgba(255, 255, 255, 0.75);
+/* 2. Liquid Glass Separated Navigation Pod */
+.pl-nav-pod {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   flex-shrink: 0;
 }
 
-.pl-count b {
-  color: var(--gold-300, #F3D2A2);
+/* 2a. Standalone Liquid Glass Counter Capsule */
+.pl-count-capsule,
+.pl-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.86) 0%, rgba(252, 248, 240, 0.70) 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  box-shadow:
+    0 8px 24px -4px rgba(46, 8, 21, 0.12),
+    inset 0 1px 2px #fff;
+  font-family: 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
   font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.10em;
+  color: #7A263A;
+  flex-shrink: 0;
 }
 
-/* Round Step Chevrons */
+.pl-count-capsule b,
+.pl-count b {
+  color: #B45309;
+  font-weight: 800;
+}
+
+/* 2b & 2c. Standalone Liquid Glass Circular Navigation Buttons */
 .pl-btn {
   appearance: none;
   -webkit-appearance: none;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  border: 1px solid rgba(217, 184, 138, 0.4);
-  background: rgba(255, 255, 255, 0.12);
-  color: #FFFFFF;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.90) 0%, rgba(250, 244, 234, 0.72) 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  box-shadow:
+    0 8px 24px -4px rgba(46, 8, 21, 0.15),
+    inset 0 1px 2px #fff;
+  color: #2E0815;
   display: grid;
   place-items: center;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+              background 0.25s ease,
+              color 0.25s ease,
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
   flex-shrink: 0;
 }
 
 .pl-btn:hover {
-  background: var(--gold-400, #E6C285);
-  color: var(--wine-950, #2E0815);
-  border-color: #FFFFFF;
-  transform: scale(1.08);
+  background: #2E0815;
+  color: #FFD98A;
+  border-color: #2E0815;
+  transform: scale(1.10);
+  box-shadow:
+    0 12px 30px -4px rgba(46, 8, 21, 0.32),
+    0 0 18px rgba(255, 217, 138, 0.45);
+}
+
+.pl-btn:active {
+  transform: scale(0.96);
 }
 
 .pl-btn:focus-visible {
-  outline: 2px solid var(--gold-300, #F3D2A2);
+  outline: 2px solid var(--gold-400, #E6C285);
   outline-offset: 2px;
+}
+
+/* 3. Floating Liquid Glass Stage Flank Paddles (Left & Right) */
+.pl-flank-arrow {
+  position: absolute;
+  top: 48%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(252, 247, 238, 0.65) 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  box-shadow:
+    0 10px 28px -6px rgba(46, 8, 21, 0.16),
+    inset 0 1px 2px #fff;
+  color: #2E0815;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 30;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.pl-flank-arrow.prev {
+  left: clamp(10px, 2.2vw, 24px);
+}
+
+.pl-flank-arrow.next {
+  right: clamp(10px, 2.2vw, 24px);
+}
+
+.pl-flank-arrow:hover {
+  background: #2E0815;
+  color: #FFD98A;
+  border-color: #2E0815;
+  transform: translateY(-50%) scale(1.12);
+  box-shadow: 0 14px 34px -4px rgba(46, 8, 21, 0.35);
+}
+
+.pl-flank-arrow:active {
+  transform: translateY(-50%) scale(0.96);
 }
 
 /* Accessibility screen-reader hidden span */
@@ -288,29 +402,47 @@
 /* Mobile & Tablet adjustments */
 @media (max-width: 768px) {
   .pl-root {
-    min-height: 400px;
+    min-height: 420px;
   }
+  .pl-dock,
   .pl-bar {
-    padding: 6px 14px;
+    flex-direction: column;
+    align-items: stretch;
     gap: 8px;
     bottom: 12px;
+    left: 10px;
+    right: 10px;
+  }
+  .pl-cap-pill {
+    max-width: 100%;
+    padding: 8px 16px;
+    border-radius: 14px;
   }
   .pl-title {
-    font-size: 0.90rem;
+    font-size: 0.92rem;
   }
   .pl-sub {
-    font-size: 0.72rem;
+    font-size: 0.74rem;
   }
+  .pl-nav-pod {
+    justify-content: space-between;
+    width: 100%;
+  }
+  .pl-count-capsule,
   .pl-count {
+    padding: 6px 14px;
     font-size: 11px;
   }
   .pl-btn {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
   }
   .pl-btn svg {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
+  }
+  .pl-flank-arrow {
+    display: none;
   }
 }
 
