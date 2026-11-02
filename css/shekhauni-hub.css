@@ -913,6 +913,14 @@
   border: 1px solid rgba(217, 184, 138, 0.45);
 }
 
+
+.s-slider-badge.campus { background: rgba(30, 58, 138, 0.92); color: #FFF; border: 1px solid rgba(147, 197, 253, 0.45); }
+.s-slider-badge.labs { background: rgba(6, 95, 70, 0.92); color: #ECFDF5; border: 1px solid rgba(110, 231, 183, 0.45); }
+.s-slider-badge.sports { background: rgba(154, 52, 18, 0.92); color: #FFF; border: 1px solid rgba(253, 186, 116, 0.45); }
+.s-slider-badge.merit { background: rgba(180, 83, 9, 0.92); color: #FFF; border: 1px solid rgba(253, 230, 138, 0.45); }
+.s-slider-badge.cultural { background: rgba(125, 29, 63, 0.92); color: #FDE68A; border: 1px solid rgba(217, 184, 138, 0.45); }
+.s-slider-badge.transport { background: rgba(161, 98, 7, 0.92); color: #FFF; border: 1px solid rgba(254, 240, 138, 0.45); }
+
 .s-slider-badge.other {
   background: rgba(30, 58, 138, 0.92);
   color: #FFF;

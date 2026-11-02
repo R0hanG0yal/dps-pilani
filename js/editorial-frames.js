@@ -254,137 +254,273 @@
   // PART 3: INSPIRATION HERO & DAGEROZ TSUNAMI / DRAGGABLE BUTTON ENGINE
   // ==========================================================================
 
-  // 5. INSPIRATION HERO SLIDER (Curved Photo Frame Cross-Fade & Selector Pills)
-  function initInspireHeroSlider() {
-    const photoPills = document.querySelectorAll('.photo-pill-btn');
-    const curvedImg = document.getElementById('curvedHeroPhoto');
-    const stepBtns = document.querySelectorAll('.inspire-step-btn');
-    const heroBgs = document.querySelectorAll('.inspire-hero-bg');
-
-    if (!curvedImg && !photoPills.length) return;
-
-    // Dynamically derive slides directly from the DOM pills so HTML data-img / data-alt are always strictly respected!
-    const slides = photoPills.length
-      ? Array.from(photoPills).map(function (pill) {
-          return {
-            img: pill.getAttribute('data-img') || '',
-            alt: pill.getAttribute('data-alt') || pill.textContent.trim()
-          };
-        })
-      : [
-          { img: 'assets/photos/client/campus/campus-entry-portico-1.jpg', alt: 'Grand entrance portico and central quadrangle of Durga Public School Pilani' },
-          { img: 'assets/photos/client/events/event-sports-day-sprint-race-1.jpg', alt: 'Martial arts and athletic sports training at Durga Public School' },
-          { img: 'assets/photos/client/labs/computer-lab-workstations-1.jpg', alt: 'High-Speed Computer Science & IT Hub' },
-          { img: 'assets/photos/client/transport/transport-bus-fleet-1.jpg', alt: 'Safe GPS Transport Fleet at Durga Public School' }
-        ];
-
-    let activeIndex = 0;
-    let autoTimer = null;
-
-    function goToSlide(index) {
-      activeIndex = (index + slides.length) % slides.length;
-      const target = slides[activeIndex];
-      if (!target || !target.img) return;
-
-      // Update curved photo with smooth cross-fade
-      if (curvedImg) {
-        curvedImg.style.opacity = '0.35';
-        setTimeout(function () {
-          curvedImg.src = target.img;
-          curvedImg.alt = target.alt;
-          curvedImg.style.opacity = '1';
-        }, 140);
-      }
-
-      // Update photo selector pills
-      photoPills.forEach(function (pill, i) {
-        if (i === activeIndex) {
-          pill.classList.add('active');
-          pill.setAttribute('aria-selected', 'true');
-        } else {
-          pill.classList.remove('active');
-          pill.setAttribute('aria-selected', 'false');
-        }
-      });
-
-      // Update background slides if present
-      heroBgs.forEach(function (bg, i) {
-        if (i === activeIndex) {
-          bg.classList.add('active');
-        } else {
-          bg.classList.remove('active');
-        }
-      });
-
-      // Update step buttons if present
-      stepBtns.forEach(function (btn, i) {
-        if (i === activeIndex) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
-      });
+    // ==========================================================================
+  // 5. DUAL-ROW PARALLEL SMOOTH GALLERY SCROLL (Hero Showcase Architecture)
+  // ==========================================================================
+  const HERO_GALLERY_ROW_1 = [
+    {
+      id: 'hero-c-01',
+      fullImage: 'assets/photos/client/campus/campus-entry-portico-1.jpg',
+      thumbWebp: 'assets/photos/scrapbook/thumbs/campus/campus-001.webp',
+      title: 'Grand Entrance Portico',
+      tag: 'Campus Architecture',
+      date: 'Estd. 2006'
+    },
+    {
+      id: 'hero-c-02',
+      fullImage: 'assets/photos/board-merit-toppers.jpg',
+      thumbWebp: 'assets/photos/board-merit-toppers.jpg',
+      title: '100% Board Merit Distinctions',
+      tag: 'Academic Honors',
+      date: 'State Honors'
+    },
+    {
+      id: 'hero-c-03',
+      fullImage: 'assets/photos/science-practical-demonstration.jpg',
+      thumbWebp: 'assets/photos/scrapbook/thumbs/labs/labs-001.webp',
+      title: 'Empirical Science Practical Labs',
+      tag: 'Science Labs',
+      date: 'Senior Wing'
+    },
+    {
+      id: 'hero-c-04',
+      fullImage: 'assets/photos/client/labs/computer-lab-workstations-1.jpg',
+      thumbWebp: 'assets/photos/scrapbook/thumbs/labs/labs-004.webp',
+      title: 'High-Speed IT & Computer Hub',
+      tag: 'Digital Tech',
+      date: 'Modern Labs'
+    },
+    {
+      id: 'hero-c-05',
+      fullImage: 'assets/photos/campus-admin-wing.jpg',
+      thumbWebp: 'assets/photos/scrapbook/thumbs/campus/campus-004.webp',
+      title: 'Administrative Secretariat',
+      tag: 'Governance',
+      date: 'Pilani Campus'
+    },
+    {
+      id: 'hero-c-06',
+      fullImage: 'assets/photos/merit-student-director-honors.jpg',
+      thumbWebp: 'assets/photos/merit-student-director-honors.jpg',
+      title: 'Scholastic Merit Felicitation',
+      tag: 'Merit Awards',
+      date: 'Honors Desk'
+    },
+    {
+      id: 'hero-c-07',
+      fullImage: 'assets/photos/client/campus/campus-lawn-quadrangle-1.jpg',
+      thumbWebp: 'assets/photos/scrapbook/thumbs/campus/campus-003.webp',
+      title: 'Lush Sandstone Courtyards',
+      tag: 'Campus Greens',
+      date: 'Loharu Road'
+    },
+    {
+      id: 'hero-c-08',
+      fullImage: 'assets/photos/client/labs/chemistry-lab-titration-benches-1.jpg',
+      thumbWebp: 'assets/photos/scrapbook/thumbs/labs/labs-002.webp',
+      title: 'Hands-on Chemistry Workstations',
+      tag: 'Composite Labs',
+      date: 'Research Wing'
     }
+  ];
 
+  const HERO_GALLERY_ROW_2 = [
+    {
+      id: 'hero-c-09',
+      fullImage: 'assets/photos/annual-sports-day-podium-champions.jpg',
+      thumbWebp: 'assets/photos/scrapbook/thumbs/sports/sports-001.webp',
+      title: 'Athletic Champions on Podium',
+      tag: 'Athletics',
+      date: 'State Medals'
+    },
+    {
+      id: 'hero-c-10',
+      fullImage: 'assets/photos/deep-prajwalan-saraswati-vandana.jpg',
+      thumbWebp: 'assets/photos/scrapbook/thumbs/cultural/cultural-001.webp',
+      title: 'Deep Prajwalan Vedic Heritage',
+      tag: 'Cultural Arts',
+      date: 'Founders Day'
+    },
+    {
+      id: 'hero-c-11',
+      fullImage: 'assets/photos/client/transport/transport-bus-fleet-1.jpg',
+      thumbWebp: 'assets/photos/client/transport/transport-bus-fleet-1.jpg',
+      title: 'GPS Bus Fleet Across 11 Corridors',
+      tag: 'Transport',
+      date: 'Daily Routes'
+    },
+    {
+      id: 'hero-c-12',
+      fullImage: 'assets/photos/client/events/event-sports-day-sprint-race-1.jpg',
+      thumbWebp: 'assets/photos/scrapbook/thumbs/sports/sports-002.webp',
+      title: 'Track Races & Athletic Arena',
+      tag: 'Sports Arena',
+      date: 'Inter-House'
+    },
+    {
+      id: 'hero-c-13',
+      fullImage: 'assets/photos/client/events/event-folk-dance-presentation-1.jpg',
+      thumbWebp: 'assets/photos/scrapbook/thumbs/cultural/cultural-002.webp',
+      title: 'Rajasthani Folk Dance & Tradition',
+      tag: 'Folk Traditions',
+      date: 'Annual Day'
+    },
+    {
+      id: 'hero-c-14',
+      fullImage: 'assets/photos/art-craft-exhibition-raman-house.jpg',
+      thumbWebp: 'assets/photos/scrapbook/thumbs/cultural/cultural-003.webp',
+      title: 'Patel House Fine Arts Expo',
+      tag: 'Creative Arts',
+      date: 'Exhibition'
+    },
+    {
+      id: 'hero-c-15',
+      fullImage: 'assets/photos/client/events/event-republic-day-parade-1.jpg',
+      thumbWebp: 'assets/photos/scrapbook/thumbs/cultural/cultural-004.webp',
+      title: 'Ceremonial Flag & Parade',
+      tag: 'National Pride',
+      date: 'Patriotic Day'
+    },
+    {
+      id: 'hero-c-16',
+      fullImage: 'assets/photos/class-x-graduating-batch-turban.jpg',
+      thumbWebp: 'assets/photos/class-x-graduating-batch-turban.jpg',
+      title: 'Senior Secondary Graduating Cohort',
+      tag: 'Proud Alumni',
+      date: 'Graduation'
+    }
+  ];
+
+  let heroTopSliderInstance = null;
+  let heroBottomSliderInstance = null;
+
+  function initInspireHeroSlider() {
+    const topRowEl = document.getElementById('heroRowTopSlider');
+    const bottomRowEl = document.getElementById('heroRowBottomSlider');
+    const photoPills = document.querySelectorAll('.photo-pill-btn');
+
+    if (!topRowEl || !bottomRowEl || typeof SmoothScrollSlider === 'undefined') return;
+
+    // Row 1: Top Gliding Track (Drifting Right)
+    heroTopSliderInstance = new SmoothScrollSlider(topRowEl, {
+      items: HERO_GALLERY_ROW_1,
+      slideWidth: 235,
+      slideHeight: 185,
+      spacing: 2,
+      direction: 'right',
+      smoothness: 9,
+      radius: 14,
+      dim: 0,
+      background: 'transparent',
+      sensitivity: 5,
+      loop: true,
+      autoplay: true,
+      autoplaySpeed: 0.45,
+      onSlideClick: function (item) {
+        window.openHeroPhotoModal(item);
+      }
+    });
+
+    // Row 2: Bottom Gliding Track (Drifting Left in Parallel)
+    heroBottomSliderInstance = new SmoothScrollSlider(bottomRowEl, {
+      items: HERO_GALLERY_ROW_2,
+      slideWidth: 235,
+      slideHeight: 185,
+      spacing: 2,
+      direction: 'left',
+      smoothness: 9,
+      radius: 14,
+      dim: 0,
+      background: 'transparent',
+      sensitivity: 5,
+      loop: true,
+      autoplay: true,
+      autoplaySpeed: 0.38,
+      onSlideClick: function (item) {
+        window.openHeroPhotoModal(item);
+      }
+    });
+
+    // Wire Photo Selector Pills to Accelerate / Focus
     photoPills.forEach(function (pill, idx) {
       pill.addEventListener('click', function () {
-        goToSlide(idx);
-        resetAutoTimer();
+        photoPills.forEach(p => { p.classList.remove('active'); p.setAttribute('aria-selected', 'false'); });
+        pill.classList.add('active');
+        pill.setAttribute('aria-selected', 'true');
+
+        // Smoothly accelerate glide towards the requested category
+        if (heroTopSliderInstance) {
+          heroTopSliderInstance.target += (idx + 1) * 320;
+        }
+        if (heroBottomSliderInstance) {
+          heroBottomSliderInstance.target -= (idx + 1) * 320;
+        }
       });
     });
-
-    stepBtns.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        const step = parseInt(btn.getAttribute('data-step') || '0', 10);
-        goToSlide(step);
-        resetAutoTimer();
-      });
-    });
-
-    const SLIDE_INTERVAL_MS = 4500; // Snappy 4.5s auto-advance on both mobile & desktop
-
-    function startAutoTimer() {
-      if (autoTimer) clearInterval(autoTimer);
-      autoTimer = setInterval(function () {
-        goToSlide(activeIndex + 1);
-      }, SLIDE_INTERVAL_MS);
-    }
-
-    function resetAutoTimer() {
-      if (autoTimer) clearInterval(autoTimer);
-      startAutoTimer();
-    }
-
-    // Preload ALL hero slide images immediately so transitions are instantaneous
-    slides.forEach(function (s) {
-      if (s.img) {
-        const pre = new Image();
-        pre.src = s.img;
-      }
-    });
-
-    // Pause on hover ONLY on genuine mouse devices (never touch screens!)
-    const heroStage = document.querySelector('.inspire-hero-stage');
-    if (heroStage && typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      heroStage.addEventListener('mouseenter', function () {
-        if (autoTimer) clearInterval(autoTimer);
-      });
-      heroStage.addEventListener('mouseleave', function () {
-        startAutoTimer();
-      });
-    }
-
-    // Auto-resume if tab becomes visible
-    document.addEventListener('visibilitychange', function () {
-      if (document.hidden) {
-        if (autoTimer) clearInterval(autoTimer);
-      } else {
-        startAutoTimer();
-      }
-    });
-
-    startAutoTimer();
   }
+
+  // Universal Lightbox Modal for Hero Showcase Photos
+  window.openHeroPhotoModal = function (item) {
+    if (!item) return;
+    let modal = document.getElementById('heroPhotoModal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'heroPhotoModal';
+      modal.className = 's-cutting-modal';
+      modal.setAttribute('role', 'dialog');
+      modal.setAttribute('aria-modal', 'true');
+      modal.setAttribute('aria-label', 'Campus Gallery Photo Full View');
+      modal.innerHTML = `
+        <div class="s-modal-backdrop" id="heroPhotoBackdrop"></div>
+        <div class="s-modal-box">
+          <div class="s-modal-header">
+            <div class="s-modal-titles">
+              <span id="heroModalTag" class="s-paper-badge patrika">Campus</span>
+              <h3 id="heroModalTitle" class="s-modal-heading">Photo</h3>
+            </div>
+            <button type="button" class="s-modal-close-btn" id="heroPhotoClose" aria-label="Close photo modal">&times;</button>
+          </div>
+          <div class="s-modal-body">
+            <img id="heroModalImg" src="" alt="DPS Campus Photo" class="s-modal-clipping-img">
+          </div>
+          <div class="s-modal-footer">
+            <span id="heroModalDate" style="font-size:0.85rem;color:#7D1D3F;font-weight:700;">Durga Public School, Pilani</span>
+            <a href="gallery.html" class="pillar-chip" style="color:var(--wine-800);font-weight:600;">View Complete 271-Photo Archive &rarr;</a>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+
+      const closeBtn = modal.querySelector('#heroPhotoClose');
+      const backdrop = modal.querySelector('#heroPhotoBackdrop');
+      const closeModal = function () {
+        modal.classList.remove('is-open');
+        document.body.style.overflow = '';
+      };
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (backdrop) backdrop.addEventListener('click', closeModal);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+      });
+    }
+
+    const imgEl = modal.querySelector('#heroModalImg');
+    const titleEl = modal.querySelector('#heroModalTitle');
+    const tagEl = modal.querySelector('#heroModalTag');
+    const dateEl = modal.querySelector('#heroModalDate');
+
+    if (imgEl) imgEl.src = item.fullImage || item.image || item.thumbImage;
+    if (imgEl) imgEl.alt = item.title;
+    if (titleEl) titleEl.textContent = item.title;
+    if (tagEl) {
+      tagEl.textContent = item.tag || 'Campus Gallery';
+      tagEl.className = 's-paper-badge ' + (item.badgeClass || 'patrika');
+    }
+    if (dateEl && item.date) dateEl.textContent = 'Durga Public School, Pilani • ' + item.date;
+
+    modal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  };
 
   // 7. DRAGGABLE BLUE TRANSLUCENT BUTTON & TSUNAMI / BUBBLES / DAGEROZ AD ENGINE
   let tsunamiAnimationId = null;
