@@ -15,6 +15,9 @@
     HOUSES: 'dps_house_points',
     GALLERY: 'dps_gallery_catalog',
     CIRCULARS: 'dps_circulars',
+    TOPPERS: 'dps_toppers',
+    CUTTINGS: 'dps_news_cuttings',
+    TICKER: 'dps_ticker_items',
     FACULTY: 'dps_faculty',
     CONTACTS: 'dps_contact_messages',
     AUDIT: 'dps_audit_logs'
@@ -241,6 +244,81 @@
     }
   ];
 
+
+  const DEFAULT_TOPPERS = [
+    {
+      id: 'TOP-2026-01',
+      name: 'Pooja Sharma',
+      exam: 'RBSE Class XII (Science Stream)',
+      percentage: '98.20%',
+      rank: 'District 1st Rank',
+      year: '2025–26',
+      image: 'assets/photos/board-merit-toppers.jpg',
+      accolades: 'State Merit List Holder. Perfect 100/100 score in Physics & Mathematics. State Government Gargi Award recipient.',
+      status: 'Active'
+    },
+    {
+      id: 'TOP-2026-02',
+      name: 'Rahul Verma',
+      exam: 'RBSE Class XII (Commerce Stream)',
+      percentage: '97.60%',
+      rank: 'Pilani Sub-Division Merit',
+      year: '2025–26',
+      image: 'assets/photos/annual-graduation-merit.jpg',
+      accolades: '100/100 in Accountancy and Business Studies. District Gold Medalist for Academic Excellence.',
+      status: 'Active'
+    },
+    {
+      id: 'TOP-2026-03',
+      name: 'Anjali Shekhawat',
+      exam: 'RBSE Class X (Secondary Board)',
+      percentage: '98.60%',
+      rank: 'Jhunjhunu District Top 3',
+      year: '2025–26',
+      image: 'assets/photos/board-achiever-parents-tribute.jpg',
+      accolades: 'State Board Merit Certificate. Scored 100 in Mathematics & Science. Awarded School Academic Scholarship.',
+      status: 'Active'
+    },
+    {
+      id: 'TOP-2026-04',
+      name: 'Vikas Saini',
+      exam: 'RBSE Class XII (Humanities / Arts)',
+      percentage: '96.80%',
+      rank: 'School Stream Topper',
+      year: '2025–26',
+      image: 'assets/photos/board-merit-toppers.jpg',
+      accolades: 'State Distinction Honors in History, Political Science & Hindi Literature.',
+      status: 'Active'
+    }
+  ];
+
+  const DEFAULT_CUTTINGS = [
+    {
+      id: 'CUT-01',
+      title: 'दुर्गा पब्लिक स्कूल पिलानी में प्रतिभा सम्मान समारोह: बोर्ड मेरिट छात्रों को 51 हजार का नकद पुरस्कार',
+      newspaper: 'दैनिक भास्कर (Dainik Bhaskar)',
+      date: '24 May 2026',
+      image: 'assets/photos/board-merit-toppers.jpg',
+      synopsis: 'पिलानी स्थित दुर्गा देवी पब्लिक सीनियर सेकेंडरी स्कूल में माध्यमिक शिक्षा बोर्ड परीक्षा में 95% से अधिक अंक प्राप्त करने वाले मेधावी छात्र-छात्राओं का भव्य सम्मान किया गया।'
+    },
+    {
+      id: 'CUT-02',
+      title: 'पिलानी में अंतर-विद्यालय खेलकूद प्रतियोगिता: दुर्गा पब्लिक स्कूल ने जीती ओवरऑल रोलिंग ट्रॉफी',
+      newspaper: 'राजस्थान पत्रिका (Rajasthan Patrika)',
+      date: '12 Sep 2026',
+      image: 'assets/photos/annual-sports-day-podium-champions.jpg',
+      synopsis: 'एथलेटिक्स, रिले रेस और ताइक्वांडो में दुर्गा पब्लिक स्कूल के खिलाड़ियों ने शानदार प्रदर्शन करते हुए लगातार तीसरे वर्ष चैंपियनशिप अपने नाम की।'
+    },
+    {
+      id: 'CUT-03',
+      title: 'संस्कार युक्त गुणवत्तापूर्ण शिक्षा का पर्याय बना दुर्गा पब्लिक स्कूल: अभिभावक सम्मेलन में बोले निदेशक',
+      newspaper: 'दैनिक नवज्योति (Dainik Navajyoti)',
+      date: '18 Aug 2026',
+      image: 'assets/photos/board-achiever-parents-tribute.jpg',
+      synopsis: 'सत्र 2026-27 के वार्षिक अभिभावक-शिक्षक संवाद सत्र में ग्रामीण व शहरी अंचल के 800 से अधिक अभिभावकों ने सहभागिता की।'
+    }
+  ];
+
   const DEFAULT_FACULTY = [
     {
       id: 'FAC-01',
@@ -364,6 +442,16 @@
         const storedCirc = localStorage.getItem(STORAGE_KEYS.CIRCULARS);
         this.state.circulars = storedCirc ? JSON.parse(storedCirc) : DEFAULT_CIRCULARS;
 
+        // Board Merit Toppers
+        const storedToppers = localStorage.getItem(STORAGE_KEYS.TOPPERS);
+        this.state.toppers = storedToppers ? JSON.parse(storedToppers) : DEFAULT_TOPPERS;
+
+        // Press Newspaper Cuttings
+        const storedCuttings = localStorage.getItem(STORAGE_KEYS.CUTTINGS);
+        this.state.cuttings = storedCuttings ? JSON.parse(storedCuttings) : DEFAULT_CUTTINGS;
+
+        this.state.newsSubTab = 'circulars';
+
         // Faculty
         const storedFac = localStorage.getItem(STORAGE_KEYS.FACULTY);
         this.state.faculty = storedFac ? JSON.parse(storedFac) : DEFAULT_FACULTY;
@@ -384,6 +472,8 @@
         if (!storedHouses) this.saveHouses();
         if (!storedGallery) this.saveGallery();
         if (!storedCirc) this.saveCirculars();
+        if (!storedToppers) this.saveToppers();
+        if (!storedCuttings) this.saveCuttings();
         if (!storedFac) this.saveFaculty();
         if (!storedContacts) this.saveContacts();
       } catch (e) {
@@ -405,6 +495,12 @@
     },
     saveCirculars: function () {
       localStorage.setItem(STORAGE_KEYS.CIRCULARS, JSON.stringify(this.state.circulars));
+    },
+    saveToppers: function () {
+      localStorage.setItem(STORAGE_KEYS.TOPPERS, JSON.stringify(this.state.toppers));
+    },
+    saveCuttings: function () {
+      localStorage.setItem(STORAGE_KEYS.CUTTINGS, JSON.stringify(this.state.cuttings));
     },
     saveFaculty: function () {
       localStorage.setItem(STORAGE_KEYS.FACULTY, JSON.stringify(this.state.faculty));
@@ -448,6 +544,7 @@
     },
 
     switchTab: function (tabId) {
+      if (tabId === 'notices' || tabId === 'circulars' || tabId === 'houses') tabId = 'news';
       this.state.activeTab = tabId;
       document.querySelectorAll('.nav-item').forEach(function (btn) {
         btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
@@ -465,11 +562,11 @@
       const tabMap = {
         dashboard: { title: 'Operational Overview', sub: 'Key school metrics, lead velocity & live broadcasts' },
         leads: { title: 'Admissions CRM & Inquiries', sub: 'Comprehensive registry of student applications & tele-counseling' },
-        notices: { title: 'Live Alert & Notice Broadcast', sub: 'Publish instant alerts, banners, and tickers to the live website' },
-        houses: { title: 'House Championship & Points', sub: 'Live point standings for Gandhi, Vivekanand, Raman & Bose Houses' },
+        news: { title: 'News & Media Portal', sub: 'Circulars, Board Merit Toppers, Press Clippings, Marquee Ticker & Alerts' },
+        notices: { title: 'News & Media Portal', sub: 'Circulars, Board Merit Toppers, Press Clippings, Marquee Ticker & Alerts' },
+        circulars: { title: 'News & Media Portal', sub: 'Circulars, Board Merit Toppers, Press Clippings, Marquee Ticker & Alerts' },
         settings: { title: 'School Information & Live CMS', sub: 'Modify school phone numbers, timings, session parameters & metrics' },
         gallery: { title: 'Archival Media & Scrapbook', sub: 'Manage 271 campus photographs, titles, captions & categories' },
-        circulars: { title: 'Circulars & Official Downloads', sub: 'Publish public notices, examination schedules & PDF guidelines' },
         faculty: { title: 'Faculty & Administration Roster', sub: 'Teaching staff, academic coordinators & leadership profiles' },
         contacts: { title: 'Public Contact Inquiries', sub: 'Direct messages and visitor campus tour requests' },
         backup: { title: 'Data Backup & Audit History', sub: 'Export complete school records, restore backups & view system activity' }
@@ -496,6 +593,12 @@
     updateCounters: function () {
       const newLeadsCount = this.state.leads.filter(l => l.status === 'New').length;
       const unreadMsgCount = this.state.contacts.filter(m => m.status === 'Unread').length;
+
+      const newsBadge = document.getElementById('badgeNewsCount');
+      if (newsBadge) {
+        const totalItems = (this.state.circulars ? this.state.circulars.length : 0) + (this.state.toppers ? this.state.toppers.length : 0);
+        newsBadge.textContent = totalItems > 0 ? totalItems : 'Live';
+      }
 
       const leadsBadge = document.getElementById('badgeLeadsCount');
       if (leadsBadge) {
@@ -527,11 +630,14 @@
         case 'leads':
           this.renderLeadsTable();
           break;
-        case 'notices':
-          this.renderNoticeManager();
+        case 'news':
+          this.renderNewsPortal();
           break;
-        case 'houses':
-          this.renderHouseLeaderboard();
+        case 'notices':
+          this.renderNewsPortal();
+          break;
+        case 'circulars':
+          this.renderNewsPortal();
           break;
         case 'settings':
           this.renderSettings();
@@ -566,18 +672,19 @@
       document.getElementById('statAdmitted').textContent = admittedCount;
       document.getElementById('statGalleryCount').textContent = this.state.gallery.length;
 
-      // Leading House
-      let leaderKey = 'vivekanand';
-      let maxScore = -1;
-      Object.keys(this.state.houses).forEach(k => {
-        if (this.state.houses[k].total > maxScore) {
-          maxScore = this.state.houses[k].total;
-          leaderKey = k;
-        }
-      });
-      const leaderHouse = this.state.houses[leaderKey];
-      document.getElementById('statLeaderHouse').textContent = leaderHouse.name.replace(' House', '');
-      document.getElementById('statLeaderPoints').textContent = leaderHouse.total + ' Points';
+      // Active News & Merit Statistics
+      const totalCirculars = this.state.circulars ? this.state.circulars.length : 0;
+      const totalToppers = this.state.toppers ? this.state.toppers.length : 0;
+      const totalCuttings = this.state.cuttings ? this.state.cuttings.length : 0;
+      const grandTotalNews = totalCirculars + totalToppers + totalCuttings;
+
+      const statActiveNews = document.getElementById('statActiveNews');
+      if (statActiveNews) statActiveNews.textContent = `${grandTotalNews} Published`;
+
+      const statNewsBreakdown = document.getElementById('statNewsBreakdown');
+      if (statNewsBreakdown) {
+        statNewsBreakdown.textContent = `${totalCirculars} Circulars • ${totalToppers} Toppers • ${totalCuttings} Clippings`;
+      }
 
       // Recent Leads Table
       const recentContainer = document.getElementById('dashboardRecentLeads');
@@ -596,24 +703,42 @@
         `).join('');
       }
 
-      // House point bars
-      const houseBars = document.getElementById('dashboardHouseBars');
-      if (houseBars) {
-        houseBars.innerHTML = Object.keys(this.state.houses).map(k => {
-          const h = this.state.houses[k];
-          const pct = Math.min(100, Math.round((h.total / 600) * 100));
-          return `
-            <div style="margin-bottom:12px;">
-              <div style="display:flex;justify-content:space-between;font-size:0.78rem;font-weight:700;margin-bottom:4px;">
-                <span>${h.name}</span>
-                <span style="color:${h.color};">${h.total} Pts</span>
-              </div>
-              <div style="height:8px;background:#E2E8F0;border-radius:4px;overflow:hidden;">
-                <div style="width:${pct}%;height:100%;background:${h.color};border-radius:4px;"></div>
-              </div>
+      // News & Topper Highlights on Dashboard
+      const newsSummary = document.getElementById('dashboardNewsSummary');
+      if (newsSummary) {
+        const topToppers = (this.state.toppers || []).slice(0, 2);
+        const topCircs = (this.state.circulars || []).slice(0, 2);
+        newsSummary.innerHTML = `
+          <div style="margin-bottom:14px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span style="font-size:0.78rem;font-weight:700;color:#92400E;text-transform:uppercase;">Top Academic Achievers</span>
+              <button type="button" class="btn btn-sm btn-outline" style="padding:2px 8px;font-size:0.72rem;" onclick="window.DPSAdmin.switchTab('news');window.DPSAdmin.switchNewsSubTab('toppers');">+ View All</button>
             </div>
-          `;
-        }).join('');
+            ${topToppers.map(t => `
+              <div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #F1F5F9;">
+                <img src="${t.image}" alt="${t.name}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:1.5px solid #D97706;">
+                <div style="flex-grow:1;min-width:0;">
+                  <div style="font-weight:700;font-size:0.80rem;color:#1E293B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${t.name}</div>
+                  <div style="font-size:0.70rem;color:#64748B;">${t.exam}</div>
+                </div>
+                <span style="font-weight:800;font-size:0.84rem;color:#B45309;">${t.percentage}</span>
+              </div>
+            `).join('')}
+          </div>
+
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span style="font-size:0.78rem;font-weight:700;color:#1E3A8A;text-transform:uppercase;">Recent Notifications</span>
+              <button type="button" class="btn btn-sm btn-outline" style="padding:2px 8px;font-size:0.72rem;" onclick="window.DPSAdmin.switchTab('news');window.DPSAdmin.switchNewsSubTab('circulars');">+ View All</button>
+            </div>
+            ${topCircs.map(c => `
+              <div style="padding:6px 0;border-bottom:1px solid #F1F5F9;">
+                <div style="font-weight:600;font-size:0.78rem;color:#1E293B;line-height:1.3;">${c.title}</div>
+                <div style="font-size:0.68rem;color:#94A3B8;margin-top:2px;">${c.id} • ${c.date}</div>
+              </div>
+            `).join('')}
+          </div>
+        `;
       }
     },
 
@@ -1016,6 +1141,228 @@
       this.toast(`Photo #${photoId} removed.`, 'info');
       this.renderGalleryCatalog();
       this.updateCounters();
+    },
+
+
+    // ==================== NEWS & MEDIA PORTAL ====================
+    switchNewsSubTab: function (subTab) {
+      this.state.newsSubTab = subTab;
+      document.querySelectorAll('.news-sub-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-newstab') === subTab);
+      });
+      document.querySelectorAll('.news-sub-panel').forEach(p => {
+        if (p.id === 'news-sub-' + subTab) {
+          p.style.display = 'block';
+          p.classList.add('active');
+        } else {
+          p.style.display = 'none';
+          p.classList.remove('active');
+        }
+      });
+
+      if (subTab === 'circulars') this.renderCircularsTable();
+      else if (subTab === 'toppers') this.renderToppers();
+      else if (subTab === 'cuttings') this.renderCuttings();
+      else if (subTab === 'broadcast') this.renderNoticeManager();
+    },
+
+    renderNewsPortal: function () {
+      this.switchNewsSubTab(this.state.newsSubTab || 'circulars');
+    },
+
+    // TOPPERS MANAGEMENT
+    renderToppers: function () {
+      const container = document.getElementById('toppersGridContainer');
+      const badge = document.getElementById('toppersCountBadge');
+      if (badge) badge.textContent = `${this.state.toppers.length} Merit Champions`;
+      if (!container) return;
+
+      if (!this.state.toppers || !this.state.toppers.length) {
+        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#64748B;">No board toppers currently configured. Click "+ Add Board Topper" to publish one.</div>';
+        return;
+      }
+
+      container.innerHTML = this.state.toppers.map(t => `
+        <div class="topper-admin-card">
+          <div>
+            <div class="topper-admin-header">
+              <img src="${t.image}" alt="${t.name}" class="topper-admin-avatar" onerror="this.src='assets/photos/board-merit-toppers.jpg'">
+              <div>
+                <div class="topper-admin-name">${t.name}</div>
+                <div class="topper-admin-exam">${t.exam}</div>
+              </div>
+            </div>
+
+            <div class="topper-score-strip">
+              <span class="topper-score-pct">${t.percentage}</span>
+              <span class="topper-score-rank">${t.rank}</span>
+            </div>
+
+            <div class="topper-accolades">
+              ${t.accolades}
+            </div>
+          </div>
+
+          <div class="topper-card-footer">
+            <span>Session: <strong>${t.year}</strong></span>
+            <button type="button" class="btn-icon" style="color:#DC2626;" onclick="window.DPSAdmin.deleteTopper('${t.id}')" title="Delete Topper">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    },
+
+    openAddTopperModal: function () {
+      const nextNum = ((this.state.toppers ? this.state.toppers.length : 0) + 1).toString().padStart(2, '0');
+      document.getElementById('newTopperName').value = '';
+      document.getElementById('newTopperPercentage').value = '';
+      document.getElementById('newTopperRank').value = 'District Merit Rank';
+      document.getElementById('newTopperYear').value = '2025–26';
+      document.getElementById('newTopperAccolades').value = '';
+      document.getElementById('addTopperModal')?.classList.add('active');
+    },
+
+    submitNewTopper: function () {
+      const name = document.getElementById('newTopperName')?.value.trim();
+      const exam = document.getElementById('newTopperExam')?.value || 'RBSE Class XII (Science Stream)';
+      const percentage = document.getElementById('newTopperPercentage')?.value.trim();
+      const rank = document.getElementById('newTopperRank')?.value.trim() || 'Merit Distinction';
+      const year = document.getElementById('newTopperYear')?.value.trim() || '2025–26';
+      const image = document.getElementById('newTopperImage')?.value.trim() || 'assets/photos/board-merit-toppers.jpg';
+      const accolades = document.getElementById('newTopperAccolades')?.value.trim() || 'Distinction scholar with academic honors.';
+
+      if (!name || !percentage) {
+        this.toast('Please provide student name and percentage score.', 'error');
+        return;
+      }
+
+      const newId = 'TOP-2026-' + (this.state.toppers.length + 1).toString().padStart(2, '0');
+      const newTopper = {
+        id: newId,
+        name: name,
+        exam: exam,
+        percentage: percentage,
+        rank: rank,
+        year: year,
+        image: image,
+        accolades: accolades,
+        status: 'Active'
+      };
+
+      this.state.toppers.unshift(newTopper);
+      this.saveToppers();
+      this.saveAudit(`Added Board Merit Topper: ${name} (${exam} - ${percentage})`);
+      this.toast(`Board Topper ${name} added successfully!`, 'success');
+      this.renderToppers();
+      this.renderDashboard();
+      document.getElementById('addTopperModal')?.classList.remove('active');
+    },
+
+    deleteTopper: function (id) {
+      if (!confirm(`Delete topper entry ${id}?`)) return;
+      this.state.toppers = this.state.toppers.filter(t => t.id !== id);
+      this.saveToppers();
+      this.saveAudit(`Deleted topper record ${id}`);
+      this.toast('Board topper record removed.', 'info');
+      this.renderToppers();
+      this.renderDashboard();
+    },
+
+    // NEWSPAPER PRESS CLIPPINGS
+    renderCuttings: function () {
+      const container = document.getElementById('cuttingsGridContainer');
+      const badge = document.getElementById('cuttingsCountBadge');
+      if (badge) badge.textContent = `${this.state.cuttings.length} Press Articles`;
+      if (!container) return;
+
+      if (!this.state.cuttings || !this.state.cuttings.length) {
+        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#64748B;">No press clippings published. Click "+ Add Press Clipping" to feature one.</div>';
+        return;
+      }
+
+      container.innerHTML = this.state.cuttings.map(c => `
+        <div class="cutting-admin-card">
+          <div class="cutting-card-img-wrap">
+            <img src="${c.image}" alt="${c.title}" class="cutting-card-img" onerror="this.src='assets/photos/board-merit-toppers.jpg'">
+          </div>
+          <div class="cutting-card-body">
+            <div class="cutting-meta-pill">${c.newspaper} • ${c.date}</div>
+            <div class="cutting-title">${c.title}</div>
+            <div class="cutting-synopsis">${c.synopsis}</div>
+            <div class="cutting-card-footer">
+              <span style="font-family:var(--font-mono);">${c.id}</span>
+              <button type="button" class="btn-icon" style="color:#DC2626;" onclick="window.DPSAdmin.deleteCutting('${c.id}')" title="Delete Clipping">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    },
+
+    openAddCuttingModal: function () {
+      document.getElementById('newCuttingTitle').value = '';
+      document.getElementById('newCuttingNewspaper').value = 'दैनिक भास्कर (Dainik Bhaskar)';
+      document.getElementById('newCuttingDate').value = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+      document.getElementById('newCuttingSynopsis').value = '';
+      document.getElementById('addCuttingModal')?.classList.add('active');
+    },
+
+    submitNewCutting: function () {
+      const title = document.getElementById('newCuttingTitle')?.value.trim();
+      const newspaper = document.getElementById('newCuttingNewspaper')?.value.trim() || 'State Press';
+      const date = document.getElementById('newCuttingDate')?.value.trim() || new Date().toLocaleDateString();
+      const image = document.getElementById('newCuttingImage')?.value.trim() || 'assets/photos/board-merit-toppers.jpg';
+      const synopsis = document.getElementById('newCuttingSynopsis')?.value.trim() || title;
+
+      if (!title) {
+        this.toast('Please provide clipping headline.', 'error');
+        return;
+      }
+
+      const newId = 'CUT-' + (this.state.cuttings.length + 1).toString().padStart(2, '0');
+      const newCutting = {
+        id: newId,
+        title: title,
+        newspaper: newspaper,
+        date: date,
+        image: image,
+        synopsis: synopsis
+      };
+
+      this.state.cuttings.unshift(newCutting);
+      this.saveCuttings();
+      this.saveAudit(`Added press clipping: ${title} (${newspaper})`);
+      this.toast('Newspaper clipping published to news feed!', 'success');
+      this.renderCuttings();
+      this.renderDashboard();
+      document.getElementById('addCuttingModal')?.classList.remove('active');
+    },
+
+    deleteCutting: function (id) {
+      if (!confirm(`Delete clipping ${id}?`)) return;
+      this.state.cuttings = this.state.cuttings.filter(c => c.id !== id);
+      this.saveCuttings();
+      this.saveAudit(`Deleted press clipping ${id}`);
+      this.toast('Press clipping deleted.', 'info');
+      this.renderCuttings();
+      this.renderDashboard();
+    },
+
+    saveTickerText: function () {
+      const input = document.getElementById('tickerLiveInput');
+      if (!input) return;
+      const val = input.value.trim();
+      if (!val) {
+        this.toast('Please enter scrolling marquee ticker text.', 'error');
+        return;
+      }
+      localStorage.setItem('dps_ticker_items', JSON.stringify([val]));
+      this.state.config.noticeBanner.message = val;
+      this.saveConfig();
+      this.saveAudit('Updated Live Scrolling Marquee Top Ticker');
+      this.toast('Live scrolling top ticker updated immediately across website!', 'success');
     },
 
     // CIRCULARS & NOTICES

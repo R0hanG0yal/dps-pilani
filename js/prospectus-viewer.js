@@ -238,20 +238,28 @@
       resizeCanvas();
 
       if (foldingEngine && foldingEngine.gl && foldingEngine.program) {
-        if (canvas) canvas.classList.add('is-active');
+        if (canvas) {
+          canvas.style.opacity = '1';
+          canvas.style.pointerEvents = 'auto';
+          canvas.classList.add('is-active');
+        }
         const isSpreadMode = (!getSpreadInfo(fromIdx).isSingle) || (!nextInfo.isSingle);
         foldingEngine.transition(canvases[0], canvases[1], direction, isSpreadMode, 660, function () {
           currentSpreadIdx = toIdx;
           syncBaseSpread(toIdx);
           updateUI();
           setTimeout(function () {
-            if (canvas) canvas.classList.remove('is-active');
+            if (canvas) {
+              canvas.style.opacity = '0';
+              canvas.style.pointerEvents = 'none';
+              canvas.classList.remove('is-active');
+            }
             isAnimating = false;
             if (foldingEngine && foldingEngine.gl) {
               foldingEngine.gl.clearColor(0, 0, 0, 0);
               foldingEngine.gl.clear(foldingEngine.gl.COLOR_BUFFER_BIT);
             }
-          }, 35);
+          }, 40);
         });
       } else {
         // Fallback

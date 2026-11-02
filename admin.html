@@ -72,14 +72,10 @@
           <span id="badgeLeadsCount" class="nav-counter counter-urgent">6</span>
         </button>
 
-        <button type="button" class="nav-item" data-tab="notices">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-          <span class="nav-label">Live Alert Broadcast</span>
-        </button>
-
-        <button type="button" class="nav-item" data-tab="houses">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
-          <span class="nav-label">House Championship</span>
+        <button type="button" class="nav-item" data-tab="news">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1m2 13a2 2 0 0 1-2-2V7m2 13a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
+          <span class="nav-label">News &amp; Media Portal</span>
+          <span id="badgeNewsCount" class="nav-counter counter-urgent">Live</span>
         </button>
 
         <div class="nav-section-title">Live Site Management</div>
@@ -94,10 +90,7 @@
           <span id="badgePhotosCount" class="nav-counter">271</span>
         </button>
 
-        <button type="button" class="nav-item" data-tab="circulars">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-          <span class="nav-label">Circulars &amp; Notices</span>
-        </button>
+
 
         <button type="button" class="nav-item" data-tab="faculty">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -184,11 +177,11 @@
 
             <div class="stat-card">
               <div class="stat-header">
-                <span class="stat-title">House Leaderboard</span>
-                <div class="stat-icon-wrap icon-amber"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg></div>
+                <span class="stat-title">News &amp; Merit Highlights</span>
+                <div class="stat-icon-wrap icon-amber"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1m2 13a2 2 0 0 1-2-2V7m2 13a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg></div>
               </div>
-              <div id="statLeaderHouse" class="stat-value">Vivekanand</div>
-              <div id="statLeaderPoints" class="stat-subtext">480 Points &bull; Current Champion</div>
+              <div id="statActiveNews" class="stat-value">11 Published</div>
+              <div id="statNewsBreakdown" class="stat-subtext">4 Circulars &bull; 4 Toppers &bull; 3 Clippings</div>
             </div>
 
             <div class="stat-card">
@@ -210,11 +203,11 @@
               <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.switchTab('leads')">
                 <span>+ Review Admission Leads</span>
               </button>
-              <button type="button" class="btn btn-saffron" onclick="window.DPSAdmin.switchTab('notices')">
+              <button type="button" class="btn btn-saffron" onclick="window.DPSAdmin.switchTab('news')">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;vertical-align:middle;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg><span>Broadcast Urgent Notice</span>
               </button>
-              <button type="button" class="btn btn-outline" onclick="window.DPSAdmin.switchTab('houses')">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;vertical-align:middle;"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg><span>Update House Scores</span>
+              <button type="button" class="btn btn-outline" onclick="window.DPSAdmin.switchTab('news')">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;vertical-align:middle;"><path d="M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1m2 13a2 2 0 0 1-2-2V7m2 13a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg><span>Manage News &amp; Toppers</span>
               </button>
               <button type="button" class="btn btn-outline" onclick="window.DPSAdmin.switchTab('settings')">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;vertical-align:middle;"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0-.33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg><span>Edit School Timings &amp; Phone</span>
@@ -252,13 +245,13 @@
               </div>
             </div>
 
-            <!-- House Points Standings -->
+            <!-- Live News, Press & Topper Updates -->
             <div class="admin-card">
               <div class="admin-card-header">
-                <span class="card-title">House Championship Standings</span>
-                <button type="button" class="btn btn-sm btn-outline" onclick="window.DPSAdmin.switchTab('houses')">Edit Points &rarr;</button>
+                <span class="card-title">Live News, Press &amp; Merit Highlights</span>
+                <button type="button" class="btn btn-sm btn-outline" onclick="window.DPSAdmin.switchTab('news')">Open Portal &rarr;</button>
               </div>
-              <div class="admin-card-body" id="dashboardHouseBars">
+              <div class="admin-card-body" id="dashboardNewsSummary">
                 <!-- Populated by JS -->
               </div>
             </div>
@@ -337,88 +330,187 @@
           </div>
         </div>
 
-        <!-- ==================== 3. LIVE ALERT BROADCAST ==================== -->
-        <div id="view-notices" class="admin-view-panel">
-          <div class="admin-card">
-            <div class="admin-card-header">
-              <span class="card-title">Live Website Emergency Alert &amp; Banner Broadcast</span>
-            </div>
-            <div class="admin-card-body">
-              <p style="font-size:0.82rem;color:#475569;margin-bottom:20px;">
-                Broadcast urgent announcements (such as Admissions Last Date, Exam Results, Weather/Holiday Notices) at the top of the Durga Public School website across all 13 pages in real-time.
-              </p>
+                <!-- ==================== 3. UNIFIED NEWS & MEDIA PORTAL ==================== -->
+        <div id="view-news" class="admin-view-panel">
+          <!-- Sub-navigation tabs -->
+          <div class="news-sub-nav">
+            <button type="button" class="news-sub-btn active" data-newstab="circulars" onclick="window.DPSAdmin.switchNewsSubTab('circulars')">
+              General Circulars &amp; Notifications
+            </button>
+            <button type="button" class="news-sub-btn" data-newstab="toppers" onclick="window.DPSAdmin.switchNewsSubTab('toppers')">
+              Board Merit Toppers
+            </button>
+            <button type="button" class="news-sub-btn" data-newstab="cuttings" onclick="window.DPSAdmin.switchNewsSubTab('cuttings')">
+              Newspaper Press Clippings
+            </button>
+            <button type="button" class="news-sub-btn" data-newstab="broadcast" onclick="window.DPSAdmin.switchNewsSubTab('broadcast')">
+              Top Marquee Ticker &amp; Alerts
+            </button>
+          </div>
 
-              <!-- Live Preview -->
-              <div style="margin-bottom:24px;">
-                <label class="form-label">Live Preview On Website</label>
-                <div id="noticeLivePreview" style="border-radius:10px;overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--glass-border);transition:all 0.3s ease;">
-                  <!-- Populated by JS -->
+          <!-- SUB-VIEW 1: CIRCULARS & NOTIFICATIONS -->
+          <div id="news-sub-circulars" class="news-sub-panel active">
+            <div class="admin-card">
+              <div class="admin-card-header">
+                <div class="card-title-group">
+                  <span class="card-title">Official Circulars, Notifications &amp; Guidelines</span>
+                  <span id="circularsCountBadge" class="card-badge">Showing Records</span>
+                </div>
+                <div class="admin-card-actions">
+                  <button type="button" class="btn btn-sm btn-wine" onclick="window.DPSAdmin.openAddCircularModal()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <span>+ Publish New Circular</span>
+                  </button>
                 </div>
               </div>
-
-              <div class="form-group" style="margin-bottom:20px;">
-                <label class="toggle-wrap">
-                  <div class="toggle-switch">
-                    <input type="checkbox" id="noticeToggle">
-                    <span class="toggle-slider"></span>
-                  </div>
-                  <strong style="font-size:0.88rem;color:#2E0815;">Enable Live Top Alert Banner</strong>
-                </label>
-              </div>
-
-              <div class="form-group">
-                <label for="noticeMessage" class="form-label">Banner Announcement Message</label>
-                <input type="text" id="noticeMessage" class="form-input" placeholder="e.g. Admissions Open for Session 2026–27 (Nursery to Class XII) | Call +91 94140 37571">
-              </div>
-
-              <div class="form-grid-2">
-                <div class="form-group">
-                  <label for="noticeLink" class="form-label">Destination Link / Action</label>
-                  <input type="text" id="noticeLink" class="form-input" placeholder="admissions.html">
+              <div class="admin-card-body">
+                <div class="table-responsive">
+                  <table class="admin-table">
+                    <thead>
+                      <tr>
+                        <th>Ref Number</th>
+                        <th>Notice Subject</th>
+                        <th>Category</th>
+                        <th>Published Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="circularsTableBody">
+                      <!-- Populated by JS -->
+                    </tbody>
+                  </table>
                 </div>
-
-                <div class="form-group">
-                  <label for="noticeTheme" class="form-label">Banner Color Style</label>
-                  <select id="noticeTheme" class="form-select-full">
-                    <option value="theme-wine">Royal Wine (Official &amp; Elegant)</option>
-                    <option value="theme-saffron">Saffron Gold (Admissions Celebration)</option>
-                    <option value="theme-amber">Amber Alert (Urgent Notice / Holiday)</option>
-                  </select>
-                </div>
-              </div>
-
-              <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.saveNoticeBanner()">
-                  <span>Save &amp; Broadcast to Live Website</span>
-                  <span>&rarr;</span>
-                </button>
-                <button type="button" class="btn btn-outline" onclick="window.DPSAdmin.clearNoticeBanner()">
-                  <span>Clear / Disable Banner</span>
-                </button>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- ==================== 4. HOUSE CHAMPIONSHIP ==================== -->
-        <div id="view-houses" class="admin-view-panel">
-          <div class="admin-card">
-            <div class="admin-card-header">
-              <span class="card-title">Four-House Championship &amp; Points Leaderboard</span>
-              <div class="admin-card-actions">
-                <button type="button" class="btn btn-sm btn-wine" onclick="window.DPSAdmin.openAwardPointsModal()">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                  <span>+ Award House Points</span>
-                </button>
+          <!-- SUB-VIEW 2: BOARD MERIT TOPPERS -->
+          <div id="news-sub-toppers" class="news-sub-panel" style="display:none;">
+            <div class="admin-card">
+              <div class="admin-card-header">
+                <div class="card-title-group">
+                  <span class="card-title">Academic Merit Achievers &amp; Board Toppers</span>
+                  <span id="toppersCountBadge" class="card-badge">Merit Champions</span>
+                </div>
+                <div class="admin-card-actions">
+                  <button type="button" class="btn btn-sm btn-wine" onclick="window.DPSAdmin.openAddTopperModal()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <span>+ Add Board Topper</span>
+                  </button>
+                </div>
+              </div>
+              <div class="admin-card-body">
+                <p style="font-size:0.84rem;color:#475569;margin-bottom:20px;">
+                  Celebrate and manage Class X &amp; XII State Board merit toppers. These profiles are featured on the official school website and published across academic media releases.
+                </p>
+                <div id="toppersGridContainer" class="toppers-grid">
+                  <!-- Populated by JS -->
+                </div>
               </div>
             </div>
-            <div class="admin-card-body">
-              <p style="font-size:0.82rem;color:#475569;margin-bottom:20px;">
-                Update the live athletic, academic, cultural, and discipline points for all four houses. Total scores and leaderboards update automatically on the website.
-              </p>
+          </div>
 
-              <div id="housesGridContainer" class="houses-admin-grid">
-                <!-- Populated by JS -->
+          <!-- SUB-VIEW 3: NEWSPAPER PRESS CLIPPINGS -->
+          <div id="news-sub-cuttings" class="news-sub-panel" style="display:none;">
+            <div class="admin-card">
+              <div class="admin-card-header">
+                <div class="card-title-group">
+                  <span class="card-title">Newspaper Press Clipping Feed (Shekhauni Format)</span>
+                  <span id="cuttingsCountBadge" class="card-badge">Press Archive</span>
+                </div>
+                <div class="admin-card-actions">
+                  <button type="button" class="btn btn-sm btn-wine" onclick="window.DPSAdmin.openAddCuttingModal()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <span>+ Add Press Clipping</span>
+                  </button>
+                </div>
+              </div>
+              <div class="admin-card-body">
+                <p style="font-size:0.84rem;color:#475569;margin-bottom:20px;">
+                  Manage featured newspaper coverage from Rajasthan Patrika, Dainik Bhaskar and national dailies. Clippings feed into the Originkit smooth interactive slider on the live site.
+                </p>
+                <div id="cuttingsGridContainer" class="cuttings-admin-grid">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUB-VIEW 4: TOP MARQUEE TICKER & ALERTS -->
+          <div id="news-sub-broadcast" class="news-sub-panel" style="display:none;">
+            <div class="admin-card">
+              <div class="admin-card-header">
+                <span class="card-title">Live Scrolling Marquee Ticker &amp; Top Alert Banner</span>
+              </div>
+              <div class="admin-card-body">
+                <!-- Top Marquee Ticker Editor -->
+                <div style="background:#FFF8F0;border:1px solid #FED7AA;border-radius:12px;padding:20px;margin-bottom:24px;">
+                  <h4 style="margin:0 0 8px 0;color:#9A3412;font-size:0.95rem;">Live Scrolling Marquee Top Ticker</h4>
+                  <p style="font-size:0.80rem;color:#7C2D12;margin-bottom:14px;">
+                    This text scrolls continuously at the very top of the school website header across all desktop and mobile devices.
+                  </p>
+                  <div class="form-group">
+                    <input type="text" id="tickerLiveInput" class="form-input" style="font-weight:600;font-size:0.86rem;" placeholder="e.g. Admissions Open for Session 2026–27 | Affiliated to RBSE Board, Ajmer (Reg. No. 33/JJN/2006-07) | Call: 9887870013, 8619579870">
+                  </div>
+                  <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.saveTickerText()">
+                    <span>Save &amp; Update Live Scrolling Ticker &rarr;</span>
+                  </button>
+                </div>
+
+                <!-- Emergency Alert Banner -->
+                <h4 style="margin:0 0 10px 0;color:#2E0815;font-size:0.95rem;">Urgent Emergency Banner Broadcast</h4>
+                <p style="font-size:0.82rem;color:#475569;margin-bottom:20px;">
+                  Broadcast high-visibility alert ribbons across the website for weather holidays, entrance examinations, or urgent notifications.
+                </p>
+
+                <!-- Live Preview -->
+                <div style="margin-bottom:24px;">
+                  <label class="form-label">Live Preview On Website</label>
+                  <div id="noticeLivePreview" style="border-radius:10px;overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--glass-border);transition:all 0.3s ease;">
+                    <!-- Populated by JS -->
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom:20px;">
+                  <label class="toggle-wrap">
+                    <div class="toggle-switch">
+                      <input type="checkbox" id="noticeToggle">
+                      <span class="toggle-slider"></span>
+                    </div>
+                    <strong style="font-size:0.88rem;color:#2E0815;">Enable Live Top Alert Banner</strong>
+                  </label>
+                </div>
+
+                <div class="form-group">
+                  <label for="noticeMessage" class="form-label">Banner Announcement Message</label>
+                  <input type="text" id="noticeMessage" class="form-input" placeholder="e.g. Admissions Open for Session 2026–27 (Nursery to Class XII) | Helpline: 9887870013">
+                </div>
+
+                <div class="form-grid-2">
+                  <div class="form-group">
+                    <label for="noticeLink" class="form-label">Destination Link / Action</label>
+                    <input type="text" id="noticeLink" class="form-input" placeholder="admissions.html">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="noticeTheme" class="form-label">Banner Color Style</label>
+                    <select id="noticeTheme" class="form-select-full">
+                      <option value="theme-wine">Royal Wine (Official &amp; Elegant)</option>
+                      <option value="theme-saffron">Saffron Gold (Admissions Celebration)</option>
+                      <option value="theme-amber">Amber Alert (Urgent Notice / Holiday)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                  <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.saveNoticeBanner()">
+                    <span>Save &amp; Broadcast Alert to Live Website &rarr;</span>
+                  </button>
+                  <button type="button" class="btn btn-outline" onclick="window.DPSAdmin.clearNoticeBanner()">
+                    <span>Clear / Disable Alert Banner</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -564,40 +656,6 @@
               <!-- Gallery Grid -->
               <div id="galleryGridContainer" class="admin-gallery-grid">
                 <!-- Populated by JS -->
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==================== 7. CIRCULARS & NOTICES ==================== -->
-        <div id="view-circulars" class="admin-view-panel">
-          <div class="admin-card">
-            <div class="admin-card-header">
-              <span class="card-title">Circulars, Notices &amp; Public Guidelines</span>
-              <div class="admin-card-actions">
-                <button type="button" class="btn btn-sm btn-wine" onclick="window.DPSAdmin.openAddCircularModal()">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                  <span>+ Publish New Circular</span>
-                </button>
-              </div>
-            </div>
-            <div class="admin-card-body">
-              <div class="table-responsive">
-                <table class="admin-table">
-                  <thead>
-                    <tr>
-                      <th>Ref Number</th>
-                      <th>Notice Subject</th>
-                      <th>Category</th>
-                      <th>Published Date</th>
-                      <th>Status</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody id="circularsTableBody">
-                    <!-- Populated by JS -->
-                  </tbody>
-                </table>
               </div>
             </div>
           </div>
@@ -1074,52 +1132,105 @@
     </div>
   </div>
 
-  <!-- AWARD HOUSE POINTS MODAL -->
-  <div id="awardPointsModal" class="modal-overlay">
+    <!-- ADD BOARD TOPPER MODAL -->
+  <div id="addTopperModal" class="modal-overlay">
     <div class="modal-container">
       <div class="modal-header">
-        <h3 class="modal-title">Award / Adjust House Points</h3>
-        <button type="button" class="modal-close-btn" onclick="document.getElementById('awardPointsModal').classList.remove('active')">&times;</button>
+        <h3 class="modal-title">+ Add Board Merit Topper</h3>
+        <button type="button" class="modal-close-btn" onclick="document.getElementById('addTopperModal').classList.remove('active')">&times;</button>
       </div>
       <div class="modal-body">
         <div class="form-grid-2">
           <div class="form-group">
-            <label class="form-label" for="awardHouseSelect">Target House *</label>
-            <select id="awardHouseSelect" class="form-select-full">
-              <option value="vivekanand" selected>Vivekanand House (Saffron Gold)</option>
-              <option value="gandhi">Gandhi House (Emerald Green)</option>
-              <option value="raman">Raman House (Royal Wine)</option>
-              <option value="bose">Bose House (Navy Blue)</option>
-            </select>
+            <label class="form-label" for="newTopperName">Student Full Name *</label>
+            <input type="text" id="newTopperName" class="form-input" placeholder="e.g. Pooja Sharma" required>
           </div>
           <div class="form-group">
-            <label class="form-label" for="awardHouseCategory">Competition Category *</label>
-            <select id="awardHouseCategory" class="form-select-full">
-              <option value="athletics" selected>Athletics &amp; Sports</option>
-              <option value="academics">Academics &amp; Quizzing</option>
-              <option value="cultural">Cultural &amp; Arts</option>
-              <option value="discipline">Discipline &amp; Conduct</option>
+            <label class="form-label" for="newTopperExam">Board Class &amp; Stream *</label>
+            <select id="newTopperExam" class="form-select-full">
+              <option value="RBSE Class XII (Science Stream)" selected>RBSE Class XII (Science Stream)</option>
+              <option value="RBSE Class XII (Commerce Stream)">RBSE Class XII (Commerce Stream)</option>
+              <option value="RBSE Class XII (Humanities / Arts)">RBSE Class XII (Humanities / Arts)</option>
+              <option value="RBSE Class X (Secondary Board)">RBSE Class X (Secondary Board)</option>
             </select>
           </div>
         </div>
 
         <div class="form-grid-2">
           <div class="form-group">
-            <label class="form-label" for="awardHousePoints">Points to Add *</label>
-            <input type="number" id="awardHousePoints" class="form-input" value="10" step="5" required>
+            <label class="form-label" for="newTopperPercentage">Percentage / Score *</label>
+            <input type="text" id="newTopperPercentage" class="form-input" placeholder="e.g. 98.20%" required>
           </div>
           <div class="form-group">
-            <label class="form-label" for="awardHouseEvent">Event / Reason *</label>
-            <input type="text" id="awardHouseEvent" class="form-input" placeholder="e.g. 1st Place in 400m Relay" required>
+            <label class="form-label" for="newTopperRank">Distinction / Merit Rank *</label>
+            <input type="text" id="newTopperRank" class="form-input" placeholder="e.g. District 1st Rank / State Merit" required>
           </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="newTopperYear">Academic Session Year *</label>
+            <input type="text" id="newTopperYear" class="form-input" placeholder="e.g. 2025–26" value="2025–26" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="newTopperImage">Student Photograph URL / Path</label>
+            <input type="text" id="newTopperImage" class="form-input" placeholder="assets/photos/board-merit-toppers.jpg" value="assets/photos/board-merit-toppers.jpg">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="newTopperAccolades">Merit Accolades &amp; Achievements</label>
+          <textarea id="newTopperAccolades" class="form-textarea" rows="2" placeholder="e.g. State Merit List Certificate, 100/100 in Physics, State Gargi Award Recipient..."></textarea>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline" onclick="document.getElementById('awardPointsModal').classList.remove('active')">Cancel</button>
-        <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.submitAwardPoints()">Update Standings</button>
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('addTopperModal').classList.remove('active')">Cancel</button>
+        <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.submitNewTopper()">Save &amp; Feature Topper</button>
       </div>
     </div>
   </div>
+
+  <!-- ADD PRESS CUTTING MODAL -->
+  <div id="addCuttingModal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 class="modal-title">+ Add Newspaper Press Clipping</h3>
+        <button type="button" class="modal-close-btn" onclick="document.getElementById('addCuttingModal').classList.remove('active')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="newCuttingTitle">Press Headline / Title *</label>
+          <input type="text" id="newCuttingTitle" class="form-input" placeholder="e.g. दुर्गा पब्लिक स्कूल में प्रतिभा सम्मान समारोह" required>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="newCuttingNewspaper">Publication / Newspaper *</label>
+            <input type="text" id="newCuttingNewspaper" class="form-input" placeholder="e.g. दैनिक भास्कर (Dainik Bhaskar)" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="newCuttingDate">Publication Date *</label>
+            <input type="text" id="newCuttingDate" class="form-input" placeholder="e.g. 24 May 2026" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="newCuttingImage">Newspaper Clipping Image Path *</label>
+          <input type="text" id="newCuttingImage" class="form-input" placeholder="assets/photos/board-merit-toppers.jpg" value="assets/photos/board-merit-toppers.jpg" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="newCuttingSynopsis">Article Synopsis / Hindi Text</label>
+          <textarea id="newCuttingSynopsis" class="form-textarea" rows="2" placeholder="संक्षिप्त विवरण या समाचार का मुख्य भाग..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('addCuttingModal').classList.remove('active')">Cancel</button>
+        <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.submitNewCutting()">Add Press Clipping</button>
+      </div>
+    </div>
+  </div>
+
 
   <!-- MOBILE BOTTOM NAVIGATION DOCK -->
   <nav id="adminMobileDock" class="admin-mobile-dock" aria-label="Mobile Administration Navigation">
@@ -1134,7 +1245,7 @@
       </div>
       <span class="dock-label">Leads</span>
     </button>
-    <button type="button" class="mobile-dock-item" data-tab="notices">
+    <button type="button" class="mobile-dock-item" data-tab="news">
       <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
       <span class="dock-label">Alerts</span>
     </button>

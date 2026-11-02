@@ -295,12 +295,12 @@
   z-index: 5;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.12s ease;
+  transition: opacity 0.14s ease;
 }
 
 #prospectusWebGLCanvas.is-active {
-  opacity: 1;
-  pointer-events: auto;
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 /* Loading Spinner on Canvas */
@@ -632,9 +632,9 @@
 .prospectus-stage-wrap:-webkit-full-screen .prospectus-canvas-viewport.is-single,
 .prospectus-stage-wrap:-moz-full-screen .prospectus-canvas-viewport.is-single,
 .prospectus-stage-wrap:-ms-fullscreen .prospectus-canvas-viewport.is-single {
-  height: calc(100vh - 140px) !important;
-  max-height: calc(100vh - 140px) !important;
-  width: calc((100vh - 140px) * (595 / 780)) !important;
+  height: calc(100vh - 120px) !important;
+  max-height: calc(100vh - 120px) !important;
+  width: min(calc((100vh - 120px) * 0.763), 94vw) !important;
   max-width: 95vw !important;
   aspect-ratio: 595 / 780 !important;
   margin: auto !important;
@@ -644,9 +644,9 @@
 .prospectus-stage-wrap:-webkit-full-screen .prospectus-canvas-viewport.is-spread,
 .prospectus-stage-wrap:-moz-full-screen .prospectus-canvas-viewport.is-spread,
 .prospectus-stage-wrap:-ms-fullscreen .prospectus-canvas-viewport.is-spread {
-  height: calc(100vh - 140px) !important;
-  max-height: calc(100vh - 140px) !important;
-  width: calc((100vh - 140px) * (1190 / 780)) !important;
+  height: calc(100vh - 120px) !important;
+  max-height: calc(100vh - 120px) !important;
+  width: min(calc((100vh - 120px) * 1.526), 96vw) !important;
   max-width: 96vw !important;
   aspect-ratio: 1190 / 780 !important;
   margin: auto !important;

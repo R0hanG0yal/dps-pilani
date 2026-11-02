@@ -6808,7 +6808,7 @@ details.apple-expandable-item[open] > summary::after {
 
 
 /* =========================================================================
-   FOUR-HOUSE SYSTEM: GANDHI, VIVEKANAND, RAMAN & BOSE HOUSES
+   FOUR-HOUSE SYSTEM: GANDHI, VIVEKANAND, PATEL & BOSE HOUSES
    ========================================================================= */
 .grid-4 {
   display: grid;
@@ -6832,7 +6832,7 @@ details.apple-expandable-item[open] > summary::after {
 
 .card-house-gandhi,
 .card-house-vivekanand,
-.card-house-raman,
+.card-house-raman, .card-house-patel,
 .card-house-bose {
   background: linear-gradient(165deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 250, 242, 0.90) 100%) !important;
   border-radius: 20px !important;
@@ -6842,7 +6842,7 @@ details.apple-expandable-item[open] > summary::after {
 
 .card-house-gandhi:hover,
 .card-house-vivekanand:hover,
-.card-house-raman:hover,
+.card-house-raman, .card-house-patel:hover,
 .card-house-bose:hover {
   transform: translateY(-6px) !important;
   box-shadow: 0 20px 45px -10px rgba(46, 8, 21, 0.18) !important;
@@ -7767,7 +7767,7 @@ details.apple-expandable-item[open] > summary::after {
   /* House System Cards in 2-Column Grid */
   .card-house-gandhi,
   .card-house-vivekanand,
-  .card-house-raman,
+  .card-house-raman, .card-house-patel,
   .card-house-bose {
     padding: 12px 10px !important;
     border-radius: 12px !important;
@@ -7775,7 +7775,7 @@ details.apple-expandable-item[open] > summary::after {
 
   .card-house-gandhi h3,
   .card-house-vivekanand h3,
-  .card-house-raman h3,
+  .card-house-raman, .card-house-patel h3,
   .card-house-bose h3 {
     font-size: 0.90rem !important;
     margin-bottom: 4px !important;
@@ -7783,7 +7783,7 @@ details.apple-expandable-item[open] > summary::after {
 
   .card-house-gandhi p,
   .card-house-vivekanand p,
-  .card-house-raman p,
+  .card-house-raman, .card-house-patel p,
   .card-house-bose p {
     font-size: 0.72rem !important;
     line-height: 1.32 !important;
@@ -8527,7 +8527,7 @@ details.apple-expandable-item[open] > summary::after {
   /* House System Cards: Clean 2-line motto */
   .card-house-gandhi p,
   .card-house-vivekanand p,
-  .card-house-raman p,
+  .card-house-raman, .card-house-patel p,
   .card-house-bose p {
     display: -webkit-box !important;
     -webkit-line-clamp: 2 !important;

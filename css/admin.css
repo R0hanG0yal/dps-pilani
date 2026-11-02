@@ -1741,3 +1741,219 @@ input:checked + .toggle-slider::before {
     width: 95vw;
   }
 }
+
+/* ==========================================================================
+   UNIFIED NEWS & MEDIA PORTAL STYLES
+   ========================================================================== */
+
+.news-sub-nav {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 14px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.news-sub-btn {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.news-sub-btn:hover {
+  background: #F8FAFC;
+  color: var(--color-primary);
+  border-color: rgba(125, 29, 63, 0.3);
+}
+
+.news-sub-btn.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #FFF;
+  box-shadow: 0 4px 12px rgba(125, 29, 63, 0.25);
+}
+
+/* TOPPERS CARDS GRID */
+.toppers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 20px;
+}
+
+.topper-admin-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.topper-admin-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.topper-admin-header {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.topper-admin-avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #D97706;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.topper-admin-name {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #1E293B;
+  margin-bottom: 2px;
+}
+
+.topper-admin-exam {
+  font-size: 0.76rem;
+  color: #64748B;
+  font-weight: 500;
+}
+
+.topper-score-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+}
+
+.topper-score-pct {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #B45309;
+}
+
+.topper-score-rank {
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: #F59E0B;
+  color: #FFF;
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+.topper-accolades {
+  font-size: 0.78rem;
+  color: #475569;
+  line-height: 1.45;
+  margin-bottom: 14px;
+  flex-grow: 1;
+}
+
+.topper-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #F1F5F9;
+  padding-top: 10px;
+  font-size: 0.72rem;
+  color: #94A3B8;
+}
+
+/* PRESS CUTTINGS GRID */
+.cuttings-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.cutting-admin-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+.cutting-card-img-wrap {
+  width: 100%;
+  height: 160px;
+  background: #0F172A;
+  overflow: hidden;
+  position: relative;
+}
+
+.cutting-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.cutting-card-img-wrap:hover .cutting-card-img {
+  transform: scale(1.04);
+}
+
+.cutting-card-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.cutting-meta-pill {
+  font-size: 0.70rem;
+  font-weight: 700;
+  color: #B45309;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.cutting-title {
+  font-size: 0.90rem;
+  font-weight: 700;
+  color: #1E293B;
+  line-height: 1.35;
+  margin-bottom: 8px;
+}
+
+.cutting-synopsis {
+  font-size: 0.78rem;
+  color: #64748B;
+  line-height: 1.45;
+  margin-bottom: 14px;
+  flex-grow: 1;
+}
+
+.cutting-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #F1F5F9;
+  padding-top: 10px;
+  font-size: 0.72rem;
+  color: #94A3B8;
+}

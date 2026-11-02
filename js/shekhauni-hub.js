@@ -60,7 +60,7 @@
       badge: 'SPORTS',
       category: 'Athletics',
       title: 'Inter-House Sports Meet & Taekwondo Belt Demonstration Honors',
-      desc: 'Gandhi, Vivekanand, Raman, and Bose house athletes completed 4x100m relays, sprint heats, and martial arts katas on campus grounds.',
+      desc: 'Gandhi, Vivekanand, Patel, and Bose house athletes completed 4x100m relays, sprint heats, and martial arts katas on campus grounds.',
       link: 'life.html#sports',
       isNew: false
     },
@@ -73,6 +73,50 @@
       desc: 'State board distinction toppers honored by Director Shri Surender Singh and Senior Faculty in campus courtyard assembly.',
       link: 'gallery.html',
       isNew: false
+    }
+  ];
+
+  // 1B. Default Board Merit Toppers
+  const DEFAULT_TOPPERS = [
+    {
+      id: 'TOP-2026-01',
+      name: 'Pooja Sharma',
+      exam: 'RBSE Class XII (Science Stream)',
+      percentage: '98.20%',
+      rank: 'District 1st Rank',
+      year: '2025–26',
+      image: 'assets/photos/board-merit-toppers.jpg',
+      accolades: 'State Merit List Holder. Perfect 100/100 score in Physics & Mathematics. State Government Gargi Award recipient.'
+    },
+    {
+      id: 'TOP-2026-02',
+      name: 'Rahul Verma',
+      exam: 'RBSE Class XII (Commerce Stream)',
+      percentage: '97.60%',
+      rank: 'Pilani Sub-Division Merit',
+      year: '2025–26',
+      image: 'assets/photos/annual-graduation-merit.jpg',
+      accolades: '100/100 in Accountancy and Business Studies. District Gold Medalist for Academic Excellence.'
+    },
+    {
+      id: 'TOP-2026-03',
+      name: 'Anjali Shekhawat',
+      exam: 'RBSE Class X (Secondary Board)',
+      percentage: '98.60%',
+      rank: 'Jhunjhunu District Top 3',
+      year: '2025–26',
+      image: 'assets/photos/board-achiever-parents-tribute.jpg',
+      accolades: 'State Board Merit Certificate. Scored 100 in Mathematics & Science. Awarded School Academic Scholarship.'
+    },
+    {
+      id: 'TOP-2026-04',
+      name: 'Vikas Saini',
+      exam: 'RBSE Class XII (Humanities / Arts)',
+      percentage: '96.80%',
+      rank: 'School Stream Topper',
+      year: '2025–26',
+      image: 'assets/photos/board-merit-toppers.jpg',
+      accolades: 'State Distinction Honors in History, Political Science & Hindi Literature.'
     }
   ];
 
@@ -116,6 +160,8 @@
       });
     });
 
+    // B. Render General Notifications & Toppers
+    renderToppers();
     // B. Render General Notifications (from localStorage or default)
     renderNotifications();
 
@@ -128,6 +174,42 @@
 
   function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  // Render Board Merit Toppers Feed
+  function renderToppers() {
+    const container = document.getElementById('sToppersListContainer');
+    if (!container) return;
+
+    let toppers = DEFAULT_TOPPERS;
+    try {
+      const stored = localStorage.getItem('dps_toppers');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          toppers = parsed;
+        }
+      }
+    } catch (e) {
+      console.warn('[NewsHub] Error parsing stored toppers:', e);
+    }
+
+    container.innerHTML = toppers.map(function (t) {
+      return `
+        <article class="s-topper-card">
+          <div class="s-topper-avatar-wrap">
+            <img src="${escapeHtml(t.image || 'assets/photos/board-merit-toppers.jpg')}" alt="${escapeHtml(t.name)}" class="s-topper-avatar" onerror="this.src='assets/photos/board-merit-toppers.jpg'">
+            <span class="s-topper-badge">${escapeHtml(t.percentage)}</span>
+          </div>
+          <div class="s-topper-info">
+            <div class="s-topper-rank">${escapeHtml(t.rank || 'Merit')} • ${escapeHtml(t.year || '2025–26')}</div>
+            <h4 class="s-topper-name">${escapeHtml(t.name)}</h4>
+            <div class="s-topper-exam">${escapeHtml(t.exam)}</div>
+            <p class="s-topper-quote">${escapeHtml(t.accolades || 'State Merit distinction scholar.')}</p>
+          </div>
+        </article>
+      `;
+    }).join('');
   }
 
   // Render Notifications Feed
