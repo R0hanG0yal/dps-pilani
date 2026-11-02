@@ -1119,8 +1119,45 @@ p { color: var(--ink-700); }
 .foot-brand img { width: 60px; height: 60px; border-radius: 50%; box-shadow: 0 0 0 2px rgba(223,175,69,.5); }
 .foot-brand-name { font-family: var(--font-display); font-weight: 800; font-size: 1.4rem; color: #fff; display: block; }
 .foot-brand-sub { font-size: .82rem; color: rgba(255,255,255,.6); }
-.foot-motto { margin-left: auto; text-align: right; font-family: var(--font-display); font-style: italic; font-size: .95rem; color: var(--gold-300); max-width: 320px; line-height: 1.35; }
-.foot-motto span { display: block; font-family: var(--font-label); font-style: normal; font-size: .62rem; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.5); margin-top: 4px; }
+.foot-motto {
+  margin-left: auto;
+  text-align: right;
+  font-family: var(--font-ui, 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif) !important;
+  font-style: normal !important;
+  font-size: 0.86rem !important;
+  color: rgba(255, 255, 255, 0.92) !important;
+  max-width: 380px !important;
+  line-height: 1.5 !important;
+}
+.foot-motto span.foot-motto-label,
+.foot-motto > span:first-child {
+  display: block !important;
+  font-family: var(--font-label, sans-serif) !important;
+  font-style: normal !important;
+  font-size: 0.66rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.16em !important;
+  text-transform: uppercase !important;
+  color: var(--saffron-400, #FBBF24) !important;
+  margin-bottom: 4px !important;
+}
+.foot-motto-auth {
+  display: block !important;
+  font-weight: 700 !important;
+  color: #FFF !important;
+  font-size: 0.88rem !important;
+  line-height: 1.4 !important;
+  letter-spacing: 0.01em !important;
+}
+.foot-motto-reg {
+  display: block !important;
+  font-family: var(--font-label, monospace, sans-serif) !important;
+  font-size: 0.74rem !important;
+  font-weight: 600 !important;
+  color: #FDE68A !important;
+  letter-spacing: 0.03em !important;
+  margin-top: 3px !important;
+}
 
 .foot-drawer-toggle {
   width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px;
