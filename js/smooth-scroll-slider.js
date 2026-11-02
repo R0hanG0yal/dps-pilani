@@ -99,14 +99,15 @@
       c.innerHTML = '';
       c.style.position = 'relative';
       c.style.width = '100%';
-      c.style.height = '100%';
+      c.style.height = (this.options.slideHeight ? (this.options.slideHeight + 60) + 'px' : '480px');
+      c.style.minHeight = '420px';
       c.style.overflow = 'hidden';
       c.style.background = this.options.background;
       c.style.cursor = 'grab';
       c.style.touchAction = 'pan-y';
       c.style.userSelect = 'none';
       c.style.webkitUserSelect = 'none';
-      c.style.opacity = '0';
+      c.style.opacity = '1';
       c.style.transition = 'opacity 0.35s ease';
 
       // Inner rail wrapper
@@ -144,8 +145,14 @@
     }
 
     _handleResizeWidth(w) {
-      if (w <= 0) return;
+      if (w <= 0) {
+        const parentW = this.container.parentElement ? this.container.parentElement.getBoundingClientRect().width : 0;
+        w = parentW > 0 ? parentW : (window.innerWidth ? Math.min(window.innerWidth - 48, 1200) : 1100);
+      }
       this.width = w;
+
+      if (!this.currentSlideWidth) this.currentSlideWidth = this.options.slideWidth || 320;
+      if (!this.currentSlideHeight) this.currentSlideHeight = this.options.slideHeight || 420;
 
       // Responsive adjustments for mobile screens
       if (w < 480) {
@@ -155,8 +162,8 @@
         this.currentSlideWidth = 270;
         this.currentSlideHeight = 360;
       } else {
-        this.currentSlideWidth = this.options.slideWidth;
-        this.currentSlideHeight = this.options.slideHeight;
+        this.currentSlideWidth = this.options.slideWidth || 320;
+        this.currentSlideHeight = this.options.slideHeight || 420;
       }
 
       this.step = this.currentSlideWidth + clamp(this.options.spacing, 0, 10) * 20;

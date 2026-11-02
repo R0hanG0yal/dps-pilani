@@ -8129,40 +8129,58 @@
     document.addEventListener('DOMContentLoaded', function () {
       const gSliderEl = document.getElementById('galleryCuttingsSlider');
       if (gSliderEl && typeof SmoothScrollSlider !== 'undefined') {
-        fetch('assets/photos/news-cuttings/news-cuttings-metadata.json')
-          .then(r => r.json())
-          .then(data => {
-            const gSlider = new SmoothScrollSlider(gSliderEl, {
-              items: data,
-              slideWidth: 320,
-              slideHeight: 420,
-              spacing: 2,
-              direction: 'right',
-              smoothness: 10,
-              radius: 16,
-              dim: 10,
-              background: '#0B0206',
-              sensitivity: 5,
-              loop: true,
-              autoplay: true,
-              autoplaySpeed: 0.5,
-              onSlideClick: function (item) {
-                // Trigger modal lightbox
-                if (typeof openCuttingModal === 'function') {
-                  openCuttingModal(item.id);
-                } else {
-                  const card = document.querySelector(`[data-print="${item.id.replace('cutting-', 'NC-')}"] .scrapbook-photo-card`);
-                  if (card) card.click();
-                }
+        const initialData = (typeof DEFAULT_NEWS_CUTTINGS !== 'undefined' ? DEFAULT_NEWS_CUTTINGS : (window.DEFAULT_NEWS_CUTTINGS || []));
+        let gSlider = null;
+        function initSlider(data) {
+          if (!data || !data.length) return;
+          if (gSlider) {
+            gSlider.setItems(data);
+            return;
+          }
+          gSlider = new SmoothScrollSlider(gSliderEl, {
+            items: data,
+            slideWidth: 320,
+            slideHeight: 420,
+            spacing: 2,
+            direction: 'right',
+            smoothness: 10,
+            radius: 16,
+            dim: 10,
+            background: '#0B0206',
+            sensitivity: 5,
+            loop: true,
+            autoplay: true,
+            autoplaySpeed: 0.5,
+            onSlideClick: function (item) {
+              if (typeof openCuttingModal === 'function') {
+                openCuttingModal(item.id);
+              } else {
+                const card = document.querySelector(`[data-print="${item.id.replace('cutting-', 'NC-')}"] .scrapbook-photo-card`);
+                if (card) card.click();
               }
-            });
+            }
+          });
 
-            const prevBtn = document.getElementById('gallerySliderPrevBtn');
-            const nextBtn = document.getElementById('gallerySliderNextBtn');
-            if (prevBtn) prevBtn.addEventListener('click', () => gSlider.prev());
-            if (nextBtn) nextBtn.addEventListener('click', () => gSlider.next());
-          })
-          .catch(err => console.warn('[Gallery] Could not load cuttings slider:', err));
+          const prevBtn = document.getElementById('gallerySliderPrevBtn');
+          const nextBtn = document.getElementById('gallerySliderNextBtn');
+          if (prevBtn) prevBtn.addEventListener('click', () => gSlider.prev());
+          if (nextBtn) nextBtn.addEventListener('click', () => gSlider.next());
+        }
+
+        if (initialData && initialData.length) {
+          initSlider(initialData);
+        }
+
+        if (window.location.protocol.startsWith('http')) {
+          fetch('assets/photos/news-cuttings/news-cuttings-metadata.json')
+            .then(r => r.json())
+            .then(data => {
+              if (Array.isArray(data) && data.length > 0) {
+                initSlider(data);
+              }
+            })
+            .catch(() => {});
+        }
       }
     });
   </script>
