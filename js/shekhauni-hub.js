@@ -791,9 +791,15 @@
       const stored = localStorage.getItem('dps_news_cuttings');
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        const isLegacyMock = Array.isArray(parsed) && parsed.some(it => String(it.id).startsWith('CUT-'));
+        if (Array.isArray(parsed) && parsed.length >= 20 && !isLegacyMock) {
           activeData = parsed;
+        } else {
+          localStorage.removeItem('dps_news_cuttings');
+          localStorage.setItem('dps_news_cuttings', JSON.stringify(DEFAULT_NEWS_CUTTINGS));
         }
+      } else {
+        localStorage.setItem('dps_news_cuttings', JSON.stringify(DEFAULT_NEWS_CUTTINGS));
       }
     } catch (e) {}
 
@@ -811,6 +817,17 @@
         .then(data => {
           if (Array.isArray(data) && data.length > 0) {
             newsCuttings = data;
+            if (cuttingsSpotlightInstance && typeof cuttingsSpotlightInstance.setItems === 'function') {
+              cuttingsSpotlightInstance.setItems(data.map(function (c) {
+                return {
+                  image: c.fullImage || c.image,
+                  title: c.title,
+                  caption: (c.date ? c.date + ' &bull; ' : '') + (c.newspaper || 'Rajasthan Press') + (c.edition ? ' &bull; ' + c.edition : ''),
+                  note: (c.newspaper || 'Rajasthan Press') + (c.date ? ' ' + c.date : ''),
+                  id: c.id
+                };
+              }));
+            }
             if (cuttingsSliderInstance) {
               cuttingsSliderInstance.setItems(data);
             }

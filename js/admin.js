@@ -293,31 +293,191 @@
   ];
 
   const DEFAULT_CUTTINGS = [
-    {
-      id: 'CUT-01',
-      title: 'दुर्गा पब्लिक स्कूल पिलानी में प्रतिभा सम्मान समारोह: बोर्ड मेरिट छात्रों को 51 हजार का नकद पुरस्कार',
-      newspaper: 'दैनिक भास्कर (Dainik Bhaskar)',
-      date: '24 May 2026',
-      image: 'assets/photos/board-merit-toppers.jpg',
-      synopsis: 'पिलानी स्थित दुर्गा देवी पब्लिक सीनियर सेकेंडरी स्कूल में माध्यमिक शिक्षा बोर्ड परीक्षा में 95% से अधिक अंक प्राप्त करने वाले मेधावी छात्र-छात्राओं का भव्य सम्मान किया गया।'
-    },
-    {
-      id: 'CUT-02',
-      title: 'पिलानी में अंतर-विद्यालय खेलकूद प्रतियोगिता: दुर्गा पब्लिक स्कूल ने जीती ओवरऑल रोलिंग ट्रॉफी',
-      newspaper: 'राजस्थान पत्रिका (Rajasthan Patrika)',
-      date: '12 Sep 2026',
-      image: 'assets/photos/annual-sports-day-podium-champions.jpg',
-      synopsis: 'एथलेटिक्स, रिले रेस और ताइक्वांडो में दुर्गा पब्लिक स्कूल के खिलाड़ियों ने शानदार प्रदर्शन करते हुए लगातार तीसरे वर्ष चैंपियनशिप अपने नाम की।'
-    },
-    {
-      id: 'CUT-03',
-      title: 'संस्कार युक्त गुणवत्तापूर्ण शिक्षा का पर्याय बना दुर्गा पब्लिक स्कूल: अभिभावक सम्मेलन में बोले निदेशक',
-      newspaper: 'दैनिक नवज्योति (Dainik Navajyoti)',
-      date: '18 Aug 2026',
-      image: 'assets/photos/board-achiever-parents-tribute.jpg',
-      synopsis: 'सत्र 2026-27 के वार्षिक अभिभावक-शिक्षक संवाद सत्र में ग्रामीण व शहरी अंचल के 800 से अधिक अभिभावकों ने सहभागिता की।'
-    }
-  ];
+  {
+    "id": "cutting-01",
+    "title": "Annual Board Merit & Academic Honor Roll",
+    "newspaper": "Dainik Bhaskar",
+    "date": "12 Dec",
+    "image": "assets/photos/news-cuttings/cutting-01.jpg",
+    "synopsis": "Annual Board Merit & Academic Honor Roll - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-02",
+    "title": "District Olympiad & Merit Scholarship Achievers",
+    "newspaper": "Rajasthan Patrika",
+    "date": "12 Dec",
+    "image": "assets/photos/news-cuttings/cutting-02.jpg",
+    "synopsis": "District Olympiad & Merit Scholarship Achievers - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-03",
+    "title": "Excellence in Science & Mathematics Distinctions",
+    "newspaper": "Dainik Bhaskar",
+    "date": "12 Dec",
+    "image": "assets/photos/news-cuttings/cutting-03.jpg",
+    "synopsis": "Excellence in Science & Mathematics Distinctions - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-04",
+    "title": "Haryalo Rajasthan Mega Tree Plantation Drive",
+    "newspaper": "Rajasthan Patrika",
+    "date": "20 Jul",
+    "image": "assets/photos/news-cuttings/cutting-04.jpg",
+    "synopsis": "Haryalo Rajasthan Mega Tree Plantation Drive - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-05",
+    "title": "Inter-School Cultural & Debate Championship Victory",
+    "newspaper": "Dainik Navjyoti",
+    "date": "State Edition",
+    "image": "assets/photos/news-cuttings/cutting-05.jpg",
+    "synopsis": "Inter-School Cultural & Debate Championship Victory - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-06",
+    "title": "Pilani Students Shine in RBSE Secondary Merit List",
+    "newspaper": "Rajasthan Patrika",
+    "date": "District Special",
+    "image": "assets/photos/news-cuttings/cutting-06.jpg",
+    "synopsis": "Pilani Students Shine in RBSE Secondary Merit List - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-07",
+    "title": "Grand Annual Cultural Fest & Folk Dance Honors",
+    "newspaper": "Dainik Bhaskar",
+    "date": "Shekhawati Special",
+    "image": "assets/photos/news-cuttings/cutting-07.jpg",
+    "synopsis": "Grand Annual Cultural Fest & Folk Dance Honors - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-08",
+    "title": "Durga Public School Achieves 100% Board Pass Result",
+    "newspaper": "Rajasthan Patrika",
+    "date": "Education Focus",
+    "image": "assets/photos/news-cuttings/cutting-08.jpg",
+    "synopsis": "Durga Public School Achieves 100% Board Pass Result - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-09",
+    "title": "District Level Taekwondo & Athletics Gold Medals",
+    "newspaper": "Dainik Bhaskar",
+    "date": "Sports Desk",
+    "image": "assets/photos/news-cuttings/cutting-09.jpg",
+    "synopsis": "District Level Taekwondo & Athletics Gold Medals - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-10",
+    "title": "National Science Day Exhibition Acclaimed by Scientists",
+    "newspaper": "Rajasthan Patrika",
+    "date": "Campus Beat",
+    "image": "assets/photos/news-cuttings/cutting-10.jpg",
+    "synopsis": "National Science Day Exhibition Acclaimed by Scientists - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-11",
+    "title": "Moral Values & Sanskrit Invocations Assembly Highlighted",
+    "newspaper": "Dainik Jagran",
+    "date": "Youth Feature",
+    "image": "assets/photos/news-cuttings/cutting-11.jpg",
+    "synopsis": "Moral Values & Sanskrit Invocations Assembly Highlighted - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-12",
+    "title": "State Level Merit Scholars Felicitated by Leadership",
+    "newspaper": "Dainik Bhaskar",
+    "date": "City News",
+    "image": "assets/photos/news-cuttings/cutting-12.jpg",
+    "synopsis": "State Level Merit Scholars Felicitated by Leadership - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-13",
+    "title": "Durga Devi Public School Tops District Merit Chart",
+    "newspaper": "Rajasthan Patrika",
+    "date": "Headline Feature",
+    "image": "assets/photos/news-cuttings/cutting-13.jpg",
+    "synopsis": "Durga Devi Public School Tops District Merit Chart - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-14",
+    "title": "Comprehensive Academic & Cultural Achievements Feature",
+    "newspaper": "Dainik Bhaskar",
+    "date": "Annual Special",
+    "image": "assets/photos/news-cuttings/cutting-14.jpg",
+    "synopsis": "Comprehensive Academic & Cultural Achievements Feature - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-15",
+    "title": "RBSE Senior Secondary Science Stream Outstanding Grades",
+    "newspaper": "Rajasthan Patrika",
+    "date": "Results Special",
+    "image": "assets/photos/news-cuttings/cutting-15.jpg",
+    "synopsis": "RBSE Senior Secondary Science Stream Outstanding Grades - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-16",
+    "title": "Commerce & Arts Scholars Secure State Honors",
+    "newspaper": "Dainik Bhaskar",
+    "date": "Merit Page",
+    "image": "assets/photos/news-cuttings/cutting-16.jpg",
+    "synopsis": "Commerce & Arts Scholars Secure State Honors - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-17",
+    "title": "Young Scientists Win Innovation Challenge at State Level",
+    "newspaper": "Rajasthan Patrika",
+    "date": "Science Corner",
+    "image": "assets/photos/news-cuttings/cutting-17.jpg",
+    "synopsis": "Young Scientists Win Innovation Challenge at State Level - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-18",
+    "title": "Inter-School Hindi Poetry Recitation Championship",
+    "newspaper": "Dainik Bhaskar",
+    "date": "Literature Club",
+    "image": "assets/photos/news-cuttings/cutting-18.jpg",
+    "synopsis": "Inter-School Hindi Poetry Recitation Championship - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-19",
+    "title": "Special Supplement: Two Decades of Educational Excellence",
+    "newspaper": "Rajasthan Patrika",
+    "date": "Grand Feature",
+    "image": "assets/photos/news-cuttings/cutting-19.jpg",
+    "synopsis": "Special Supplement: Two Decades of Educational Excellence - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-20",
+    "title": "Shekhawati Regional Press Highlights DPS Academic Record",
+    "newspaper": "Dainik Bhaskar",
+    "date": "Education Times",
+    "image": "assets/photos/news-cuttings/cutting-20.jpg",
+    "synopsis": "Shekhawati Regional Press Highlights DPS Academic Record - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-21",
+    "title": "Leadership Interview: Building Confident Global Citizens",
+    "newspaper": "Rajasthan Patrika",
+    "date": "Editorial Feature",
+    "image": "assets/photos/news-cuttings/cutting-21.jpg",
+    "synopsis": "Leadership Interview: Building Confident Global Citizens - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-22",
+    "title": "Children's Day Celebrations & Talent Show at DPS",
+    "newspaper": "Dainik Bhaskar",
+    "date": "16 Nov",
+    "image": "assets/photos/news-cuttings/cutting-22.jpg",
+    "synopsis": "Children's Day Celebrations & Talent Show at DPS - Durga Public School, Pilani archival media record."
+  },
+  {
+    "id": "cutting-23",
+    "title": "Inter-House Sports Meet & Athletic Championship",
+    "newspaper": "Rajasthan Patrika",
+    "date": "16 Nov",
+    "image": "assets/photos/news-cuttings/cutting-23.jpg",
+    "synopsis": "Inter-House Sports Meet & Athletic Championship - Durga Public School, Pilani archival media record."
+  }
+];
 
   const DEFAULT_FACULTY = [
     {
@@ -447,7 +607,17 @@
 
         // Press Newspaper Cuttings
         const storedCuttings = localStorage.getItem(STORAGE_KEYS.CUTTINGS);
-        this.state.cuttings = storedCuttings ? JSON.parse(storedCuttings) : DEFAULT_CUTTINGS;
+        try {
+          const parsed = storedCuttings ? JSON.parse(storedCuttings) : null;
+          if (Array.isArray(parsed) && parsed.length >= 20 && !parsed.some(it => String(it.id).startsWith('CUT-'))) {
+            this.state.cuttings = parsed;
+          } else {
+            localStorage.removeItem(STORAGE_KEYS.CUTTINGS);
+            this.state.cuttings = DEFAULT_CUTTINGS;
+          }
+        } catch(e) {
+          this.state.cuttings = DEFAULT_CUTTINGS;
+        }
 
         this.state.newsSubTab = 'circulars';
 
