@@ -131,7 +131,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-01.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-01.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-01.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-01.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-01.webp",
+    "width": 1800,
+    "height": 1119,
+    "aspectRatio": 1.609
   },
   {
     "id": "cutting-02",
@@ -142,7 +145,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-02.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-02.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-02.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-02.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-02.webp",
+    "width": 1006,
+    "height": 1379,
+    "aspectRatio": 0.73
   },
   {
     "id": "cutting-03",
@@ -153,7 +159,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-03.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-03.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-03.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-03.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-03.webp",
+    "width": 788,
+    "height": 1650,
+    "aspectRatio": 0.478
   },
   {
     "id": "cutting-04",
@@ -164,7 +173,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-04.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-04.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-04.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-04.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-04.webp",
+    "width": 324,
+    "height": 530,
+    "aspectRatio": 0.611
   },
   {
     "id": "cutting-05",
@@ -175,7 +187,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-05.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-05.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-05.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-05.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-05.webp",
+    "width": 691,
+    "height": 928,
+    "aspectRatio": 0.745
   },
   {
     "id": "cutting-06",
@@ -186,7 +201,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-06.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-06.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-06.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-06.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-06.webp",
+    "width": 1475,
+    "height": 1136,
+    "aspectRatio": 1.298
   },
   {
     "id": "cutting-07",
@@ -197,7 +215,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-07.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-07.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-07.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-07.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-07.webp",
+    "width": 1374,
+    "height": 1546,
+    "aspectRatio": 0.889
   },
   {
     "id": "cutting-08",
@@ -208,7 +229,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-08.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-08.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-08.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-08.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-08.webp",
+    "width": 1357,
+    "height": 1725,
+    "aspectRatio": 0.787
   },
   {
     "id": "cutting-09",
@@ -219,7 +243,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-09.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-09.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-09.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-09.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-09.webp",
+    "width": 1202,
+    "height": 1404,
+    "aspectRatio": 0.856
   },
   {
     "id": "cutting-10",
@@ -230,7 +257,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-10.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-10.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-10.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-10.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-10.webp",
+    "width": 662,
+    "height": 634,
+    "aspectRatio": 1.044
   },
   {
     "id": "cutting-11",
@@ -241,7 +271,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-11.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-11.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-11.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-11.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-11.webp",
+    "width": 678,
+    "height": 477,
+    "aspectRatio": 1.421
   },
   {
     "id": "cutting-12",
@@ -252,7 +285,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-12.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-12.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-12.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-12.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-12.webp",
+    "width": 626,
+    "height": 512,
+    "aspectRatio": 1.223
   },
   {
     "id": "cutting-13",
@@ -263,7 +299,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-13.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-13.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-13.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-13.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-13.webp",
+    "width": 958,
+    "height": 1345,
+    "aspectRatio": 0.712
   },
   {
     "id": "cutting-14",
@@ -274,7 +313,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-14.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-14.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-14.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-14.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-14.webp",
+    "width": 1509,
+    "height": 1800,
+    "aspectRatio": 0.838
   },
   {
     "id": "cutting-15",
@@ -285,7 +327,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-15.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-15.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-15.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-15.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-15.webp",
+    "width": 1344,
+    "height": 1250,
+    "aspectRatio": 1.075
   },
   {
     "id": "cutting-16",
@@ -296,7 +341,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-16.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-16.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-16.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-16.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-16.webp",
+    "width": 1053,
+    "height": 1594,
+    "aspectRatio": 0.661
   },
   {
     "id": "cutting-17",
@@ -307,7 +355,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-17.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-17.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-17.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-17.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-17.webp",
+    "width": 1071,
+    "height": 899,
+    "aspectRatio": 1.191
   },
   {
     "id": "cutting-18",
@@ -318,7 +369,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-18.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-18.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-18.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-18.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-18.webp",
+    "width": 166,
+    "height": 112,
+    "aspectRatio": 1.482
   },
   {
     "id": "cutting-19",
@@ -329,7 +383,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-19.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-19.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-19.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-19.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-19.webp",
+    "width": 1274,
+    "height": 1800,
+    "aspectRatio": 0.708
   },
   {
     "id": "cutting-20",
@@ -340,7 +397,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-20.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-20.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-20.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-20.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-20.webp",
+    "width": 1273,
+    "height": 1800,
+    "aspectRatio": 0.707
   },
   {
     "id": "cutting-21",
@@ -351,7 +411,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-21.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-21.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-21.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-21.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-21.webp",
+    "width": 1273,
+    "height": 1800,
+    "aspectRatio": 0.707
   },
   {
     "id": "cutting-22",
@@ -362,7 +425,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-22.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-22.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-22.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-22.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-22.webp",
+    "width": 1084,
+    "height": 552,
+    "aspectRatio": 1.964
   },
   {
     "id": "cutting-23",
@@ -373,7 +439,10 @@
     "fullImage": "assets/photos/news-cuttings/cutting-23.jpg",
     "webpImage": "assets/photos/news-cuttings/cutting-23.webp",
     "thumbImage": "assets/photos/news-cuttings/thumbs/cutting-23.jpg",
-    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-23.webp"
+    "thumbWebp": "assets/photos/news-cuttings/thumbs/cutting-23.webp",
+    "width": 465,
+    "height": 752,
+    "aspectRatio": 0.618
   }
 ];
 
@@ -409,6 +478,9 @@
           activePane.removeAttribute('hidden');
           if (targetTab === 'cuttings') {
             setTimeout(function () {
+              if (cuttingsSpotlightInstance) {
+                cuttingsSpotlightInstance.layout();
+              }
               if (cuttingsSliderInstance) {
                 cuttingsSliderInstance._onResize();
               } else if (newsCuttings && newsCuttings.length) {
@@ -416,6 +488,9 @@
               }
             }, 30);
             setTimeout(function () {
+              if (cuttingsSpotlightInstance) {
+                cuttingsSpotlightInstance.layout();
+              }
               if (cuttingsSliderInstance) {
                 cuttingsSliderInstance._onResize();
               }
@@ -556,9 +631,12 @@
       return {
         image: c.fullImage || c.image,
         title: c.title,
-        tag: c.paperName || 'Rajasthan Press',
+        tag: c.newspaper || c.paperName || 'Rajasthan Press',
         sub: (c.date || '') + (c.edition ? ' &bull; ' + c.edition : ''),
-        id: c.id
+        id: c.id,
+        width: c.width || 0,
+        height: c.height || 0,
+        aspectRatio: c.aspectRatio || 0
       };
     });
 
@@ -568,14 +646,16 @@
 
     cuttingsSpotlightInstance = new SpotlightFrames(spotlightEl, {
       images: items,
-      collapsedWidth: 70,
-      expandedWidth: 420,
-      gap: 6,
+      collapsedWidth: 72,
+      expandedWidth: 540,
+      gap: 8,
       radius: 16,
       startIndex: 0,
       trigger: 'auto',
+      fitMode: 'contain',
+      expandByAspectRatio: true,
       autoplay: true,
-      autoplayInterval: 2800,
+      autoplayInterval: 3200,
       selector: {
         box: true,
         lines: true,
