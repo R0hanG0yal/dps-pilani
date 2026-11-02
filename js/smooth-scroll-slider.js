@@ -140,6 +140,29 @@
       c.addEventListener('mouseenter', () => { this.isHovered = true; });
       c.addEventListener('mouseleave', () => { this.isHovered = false; });
 
+      // Pause tick loop when offscreen to preserve 60-120fps scrolling
+      this.isPaused = false;
+      if ('IntersectionObserver' in window) {
+        this.visibilityObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              if (this.isPaused) {
+                this.isPaused = false;
+                this.lastTime = performance.now();
+                this.rafId = requestAnimationFrame(this._tick);
+              }
+            } else {
+              this.isPaused = true;
+              if (this.rafId) {
+                cancelAnimationFrame(this.rafId);
+                this.rafId = null;
+              }
+            }
+          });
+        }, { rootMargin: '100px' });
+        this.visibilityObserver.observe(c);
+      }
+
       // Start tick loop
       this.rafId = requestAnimationFrame(this._tick);
     }
@@ -236,6 +259,7 @@
             <div class="s-slider-badge ${badgeClass}" style="position:absolute;top:12px;left:12px;z-index:3;">
               ${escapeHtml(item.newspaper || 'Press Clipping')}
             </div>
+            <div class="s-slide-dim-overlay" style="position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;border-radius:inherit;transition:opacity 0.1s ease;z-index:2;"></div>
             <picture style="width:100%;height:100%;display:block;">
               ${item.thumbWebp ? `<source srcset="${item.thumbWebp}" type="image/webp">` : ''}
               <img src="${item.thumbImage || item.image || item.fullImage}" alt="${escapeHtml(item.title)}" draggable="false" style="width:100%;height:100%;object-fit:cover;object-position:50% 50%;display:block;user-select:none;-webkit-user-drag:none;pointer-events:none;">
@@ -270,6 +294,7 @@
     }
 
     _tick(now) {
+      if (this.isPaused) return;
       this.rafId = requestAnimationFrame(this._tick);
 
       const delta = this.lastTime ? Math.min((now - this.lastTime) / 1000, 0.1) : 1 / 60;
@@ -324,11 +349,14 @@
         const left = this.flip ? width - this.currentSlideWidth - (x + push) : x + push;
         node.style.transform = `translate3d(${left}px, -50%, 0) scale(${scale})`;
 
-        if (this.dimAmount > 0 && scale < 1) {
-          const t = (1 - scale) / Math.max(0.001, 1 - MIN_SCALE);
-          node.style.filter = `brightness(${1 - t * this.dimAmount})`;
-        } else {
-          node.style.filter = 'none';
+        const dimOverlay = node.querySelector('.s-slide-dim-overlay');
+        if (dimOverlay && this.dimAmount > 0) {
+          if (scale < 1) {
+            const t = (1 - scale) / Math.max(0.001, 1 - MIN_SCALE);
+            dimOverlay.style.opacity = (t * this.dimAmount).toFixed(2);
+          } else if (dimOverlay.style.opacity !== '0') {
+            dimOverlay.style.opacity = '0';
+          }
         }
       }
     }

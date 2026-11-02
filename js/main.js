@@ -664,11 +664,19 @@
       });
     }
 
-    function loadNextBatchForChapter(chapter) {
+    function loadNextBatchForChapter(chapter, obs, sentinel) {
       if (!chapter) return;
       const current = chapterVisibleCounts.get(chapter) || INITIAL_BATCH;
+      const items = Array.from(chapter.querySelectorAll('.scrapbook-item'));
+      if (current >= items.length) {
+        if (obs && sentinel) obs.unobserve(sentinel);
+        return;
+      }
       chapterVisibleCounts.set(chapter, current + SCROLL_BATCH);
       refreshChapterProgressive(chapter);
+      if (current + SCROLL_BATCH >= items.length && obs && sentinel) {
+        obs.unobserve(sentinel);
+      }
     }
 
     function setupGalleryScrollTrigger() {
@@ -688,10 +696,10 @@
           const obs = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
               if (entry.isIntersecting) {
-                loadNextBatchForChapter(chapter);
+                loadNextBatchForChapter(chapter, obs, sentinel);
               }
             });
-          }, { rootMargin: '450px 0px 450px 0px' });
+          }, { rootMargin: '200px 0px 200px 0px' });
           obs.observe(sentinel);
         }
       });
