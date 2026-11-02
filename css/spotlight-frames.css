@@ -1,0 +1,385 @@
+/**
+ * Spotlight Frames — Originkit Architecture
+ * Vanilla CSS for High-Performance Slats Accordion
+ * Durga Public School, Pilani, Rajasthan
+ */
+
+/* Container wrapper */
+.spotlight-frames-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  overflow: hidden;
+  background: transparent;
+  user-select: none;
+  touch-action: pan-y;
+  border-radius: inherit;
+}
+
+/* Internal frame stage */
+.spotlight-frames-stage {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+/* Individual slat */
+.spotlight-slat {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  overflow: hidden;
+  cursor: pointer;
+  border-radius: 18px;
+  outline-offset: 2px;
+  will-change: left, width;
+  transition: left 0.85s cubic-bezier(0.075, 0.82, 0.165, 1),
+              width 0.85s cubic-bezier(0.075, 0.82, 0.165, 1);
+  box-shadow: 0 8px 24px rgba(46, 8, 21, 0.08);
+  border: 1px solid rgba(217, 184, 138, 0.35);
+  background: var(--card-bg, #FFFFFF);
+  z-index: 2;
+}
+
+.spotlight-slat.is-active {
+  z-index: 10;
+  box-shadow: 0 16px 36px rgba(46, 8, 21, 0.18);
+  border-color: rgba(217, 184, 138, 0.8);
+}
+
+/* Inner wrapper for image & overlays */
+.spotlight-slat-inner {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  transition: filter 0.6s cubic-bezier(0.075, 0.82, 0.165, 1),
+              opacity 0.6s ease;
+}
+
+/* Closed slats slight dimming */
+.spotlight-slat:not(.is-active) .spotlight-slat-inner {
+  filter: brightness(0.82) saturate(0.88);
+}
+
+.spotlight-slat:not(.is-active):hover .spotlight-slat-inner {
+  filter: brightness(0.95) saturate(0.96);
+}
+
+/* Fixed-width centered image (center-slice cropping) */
+.spotlight-slat-img {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
+}
+
+/* Subtle gradient scrim at bottom of open slat for readable title */
+.spotlight-slat-scrim {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 120px;
+  background: linear-gradient(180deg, rgba(46, 8, 21, 0) 0%, rgba(46, 8, 21, 0.82) 100%);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease 0.15s, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 18px 20px;
+  color: #FFFFFF;
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+
+.spotlight-slat.is-active .spotlight-slat-scrim {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.spotlight-slat-tag {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--saffron-600, #D97706);
+  color: #FFFFFF;
+  padding: 3px 8px;
+  border-radius: 999px;
+  margin-bottom: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.spotlight-slat-title {
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #FFFFFF;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+.spotlight-slat-sub {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Slat number badge on closed slats */
+.spotlight-slat-index {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(46, 8, 21, 0.75);
+  border: 1px solid rgba(217, 184, 138, 0.5);
+  color: #FDF9EE;
+  font-size: 0.68rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 5;
+}
+
+.spotlight-slat.is-active .spotlight-slat-index {
+  opacity: 0;
+  transform: translateX(-50%) scale(0.6);
+}
+
+/* Active Selector Box (Originkit hairline box + top/bottom guide lines) */
+.spotlight-selector {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border: 2.5px solid var(--gold-border, #D9B88A);
+  border-radius: 18px;
+  pointer-events: none;
+  z-index: 25;
+  will-change: left, width;
+  transition: left 0.85s cubic-bezier(0.075, 0.82, 0.165, 1),
+              width 0.85s cubic-bezier(0.075, 0.82, 0.165, 1);
+  box-shadow: 0 0 20px rgba(217, 184, 138, 0.4), inset 0 0 12px rgba(217, 184, 138, 0.15);
+}
+
+/* Guide lines extending from box top and bottom */
+.spotlight-selector-line {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 600px;
+  background: var(--gold-border, #D9B88A);
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.spotlight-selector-line.top {
+  bottom: 100%;
+}
+
+.spotlight-selector-line.bottom {
+  top: 100%;
+}
+
+/* Spotlight Navigation / Autoplay Video Bar */
+.spotlight-controls-bar {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(46, 8, 21, 0.88);
+  border: 1px solid rgba(217, 184, 138, 0.45);
+  border-radius: 999px;
+  padding: 6px 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  z-index: 30;
+  backdrop-filter: blur(8px);
+}
+
+/* Play/Pause Video Reel Toggle */
+.spotlight-video-btn {
+  background: transparent;
+  border: none;
+  color: var(--gold-300, #F3D2A2);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.spotlight-video-btn:hover {
+  color: #FFFFFF;
+  transform: scale(1.1);
+}
+
+/* Pagination Dots */
+.spotlight-dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.spotlight-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.35);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: width 0.3s ease, background 0.3s ease;
+}
+
+.spotlight-dot.active {
+  width: 22px;
+  background: var(--gold-300, #F3D2A2);
+}
+
+/* Arrow controls (optional overlay) */
+.spotlight-arrow-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(46, 8, 21, 0.85);
+  border: 1px solid rgba(217, 184, 138, 0.4);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 30;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.spotlight-arrow-btn:hover {
+  background: var(--wine-900, #7D1D3F);
+  border-color: var(--gold-300, #F3D2A2);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.spotlight-arrow-btn.prev {
+  left: 14px;
+}
+
+.spotlight-arrow-btn.next {
+  right: 14px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .spotlight-frames-wrap {
+    min-height: 360px;
+  }
+  .spotlight-slat {
+    border-radius: 12px;
+  }
+  .spotlight-selector {
+    border-radius: 12px;
+  }
+  .spotlight-slat-title {
+    font-size: 0.90rem;
+  }
+  .spotlight-arrow-btn {
+    display: none;
+  }
+}
+
+/* ============================================================================
+   HERO & NEWS SECTION INTEGRATIONS
+   ============================================================================ */
+
+/* Hero Showcase Spotlight Stage */
+.hero-spotlight-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+  background: linear-gradient(160deg, #FDFBF7 0%, #F5EFE6 50%, #ECE4D4 100%);
+}
+
+.hero-spotlight-stage .spotlight-slat {
+  border-radius: 24px;
+}
+
+.hero-spotlight-stage .spotlight-selector {
+  border-radius: 24px;
+}
+
+/* News Section Spotlight Viewport */
+.s-spotlight-container-wrap {
+  position: relative;
+  width: 100%;
+  margin-top: 14px;
+}
+
+.s-spotlight-viewport {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  min-height: 480px;
+  border-radius: 22px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(251, 247, 239, 0.75) 0%, rgba(244, 236, 220, 0.95) 100%);
+  border: 1.5px solid rgba(217, 184, 138, 0.5);
+  box-shadow: 0 12px 36px rgba(46, 8, 21, 0.08);
+}
+
+.s-spotlight-viewport .spotlight-slat {
+  border-radius: 16px;
+  border: 1px solid rgba(217, 184, 138, 0.45);
+}
+
+.s-spotlight-viewport .spotlight-selector {
+  border-radius: 16px;
+}
+
+/* Ensure Notch Pills inside Hero curved card float on top of slats */
+.client-curved-card .curved-notch-pill,
+.client-curved-card .curved-notch-gallery-pill {
+  z-index: 35 !important;
+}
+
+@media (max-width: 768px) {
+  .s-spotlight-viewport {
+    height: 410px;
+    min-height: 410px;
+  }
+}

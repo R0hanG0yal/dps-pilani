@@ -148,8 +148,8 @@
       marquee: false
     },
     principal: {
-      name: 'Dr. S. K. Sharma',
-      qualifications: 'M.Sc., M.Ed., Ph.D.',
+      name: 'Mrs. Punita Sharma',
+      qualifications: 'M.A., M.Ed., Principal & Head of Institution',
       message: 'Education at Durga Public School is a sacred journey where rigorous scholarship, physical fortitude, and uncompromised civic ethics converge to mold leaders of tomorrow.'
     }
   };
@@ -322,7 +322,7 @@
   const DEFAULT_FACULTY = [
     {
       id: 'FAC-01',
-      name: 'Dr. S. K. Sharma',
+      name: 'Mrs. Punita Sharma',
       designation: 'Principal & Head of Institution',
       dept: 'Administration & Physics',
       qual: 'M.Sc. (Physics), M.Ed., Ph.D.',
@@ -338,8 +338,7 @@
     },
     {
       id: 'FAC-03',
-      name: 'Mr. Rajesh Kumar Saini',
-      designation: 'PGT Mathematics & Senior Coordinator',
+      name: 'Mrs. Maya Verma', designation: 'Academic Coordinator & Senior Faculty',
       dept: 'Mathematics',
       qual: 'M.Sc. (Applied Maths), B.Ed.',
       exp: '16 Years'

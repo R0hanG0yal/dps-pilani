@@ -257,209 +257,121 @@
     // ==========================================================================
   // 5. DUAL-ROW PARALLEL SMOOTH GALLERY SCROLL (Hero Showcase Architecture)
   // ==========================================================================
-  const HERO_GALLERY_ROW_1 = [
+  // ============================================================================
+  // HERO SHOWCASE: SPOTLIGHT FRAMES (ORIGINKIT ARCHITECTURE)
+  // Continuous video-like autoplay loop, touch sensitive scrubbing & selector
+  // ============================================================================
+  let heroSpotlightInstance = null;
+
+  const HERO_SPOTLIGHT_ITEMS = [
     {
-      id: 'hero-c-01',
-      fullImage: 'assets/photos/client/campus/campus-entry-portico-1.jpg',
-      thumbWebp: 'assets/photos/scrapbook/thumbs/campus/campus-001.webp',
-      title: 'Grand Entrance Portico',
-      tag: 'Campus Architecture',
-      date: 'Estd. 2006'
+      image: 'assets/photos/client/campus/campus-building-exterior-1.jpg',
+      tag: '01 Campus Facade',
+      title: 'A Vibrant Sandstone Campus',
+      sub: 'Pilani landmark for academic excellence since 2006'
     },
     {
-      id: 'hero-c-02',
-      fullImage: 'assets/photos/board-merit-toppers.jpg',
-      thumbWebp: 'assets/photos/board-merit-toppers.jpg',
-      title: '100% Board Merit Distinctions',
-      tag: 'Academic Honors',
-      date: 'State Honors'
+      image: 'assets/photos/client/labs/chemistry-lab-titration-benches-1.jpg',
+      tag: 'Composite Science Labs',
+      title: 'Empirical Discovery & Practical Rigor',
+      sub: 'Physics, chemistry, biology & composite science labs'
     },
     {
-      id: 'hero-c-03',
-      fullImage: 'assets/photos/science-practical-demonstration.jpg',
-      thumbWebp: 'assets/photos/scrapbook/thumbs/labs/labs-001.webp',
-      title: 'Empirical Science Practical Labs',
-      tag: 'Science Labs',
-      date: 'Senior Wing'
+      image: 'assets/photos/client/events/event-sports-day-sprint-race-1.jpg',
+      tag: '02 Sports Arena',
+      title: 'Athletic Vitality & Sportsmanship',
+      sub: 'Sprint championships, volleyball, cricket & martial arts'
     },
     {
-      id: 'hero-c-04',
-      fullImage: 'assets/photos/client/labs/computer-lab-workstations-1.jpg',
-      thumbWebp: 'assets/photos/scrapbook/thumbs/labs/labs-004.webp',
-      title: 'High-Speed IT & Computer Hub',
-      tag: 'Digital Tech',
-      date: 'Modern Labs'
+      image: 'assets/photos/client/labs/computer-lab-workstations-1.jpg',
+      tag: '03 Computer Lab',
+      title: 'Future-Ready Digital Literacy',
+      sub: 'High-speed networked terminals & coding curriculum'
     },
     {
-      id: 'hero-c-05',
-      fullImage: 'assets/photos/campus-admin-wing.jpg',
-      thumbWebp: 'assets/photos/scrapbook/thumbs/campus/campus-004.webp',
-      title: 'Administrative Secretariat',
-      tag: 'Governance',
-      date: 'Pilani Campus'
+      image: 'assets/photos/client/transport/transport-bus-fleet-1.jpg',
+      tag: '04 GPS Bus Fleet',
+      title: 'Safe Transit Connectivity',
+      sub: '11 dedicated radial routes across Pilani & surrounding regions'
     },
     {
-      id: 'hero-c-06',
-      fullImage: 'assets/photos/merit-student-director-honors.jpg',
-      thumbWebp: 'assets/photos/merit-student-director-honors.jpg',
-      title: 'Scholastic Merit Felicitation',
-      tag: 'Merit Awards',
-      date: 'Honors Desk'
+      image: 'assets/photos/client/events/event-annual-day-cultural-performance-3.jpg',
+      tag: 'Cultural Heritage',
+      title: 'Traditional Arts & Folk Heritage',
+      sub: 'Saraswati Vandana, annual day celebrations & folk dance'
     },
     {
-      id: 'hero-c-07',
-      fullImage: 'assets/photos/client/campus/campus-lawn-quadrangle-1.jpg',
-      thumbWebp: 'assets/photos/scrapbook/thumbs/campus/campus-003.webp',
-      title: 'Lush Sandstone Courtyards',
-      tag: 'Campus Greens',
-      date: 'Loharu Road'
-    },
-    {
-      id: 'hero-c-08',
-      fullImage: 'assets/photos/client/labs/chemistry-lab-titration-benches-1.jpg',
-      thumbWebp: 'assets/photos/scrapbook/thumbs/labs/labs-002.webp',
-      title: 'Hands-on Chemistry Workstations',
-      tag: 'Composite Labs',
-      date: 'Research Wing'
+      image: 'assets/photos/merit-student-director-honors.jpg',
+      tag: '100% Board Pass',
+      title: 'RBSE Board Merit Distinctions',
+      sub: 'State distinction toppers honored by institutional leadership'
     }
   ];
-
-  const HERO_GALLERY_ROW_2 = [
-    {
-      id: 'hero-c-09',
-      fullImage: 'assets/photos/annual-sports-day-podium-champions.jpg',
-      thumbWebp: 'assets/photos/scrapbook/thumbs/sports/sports-001.webp',
-      title: 'Athletic Champions on Podium',
-      tag: 'Athletics',
-      date: 'State Medals'
-    },
-    {
-      id: 'hero-c-10',
-      fullImage: 'assets/photos/deep-prajwalan-saraswati-vandana.jpg',
-      thumbWebp: 'assets/photos/scrapbook/thumbs/cultural/cultural-001.webp',
-      title: 'Deep Prajwalan Vedic Heritage',
-      tag: 'Cultural Arts',
-      date: 'Founders Day'
-    },
-    {
-      id: 'hero-c-11',
-      fullImage: 'assets/photos/client/transport/transport-bus-fleet-1.jpg',
-      thumbWebp: 'assets/photos/client/transport/transport-bus-fleet-1.jpg',
-      title: 'GPS Bus Fleet Across 11 Corridors',
-      tag: 'Transport',
-      date: 'Daily Routes'
-    },
-    {
-      id: 'hero-c-12',
-      fullImage: 'assets/photos/client/events/event-sports-day-sprint-race-1.jpg',
-      thumbWebp: 'assets/photos/scrapbook/thumbs/sports/sports-002.webp',
-      title: 'Track Races & Athletic Arena',
-      tag: 'Sports Arena',
-      date: 'Inter-House'
-    },
-    {
-      id: 'hero-c-13',
-      fullImage: 'assets/photos/client/events/event-folk-dance-presentation-1.jpg',
-      thumbWebp: 'assets/photos/scrapbook/thumbs/cultural/cultural-002.webp',
-      title: 'Rajasthani Folk Dance & Tradition',
-      tag: 'Folk Traditions',
-      date: 'Annual Day'
-    },
-    {
-      id: 'hero-c-14',
-      fullImage: 'assets/photos/art-craft-exhibition-raman-house.jpg',
-      thumbWebp: 'assets/photos/scrapbook/thumbs/cultural/cultural-003.webp',
-      title: 'Patel House Fine Arts Expo',
-      tag: 'Creative Arts',
-      date: 'Exhibition'
-    },
-    {
-      id: 'hero-c-15',
-      fullImage: 'assets/photos/client/events/event-republic-day-parade-1.jpg',
-      thumbWebp: 'assets/photos/scrapbook/thumbs/cultural/cultural-004.webp',
-      title: 'Ceremonial Flag & Parade',
-      tag: 'National Pride',
-      date: 'Patriotic Day'
-    },
-    {
-      id: 'hero-c-16',
-      fullImage: 'assets/photos/class-x-graduating-batch-turban.jpg',
-      thumbWebp: 'assets/photos/class-x-graduating-batch-turban.jpg',
-      title: 'Senior Secondary Graduating Cohort',
-      tag: 'Proud Alumni',
-      date: 'Graduation'
-    }
-  ];
-
-  let heroTopSliderInstance = null;
-  let heroBottomSliderInstance = null;
 
   function initInspireHeroSlider() {
-    const topRowEl = document.getElementById('heroRowTopSlider');
-    const bottomRowEl = document.getElementById('heroRowBottomSlider');
+    const stageEl = document.getElementById('heroSpotlightStage');
     const photoPills = document.querySelectorAll('.photo-pill-btn');
 
-    if (!topRowEl || !bottomRowEl || typeof SmoothScrollSlider === 'undefined') return;
+    if (!stageEl || typeof SpotlightFrames === 'undefined') return;
 
-    // Row 1: Top Gliding Track (Drifting Right)
-    heroTopSliderInstance = new SmoothScrollSlider(topRowEl, {
-      items: HERO_GALLERY_ROW_1,
-      slideWidth: 235,
-      slideHeight: 185,
-      spacing: 2,
-      direction: 'right',
-      smoothness: 9,
-      radius: 14,
-      dim: 0,
-      background: 'transparent',
-      sensitivity: 5,
-      loop: true,
+    heroSpotlightInstance = new SpotlightFrames(stageEl, {
+      images: HERO_SPOTLIGHT_ITEMS,
+      collapsedWidth: 72,
+      expandedWidth: 420,
+      gap: 6,
+      radius: 24,
+      startIndex: 0,
+      trigger: 'auto',
       autoplay: true,
-      autoplaySpeed: 0.45,
+      autoplayInterval: 2800, // Continuous video-like cycle
+      selector: {
+        box: true,
+        lines: true,
+        lineLength: 450,
+        thickness: 2.5,
+        color: '#D9B88A'
+      },
+      showControls: true,
+      showArrows: false,
+      onSelect: function (item, index) {
+        const pillMap = { 0: 0, 2: 1, 3: 2, 4: 3 };
+        const activePillIdx = pillMap[index];
+        photoPills.forEach(function (pill, pIdx) {
+          if (pIdx === activePillIdx) {
+            pill.classList.add('active');
+            pill.setAttribute('aria-selected', 'true');
+          } else {
+            pill.classList.remove('active');
+            pill.setAttribute('aria-selected', 'false');
+          }
+        });
+      },
       onSlideClick: function (item) {
-        window.openHeroPhotoModal(item);
+        window.openHeroPhotoModal({
+          fullImage: item.src,
+          title: item.title,
+          tag: item.tag,
+          date: 'Campus Highlight'
+        });
       }
     });
 
-    // Row 2: Bottom Gliding Track (Drifting Left in Parallel)
-    heroBottomSliderInstance = new SmoothScrollSlider(bottomRowEl, {
-      items: HERO_GALLERY_ROW_2,
-      slideWidth: 235,
-      slideHeight: 185,
-      spacing: 2,
-      direction: 'left',
-      smoothness: 9,
-      radius: 14,
-      dim: 0,
-      background: 'transparent',
-      sensitivity: 5,
-      loop: true,
-      autoplay: true,
-      autoplaySpeed: 0.38,
-      onSlideClick: function (item) {
-        window.openHeroPhotoModal(item);
-      }
-    });
-
-    // Wire Photo Selector Pills to Accelerate / Focus
-    photoPills.forEach(function (pill, idx) {
+    // Wire Photo Selector Pills to Focus Corresponding Slat
+    const pillToSlatMap = [0, 2, 3, 4];
+    photoPills.forEach(function (pill, pillIdx) {
       pill.addEventListener('click', function () {
         photoPills.forEach(p => { p.classList.remove('active'); p.setAttribute('aria-selected', 'false'); });
         pill.classList.add('active');
         pill.setAttribute('aria-selected', 'true');
 
-        // Smoothly accelerate glide towards the requested category
-        if (heroTopSliderInstance) {
-          heroTopSliderInstance.target += (idx + 1) * 320;
-        }
-        if (heroBottomSliderInstance) {
-          heroBottomSliderInstance.target -= (idx + 1) * 320;
+        if (heroSpotlightInstance) {
+          heroSpotlightInstance.tempPause();
+          heroSpotlightInstance.setFocus(pillToSlatMap[pillIdx]);
         }
       });
     });
   }
 
-  // Universal Lightbox Modal for Hero Showcase Photos
   window.openHeroPhotoModal = function (item) {
     if (!item) return;
     let modal = document.getElementById('heroPhotoModal');

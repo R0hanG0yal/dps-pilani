@@ -70,7 +70,7 @@
       badge: 'HONORS',
       category: 'Examinations',
       title: 'Merit Achievers Felicitated with Traditional Safa & Institutional Mementos',
-      desc: 'State board distinction toppers honored by Director Shri Surender Singh and Senior Faculty in campus courtyard assembly.',
+      desc: 'State board distinction toppers honored by Director Shri Shushil Kumar Verma and Senior Faculty in campus courtyard assembly.',
       link: 'gallery.html',
       isNew: false
     }
@@ -534,6 +534,50 @@
 
   // 2B. Smooth Scroll Slider Instance (Originkit Architecture)
   let cuttingsSliderInstance = null;
+  let cuttingsSpotlightInstance = null;
+
+  function initNewsCuttingsSpotlight(data) {
+    const spotlightEl = document.getElementById('sCuttingsSpotlight');
+    if (!spotlightEl || typeof SpotlightFrames === 'undefined') return;
+
+    const items = data.map(function (c) {
+      return {
+        image: c.fullImage || c.image,
+        title: c.title,
+        tag: c.paperName || 'Rajasthan Press',
+        sub: (c.date || '') + (c.edition ? ' &bull; ' + c.edition : ''),
+        id: c.id
+      };
+    });
+
+    if (cuttingsSpotlightInstance) {
+      cuttingsSpotlightInstance.destroy();
+    }
+
+    cuttingsSpotlightInstance = new SpotlightFrames(spotlightEl, {
+      images: items,
+      collapsedWidth: 70,
+      expandedWidth: 420,
+      gap: 6,
+      radius: 16,
+      startIndex: 0,
+      trigger: 'auto',
+      autoplay: true,
+      autoplayInterval: 2800,
+      selector: {
+        box: true,
+        lines: true,
+        lineLength: 450,
+        thickness: 2.5,
+        color: '#D9B88A'
+      },
+      showControls: true,
+      showArrows: true,
+      onSlideClick: function (item) {
+        openCuttingModal(item.id);
+      }
+    });
+  }
 
   function initNewsCuttingsSlider(data) {
     const sliderEl = document.getElementById('sCuttingsSlider');
@@ -573,31 +617,61 @@
   }
 
   function setupViewModeToggle() {
+    const spotlightWrap = document.getElementById('sSpotlightContainerWrap');
     const sliderWrap = document.getElementById('sSliderContainerWrap');
     const gridEl = document.getElementById('sCuttingsGrid');
+    const btnSpotlight = document.getElementById('sViewBtnSpotlight');
     const btnSlider = document.getElementById('sViewBtnSlider');
     const btnGrid = document.getElementById('sViewBtnGrid');
 
-    if (!btnSlider || !btnGrid || !sliderWrap || !gridEl) return;
+    if (btnSpotlight) {
+      btnSpotlight.addEventListener('click', function () {
+        btnSpotlight.classList.add('active');
+        btnSpotlight.setAttribute('aria-checked', 'true');
+        if (btnSlider) { btnSlider.classList.remove('active'); btnSlider.setAttribute('aria-checked', 'false'); }
+        if (btnGrid) { btnGrid.classList.remove('active'); btnGrid.setAttribute('aria-checked', 'false'); }
 
-    btnSlider.addEventListener('click', function () {
-      btnSlider.classList.add('active');
-      btnSlider.setAttribute('aria-checked', 'true');
-      btnGrid.classList.remove('active');
-      btnGrid.setAttribute('aria-checked', 'false');
-      sliderWrap.style.display = 'block';
-      gridEl.style.display = 'none';
-      if (cuttingsSliderInstance) cuttingsSliderInstance._onResize();
-    });
+        if (spotlightWrap) spotlightWrap.style.display = 'block';
+        if (sliderWrap) sliderWrap.style.display = 'none';
+        if (gridEl) gridEl.style.display = 'none';
 
-    btnGrid.addEventListener('click', function () {
-      btnGrid.classList.add('active');
-      btnGrid.setAttribute('aria-checked', 'true');
-      btnSlider.classList.remove('active');
-      btnSlider.setAttribute('aria-checked', 'false');
-      sliderWrap.style.display = 'none';
-      gridEl.style.display = 'grid';
-    });
+        if (cuttingsSpotlightInstance) {
+          cuttingsSpotlightInstance.layout();
+          cuttingsSpotlightInstance.startAutoplay();
+        }
+      });
+    }
+
+    if (btnSlider) {
+      btnSlider.addEventListener('click', function () {
+        btnSlider.classList.add('active');
+        btnSlider.setAttribute('aria-checked', 'true');
+        if (btnSpotlight) { btnSpotlight.classList.remove('active'); btnSpotlight.setAttribute('aria-checked', 'false'); }
+        if (btnGrid) { btnGrid.classList.remove('active'); btnGrid.setAttribute('aria-checked', 'false'); }
+
+        if (spotlightWrap) spotlightWrap.style.display = 'none';
+        if (sliderWrap) sliderWrap.style.display = 'block';
+        if (gridEl) gridEl.style.display = 'none';
+
+        if (cuttingsSliderInstance) cuttingsSliderInstance._onResize();
+        if (cuttingsSpotlightInstance) cuttingsSpotlightInstance.stopAutoplay();
+      });
+    }
+
+    if (btnGrid) {
+      btnGrid.addEventListener('click', function () {
+        btnGrid.classList.add('active');
+        btnGrid.setAttribute('aria-checked', 'true');
+        if (btnSpotlight) { btnSpotlight.classList.remove('active'); btnSpotlight.setAttribute('aria-checked', 'false'); }
+        if (btnSlider) { btnSlider.classList.remove('active'); btnSlider.setAttribute('aria-checked', 'false'); }
+
+        if (spotlightWrap) spotlightWrap.style.display = 'none';
+        if (sliderWrap) sliderWrap.style.display = 'none';
+        if (gridEl) gridEl.style.display = 'grid';
+
+        if (cuttingsSpotlightInstance) cuttingsSpotlightInstance.stopAutoplay();
+      });
+    }
   }
 
   // Load News Cuttings (Local storage + embedded default + fetch fallback)
@@ -618,6 +692,7 @@
     } catch (e) {}
 
     newsCuttings = activeData;
+    initNewsCuttingsSpotlight(activeData);
     initNewsCuttingsSlider(activeData);
     renderCuttings(activeData, 'all');
     setupCuttingFilters(activeData);
