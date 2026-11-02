@@ -1306,3 +1306,119 @@
   color: #B45309 !important;
   gap: 7px !important;
 }
+
+/* ============================================================================
+   SHEKHAWATI MEDIA HUB: BALANCED 2-COLUMN & 5-COLUMN TAB BAR
+   Never single orphan rows — always at least 2 buttons per row, with smooth
+   expandable interactive styling.
+   ============================================================================ */
+.shekhauni-tab-bar {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  background: rgba(255, 255, 255, 0.75) !important;
+  padding: 8px !important;
+  border-radius: 16px !important;
+  border: 1.5px solid rgba(217, 184, 138, 0.5) !important;
+  box-shadow: 0 4px 18px rgba(46, 8, 21, 0.05) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  align-items: stretch !important;
+}
+
+.s-tab-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 10px 12px !important;
+  border-radius: 10px !important;
+  border: 1px solid transparent !important;
+  background: rgba(255, 255, 255, 0.4) !important;
+  color: var(--ink-700, #374151) !important;
+  font-family: var(--font-ui, sans-serif) !important;
+  font-size: 0.82rem !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  text-align: center !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.s-tab-btn svg {
+  flex-shrink: 0 !important;
+  transition: transform 0.22s ease !important;
+}
+
+.s-tab-btn:hover {
+  background: #FFFFFF !important;
+  color: var(--wine-950, #2E0815) !important;
+  border-color: rgba(217, 184, 138, 0.6) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(46, 8, 21, 0.08) !important;
+}
+
+.s-tab-btn:hover svg {
+  transform: scale(1.12) !important;
+}
+
+.s-tab-btn.active {
+  background: var(--wine-900, #2E0815) !important;
+  color: #FFFFFF !important;
+  border-color: #D9B88A !important;
+  box-shadow: 0 6px 18px rgba(46, 8, 21, 0.25) !important;
+  transform: translateY(-1px) !important;
+}
+
+.s-tab-btn.active svg {
+  stroke: #FDE68A !important;
+}
+
+/* Tablet & Smaller Screens: Always at least 2 buttons per row (2-Column Grid) */
+@media (max-width: 1100px) {
+  .shekhauni-tab-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  /* The 5th button spans 2 columns to keep the grid completely balanced */
+  .shekhauni-tab-bar .s-tab-btn:last-child {
+    grid-column: span 2 !important;
+  }
+
+  .s-tab-btn {
+    padding: 11px 14px !important;
+    font-size: 0.85rem !important;
+  }
+}
+
+/* Compact Mobile (< 540px) */
+@media (max-width: 540px) {
+  .shekhauni-tab-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    padding: 6px !important;
+  }
+
+  .shekhauni-tab-bar .s-tab-btn:last-child {
+    grid-column: span 2 !important;
+  }
+
+  .s-tab-btn {
+    padding: 9px 8px !important;
+    font-size: 0.74rem !important;
+    gap: 5px !important;
+  }
+
+  .s-tab-btn svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  .s-tab-badge,
+  .s-tab-count {
+    font-size: 0.60rem !important;
+    padding: 1px 5px !important;
+  }
+}
