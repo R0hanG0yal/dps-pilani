@@ -548,7 +548,7 @@
       smoothness: 10,
       radius: 16,
       dim: 10,
-      background: '#0B0206',
+      background: 'transparent',
       sensitivity: 5,
       loop: true,
       autoplay: true,

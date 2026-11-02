@@ -60,7 +60,7 @@
         smoothness: 10,
         radius: 16,
         dim: 10,
-        background: '#0B0206',
+        background: 'transparent',
         sensitivity: 5,
         loop: true,
         autoplay: false,
@@ -241,11 +241,13 @@
         slide.style.height = `${self.currentSlideHeight}px`;
         slide.style.borderRadius = `${self.options.radius}px`;
         slide.style.overflow = 'hidden';
-        slide.style.background = '#120208';
+        slide.style.background = '#FFFFFF';
+        slide.style.border = '1.5px solid rgba(217, 184, 138, 0.45)';
+        slide.style.boxShadow = '0 14px 32px -6px rgba(46, 8, 21, 0.16), 0 4px 12px rgba(0, 0, 0, 0.05)';
         slide.style.willChange = 'transform, filter';
         slide.style.transform = 'translate3d(0, -50%, 0)';
-        slide.style.boxShadow = '0 16px 36px rgba(0, 0, 0, 0.45)';
-        slide.style.border = '1px solid rgba(217, 184, 138, 0.28)';
+        
+        
         slide.style.cursor = 'pointer';
 
         // Newspaper publication tag badge
@@ -259,12 +261,12 @@
             <div class="s-slider-badge ${badgeClass}" style="position:absolute;top:12px;left:12px;z-index:3;">
               ${escapeHtml(item.newspaper || 'Press Clipping')}
             </div>
-            <div class="s-slide-dim-overlay" style="position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;border-radius:inherit;transition:opacity 0.1s ease;z-index:2;"></div>
+            <div class="s-slide-dim-overlay" style="position:absolute;inset:0;background:#F4ECDC;opacity:0;pointer-events:none;border-radius:inherit;transition:opacity 0.1s ease;z-index:2;"></div>
             <picture style="width:100%;height:100%;display:block;">
               ${item.thumbWebp ? `<source srcset="${item.thumbWebp}" type="image/webp">` : ''}
               <img src="${item.thumbImage || item.image || item.fullImage}" alt="${escapeHtml(item.title)}" draggable="false" style="width:100%;height:100%;object-fit:cover;object-position:50% 50%;display:block;user-select:none;-webkit-user-drag:none;pointer-events:none;">
             </picture>
-            <div class="s-slider-caption-bar" style="position:absolute;bottom:0;left:0;right:0;padding:14px 14px 12px 14px;background:linear-gradient(180deg, rgba(13,2,8,0) 0%, rgba(13,2,8,0.85) 30%, rgba(13,2,8,0.98) 100%);color:#FFF;z-index:3;pointer-events:none;">
+            <div class="s-slider-caption-bar" style="position:absolute;bottom:0;left:0;right:0;padding:14px 14px 12px 14px;background:linear-gradient(180deg, rgba(46,8,21,0) 0%, rgba(46,8,21,0.85) 32%, rgba(28,4,13,0.96) 100%);color:#FFF;z-index:3;pointer-events:none;">
               <span class="s-slider-date" style="font-size:0.72rem;font-weight:700;color:#FDE68A;margin-bottom:2px;display:block;">${escapeHtml(item.date || '')}</span>
               <h4 class="s-slider-title" style="font-family:var(--font-display,Georgia,serif);font-size:0.92rem;font-weight:700;line-height:1.25;color:#FFF;margin:0;">${escapeHtml(item.title)}</h4>
             </div>
