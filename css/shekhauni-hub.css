@@ -1156,3 +1156,153 @@
   border-top: 1px solid #F1F5F9;
   padding-top: 10px;
 }
+
+/* ============================================================================
+   COMPACT 2-COLUMN NOTICES GRID (Eliminates Blank Space & Cuts Height by 70%)
+   ============================================================================ */
+.s-notices-list {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+}
+
+@media (max-width: 768px) {
+  .s-notices-list {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+}
+
+/* Compact Modern Notice Card */
+.s-notice-card {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(217, 184, 138, 0.45) !important;
+  border-radius: 14px !important;
+  padding: 16px 18px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  box-shadow: 0 4px 14px rgba(46, 8, 21, 0.04) !important;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease !important;
+}
+
+.s-notice-card:hover {
+  transform: translateY(-2px) !important;
+  border-color: var(--wine-900, #7D1D3F) !important;
+  box-shadow: 0 10px 24px rgba(46, 8, 21, 0.09) !important;
+}
+
+.s-notice-card-top {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+}
+
+.s-notice-date-chip {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  background: linear-gradient(135deg, #2E0815 0%, #1A040D 100%) !important;
+  color: #FDE68A !important;
+  border: 1px solid rgba(217, 184, 138, 0.5) !important;
+  border-radius: 6px !important;
+  padding: 3px 8px !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  font-family: var(--font-mono, monospace) !important;
+  letter-spacing: 0.04em !important;
+  line-height: 1 !important;
+  box-shadow: 0 2px 6px rgba(46, 8, 21, 0.15) !important;
+}
+
+.s-notice-date-chip .s-notice-day {
+  color: #FDE68A !important;
+  font-size: 0.84rem !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+}
+
+.s-notice-date-chip .s-notice-mon {
+  color: #FFF !important;
+  font-size: 0.70rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  line-height: 1 !important;
+}
+
+.s-notice-tags {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.s-notice-category-badge {
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  color: var(--wine-950, #2E0815) !important;
+  background: var(--sand-200, #F4ECDC) !important;
+  padding: 2px 7px !important;
+  border-radius: 4px !important;
+  letter-spacing: 0.04em !important;
+}
+
+.s-notice-card-body {
+  flex: 1 !important;
+}
+
+.s-notice-card-body .s-notice-title {
+  font-size: 0.98rem !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  margin: 0 0 6px 0 !important;
+}
+
+.s-notice-card-body .s-notice-title a {
+  color: var(--wine-950, #2E0815) !important;
+  text-decoration: none !important;
+  transition: color 0.15s ease !important;
+}
+
+.s-notice-card-body .s-notice-title a:hover {
+  color: #B45309 !important;
+}
+
+.s-notice-card-body .s-notice-desc {
+  font-size: 0.84rem !important;
+  color: var(--ink-700) !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.s-notice-card-foot {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  padding-top: 8px !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
+  margin-top: 4px !important;
+}
+
+.s-notice-action-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  font-size: 0.80rem !important;
+  font-weight: 700 !important;
+  color: var(--wine-900, #7D1D3F) !important;
+  text-decoration: none !important;
+  transition: gap 0.2s ease, color 0.2s ease !important;
+}
+
+.s-notice-action-link:hover {
+  color: #B45309 !important;
+  gap: 7px !important;
+}

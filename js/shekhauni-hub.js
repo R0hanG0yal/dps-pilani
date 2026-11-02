@@ -496,33 +496,45 @@
     }
 
         container.innerHTML = notices.map(function (n) {
-      const isUrgent = n.badge === 'URGENT' || n.category === 'Urgent';
+      const category = (n.category || 'General').trim();
+      const badge = (n.badge || '').trim();
+      const isUrgent = badge.toUpperCase() === 'URGENT' || category.toUpperCase() === 'URGENT';
       const badgeCls = isUrgent ? 's-badge-urgent' : 's-badge-regular';
       const newTag = (n.isNew || n.status === 'Active') ? '<span class="s-blinking-new">NEW</span>' : '';
       const linkUrl = n.fileUrl || n.link || 'admissions.html';
       const dateParts = (n.date || '01 Nov 2026').split(' ');
       const day = dateParts[0] || '01';
-      const mon = (dateParts[1] || 'Nov') + ' ' + (dateParts[2] || '');
+      const mon = (dateParts[1] || 'Nov') + (dateParts[2] ? ' ' + dateParts[2] : '');
+
+      const showBadge = badge && badge.toLowerCase() !== category.toLowerCase();
+      const badgeHtml = showBadge ? '<span class="s-notice-badge ' + badgeCls + '">' + escapeHtml(badge) + '</span>' : '';
+
+      const title = (n.title || '').trim();
+      const desc = (n.desc || '').trim();
+      const showDesc = desc && desc.toLowerCase() !== title.toLowerCase();
+      const descHtml = showDesc ? '<p class="s-notice-desc">' + escapeHtml(desc) + '</p>' : '';
 
       return `
-        <article class="s-notice-row">
-          <div class="s-notice-date-box">
-            <span class="s-notice-day">${day}</span>
-            <span class="s-notice-mon">${mon}</span>
-          </div>
-          <div class="s-notice-main">
-            <div class="s-notice-meta-bar">
-              <span class="s-notice-category">${escapeHtml(n.category || 'General')}</span>
-              <span class="s-notice-badge ${badgeCls}">${escapeHtml(n.badge || n.category || 'NOTICE')}</span>
+        <article class="s-notice-card">
+          <div class="s-notice-card-top">
+            <div class="s-notice-date-chip">
+              <span class="s-notice-day">${escapeHtml(day)}</span>
+              <span class="s-notice-mon">${escapeHtml(mon)}</span>
+            </div>
+            <div class="s-notice-tags">
+              <span class="s-notice-category-badge">${escapeHtml(category)}</span>
+              ${badgeHtml}
               ${newTag}
             </div>
-            <h4 class="s-notice-title">
-              <a href="${escapeHtml(linkUrl)}">${escapeHtml(n.title)}</a>
-            </h4>
-            <p class="s-notice-desc">${escapeHtml(n.desc || n.title)}</p>
           </div>
-          <div class="s-notice-action">
-            <a href="${escapeHtml(linkUrl)}" class="s-notice-link-btn" aria-label="View notice: ${escapeHtml(n.title)}">
+          <div class="s-notice-card-body">
+            <h4 class="s-notice-title">
+              <a href="${escapeHtml(linkUrl)}">${escapeHtml(title)}</a>
+            </h4>
+            ${descHtml}
+          </div>
+          <div class="s-notice-card-foot">
+            <a href="${escapeHtml(linkUrl)}" class="s-notice-action-link" aria-label="View notice: ${escapeHtml(title)}">
               <span>View Notice</span>
               <span aria-hidden="true">&rarr;</span>
             </a>
