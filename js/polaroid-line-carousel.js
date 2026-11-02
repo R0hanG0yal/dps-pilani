@@ -267,6 +267,7 @@
       card.className = 'pl-card';
       card.setAttribute('data-i', String(i));
       card.setAttribute('data-on', i === self.active ? '1' : '0');
+      card.style.zIndex = String(i === self.active ? 120 : 60);
       if (i !== self.active) card.setAttribute('aria-hidden', 'true');
 
       const print = document.createElement('div');
@@ -495,7 +496,9 @@
 
         const y = stringY(x, w, y0, self.opts.sag || 44) - 6;
         el.style.transform = 'translate(' + (x - cw / 2).toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(' + a.toFixed(4) + 'rad)';
-        el.style.zIndex = String(i === near ? self.n + 1 : self.n - Math.abs(i - near));
+        const baseZ = 50;
+        const nearZ = 120;
+        el.style.zIndex = String(i === near ? nearZ : Math.max(baseZ + 1, nearZ - Math.abs(i - near)));
       }
 
       if (self.path) {

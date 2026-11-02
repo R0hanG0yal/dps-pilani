@@ -51,6 +51,7 @@
   will-change: transform;
   cursor: inherit;
   transition: opacity 0.3s ease;
+  z-index: 50;
 }
 
 /* Polaroid White/Cream Paper Mount */
@@ -174,7 +175,7 @@
   justify-content: space-between;
   gap: 14px;
   cursor: default;
-  z-index: 35;
+  z-index: 10 !important;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -184,6 +185,8 @@
 
 /* 1. Liquid Glass Caption Card (Title & Subtitle) */
 .pl-cap-pill {
+  position: relative;
+  z-index: 10 !important;
   pointer-events: auto;
   flex: 1;
   min-width: 0;
@@ -245,6 +248,8 @@
 
 /* 2. Liquid Glass Separated Navigation Pod */
 .pl-nav-pod {
+  position: relative;
+  z-index: 140 !important;
   pointer-events: auto;
   display: inline-flex;
   align-items: center;
@@ -345,7 +350,7 @@
   display: grid;
   place-items: center;
   cursor: pointer;
-  z-index: 30;
+  z-index: 140 !important;
   transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
