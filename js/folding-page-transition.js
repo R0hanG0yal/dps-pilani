@@ -394,12 +394,18 @@
     }
 
     uploadImage(tex, imageOrCanvas) {
-      if (!this.gl || !tex || !imageOrCanvas) return;
+      if (!this.gl || !tex || !imageOrCanvas) return false;
       const gl = this.gl;
-      gl.bindTexture(gl.TEXTURE_2D, tex);
-      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, imageOrCanvas);
-      this.setupTextureParameters(tex);
+      try {
+        gl.bindTexture(gl.TEXTURE_2D, tex);
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, imageOrCanvas);
+        this.setupTextureParameters(tex);
+        return true;
+      } catch (err) {
+        console.warn('[ProspectusFoldingTransition] texImage2D error:', err);
+        return false;
+      }
     }
 
     resize() {
@@ -485,8 +491,13 @@
       if (this.isAnimating) return;
       this.isAnimating = true;
 
-      this.uploadImage(this.currentTexture, currentCanvas);
-      this.uploadImage(this.nextTexture, nextCanvas);
+      const ok1 = this.uploadImage(this.currentTexture, currentCanvas);
+      const ok2 = this.uploadImage(this.nextTexture, nextCanvas);
+      if (!ok1 || !ok2) {
+        this.isAnimating = false;
+        if (typeof callback === 'function') callback();
+        return;
+      }
 
       this.direction = direction || 1;
       this.isSpread = !!isSpread;

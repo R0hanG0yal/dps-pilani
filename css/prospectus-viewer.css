@@ -234,7 +234,7 @@
   box-shadow:
     0 22px 50px -10px rgba(0, 0, 0, 0.6),
     0 8px 20px rgba(0, 0, 0, 0.35);
-  background: #110208;
+  background: radial-gradient(circle at 50% 50%, #2A0817 0%, #15020B 100%);
   cursor: grab;
   touch-action: pan-y pinch-zoom;
   user-select: none;
@@ -262,7 +262,7 @@
   display: flex;
   z-index: 1;
   overflow: hidden;
-  background: #110208;
+  background: radial-gradient(circle at 50% 50%, #2A0817 0%, #15020B 100%);
 }
 
 .prospectus-base-page {

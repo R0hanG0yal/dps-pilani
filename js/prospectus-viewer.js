@@ -69,8 +69,8 @@
       }
 
       const img = new Image();
-      const webpSrc = `${BASE_ASSET_PATH}page-${padNum(pageNum)}.webp`;
       const jpgSrc = `${BASE_ASSET_PATH}page-${padNum(pageNum)}.jpg`;
+      const webpSrc = `${BASE_ASSET_PATH}page-${padNum(pageNum)}.webp`;
 
       img.onload = function () {
         pageImageCache.set(pageNum, img);
@@ -87,10 +87,10 @@
           console.warn(`[Prospectus] Failed to load page ${pageNum}`);
           resolve(null);
         };
-        fallbackImg.src = jpgSrc;
+        fallbackImg.src = webpSrc;
       };
 
-      img.src = webpSrc;
+      img.src = jpgSrc;
     });
   }
 
@@ -151,6 +151,16 @@
     if (!viewport) return;
     const info = getSpreadInfo(spreadIdx);
 
+    function setupImg(el, pageNum) {
+      if (!el || !pageNum) return;
+      el.onerror = function () {
+        if (this.src.indexOf('.jpg') !== -1) {
+          this.src = this.src.replace('.jpg', '.webp');
+        }
+      };
+      el.src = `${BASE_ASSET_PATH}page-${padNum(pageNum)}.jpg`;
+    }
+
     if (info.isSingle) {
       viewport.classList.remove('is-spread');
       viewport.classList.add('is-single');
@@ -159,7 +169,7 @@
       if (baseImgRight) {
         baseImgRight.style.display = 'block';
         baseImgRight.style.width = '100%';
-        baseImgRight.src = `${BASE_ASSET_PATH}page-${padNum(info.right)}.webp`;
+        setupImg(baseImgRight, info.right);
       }
     } else {
       viewport.classList.remove('is-single');
@@ -168,12 +178,12 @@
       if (baseImgLeft) {
         baseImgLeft.style.display = 'block';
         baseImgLeft.style.width = '50%';
-        baseImgLeft.src = `${BASE_ASSET_PATH}page-${padNum(info.left)}.webp`;
+        setupImg(baseImgLeft, info.left);
       }
       if (baseImgRight) {
         baseImgRight.style.display = 'block';
         baseImgRight.style.width = '50%';
-        baseImgRight.src = `${BASE_ASSET_PATH}page-${padNum(info.right)}.webp`;
+        setupImg(baseImgRight, info.right);
       }
     }
   }
@@ -237,32 +247,59 @@
       }
       resizeCanvas();
 
+      let transitionTriggered = false;
       if (foldingEngine && foldingEngine.gl && foldingEngine.program) {
-        if (canvas) {
-          canvas.style.opacity = '1';
-          canvas.style.pointerEvents = 'auto';
-          canvas.classList.add('is-active');
-        }
-        const isSpreadMode = (!getSpreadInfo(fromIdx).isSingle) || (!nextInfo.isSingle);
-        foldingEngine.transition(canvases[0], canvases[1], direction, isSpreadMode, 660, function () {
-          currentSpreadIdx = toIdx;
-          syncBaseSpread(toIdx);
-          updateUI();
-          setTimeout(function () {
+        try {
+          if (canvas) {
+            canvas.style.opacity = '1';
+            canvas.style.pointerEvents = 'auto';
+            canvas.classList.add('is-active');
+          }
+          const isSpreadMode = (!getSpreadInfo(fromIdx).isSingle) || (!nextInfo.isSingle);
+
+          const safetyTimer = setTimeout(function () {
             if (canvas) {
               canvas.style.opacity = '0';
               canvas.style.pointerEvents = 'none';
               canvas.classList.remove('is-active');
             }
             isAnimating = false;
-            if (foldingEngine && foldingEngine.gl) {
-              foldingEngine.gl.clearColor(0, 0, 0, 0);
-              foldingEngine.gl.clear(foldingEngine.gl.COLOR_BUFFER_BIT);
-            }
-          }, 40);
-        });
-      } else {
-        // Fallback
+            currentSpreadIdx = toIdx;
+            syncBaseSpread(toIdx);
+            updateUI();
+          }, 850);
+
+          foldingEngine.transition(canvases[0], canvases[1], direction, isSpreadMode, 660, function () {
+            clearTimeout(safetyTimer);
+            currentSpreadIdx = toIdx;
+            syncBaseSpread(toIdx);
+            updateUI();
+            setTimeout(function () {
+              if (canvas) {
+                canvas.style.opacity = '0';
+                canvas.style.pointerEvents = 'none';
+                canvas.classList.remove('is-active');
+              }
+              isAnimating = false;
+              if (foldingEngine && foldingEngine.gl) {
+                foldingEngine.gl.clearColor(0, 0, 0, 0);
+                foldingEngine.gl.clear(foldingEngine.gl.COLOR_BUFFER_BIT);
+              }
+            }, 30);
+          });
+          transitionTriggered = true;
+        } catch (err) {
+          console.warn('[Prospectus] Transition error, jumping directly:', err);
+          transitionTriggered = false;
+        }
+      }
+
+      if (!transitionTriggered) {
+        if (canvas) {
+          canvas.style.opacity = '0';
+          canvas.style.pointerEvents = 'none';
+          canvas.classList.remove('is-active');
+        }
         currentSpreadIdx = toIdx;
         isAnimating = false;
         syncBaseSpread(toIdx);
@@ -590,7 +627,7 @@
 
     window.addEventListener('resize', function () {
       resizeCanvas();
-      renderCurrentSpread();
+      syncBaseSpread(currentSpreadIdx);
     });
   }
 

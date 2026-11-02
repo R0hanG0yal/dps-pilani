@@ -123,14 +123,15 @@
    2. TOP NEWS MARQUEE TICKER (shekhauni.ac.in Model)
    ---------------------------------------------------------------------------- */
 .dps-top-ticker-bar {
-  background: linear-gradient(90deg, #2E0815 0%, #4A0E23 50%, #2E0815 100%);
+  background: linear-gradient(90deg, #1C040D 0%, #350A19 50%, #1C040D 100%);
   color: #FFF;
-  border-bottom: 1.5px solid #D9B88A;
-  padding: 6px 0;
+  border-bottom: 1.5px solid rgba(217, 184, 138, 0.45);
+  padding: 7px 0;
   font-size: 0.82rem;
   overflow: hidden;
   position: relative;
   z-index: 90;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
 }
 
 .dps-ticker-inner {
@@ -145,7 +146,7 @@
   gap: 6px;
   background: #D97706;
   color: #FFF;
-  padding: 3px 10px;
+  padding: 4px 10px;
   border-radius: 4px;
   font-family: var(--font-label, sans-serif);
   font-size: 0.70rem;
@@ -173,65 +174,90 @@
   flex: 1;
   overflow: hidden;
   position: relative;
-  white-space: nowrap;
+  display: flex;
+  mask-image: linear-gradient(90deg, transparent 0%, black 2%, black 98%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 2%, black 98%, transparent 100%);
 }
 
 .ticker-marquee-track {
-  display: inline-block;
+  display: flex;
+  align-items: center;
   white-space: nowrap;
-  animation: sTickerScroll 36s linear infinite;
+  width: max-content;
+  will-change: transform;
+  animation: sTickerContinuous 50s linear infinite;
 }
 
 .ticker-marquee-track:hover {
   animation-play-state: paused;
 }
 
-@keyframes sTickerScroll {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+/* Continuous dual-set marquee: Starts at 0% (ALREADY VISIBLE, ZERO BLANK GAP) and loops at -50% seamlessly */
+@keyframes sTickerContinuous {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-content-set {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .ticker-item {
-  color: rgba(255, 255, 255, 0.92);
-  margin-right: 20px;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 0.81rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
 }
 
 .ticker-item strong {
-  color: #FDE68A;
-  font-weight: 700;
-  margin-right: 4px;
-  padding: 1px 5px;
-  border-radius: 3px;
-  font-size: 0.72rem;
+  font-weight: 800;
+  margin-right: 6px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 0.70rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
-.ticker-tag-rbse { background: rgba(22, 163, 74, 0.35); border: 1px solid #16A34A; }
-.ticker-tag-adm { background: rgba(217, 119, 6, 0.4); border: 1px solid #F59E0B; }
-.ticker-tag-bus { background: rgba(30, 58, 138, 0.4); border: 1px solid #3B82F6; }
-.ticker-tag-doc { background: rgba(125, 29, 63, 0.4); border: 1px solid #D9B88A; }
-.ticker-tag-soc { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); }
+.ticker-tag-rbse { background: rgba(22, 163, 74, 0.35); border: 1px solid #16A34A; color: #86EFAC; }
+.ticker-tag-adm { background: rgba(217, 119, 6, 0.4); border: 1px solid #F59E0B; color: #FDE68A; }
+.ticker-tag-bus { background: rgba(30, 58, 138, 0.4); border: 1px solid #3B82F6; color: #93C5FD; }
+.ticker-tag-doc { background: rgba(125, 29, 63, 0.4); border: 1px solid #D9B88A; color: #F5D0A9; }
+.ticker-tag-soc { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); color: #FFF; }
 
 .ticker-sep {
   color: #D9B88A;
-  margin: 0 14px;
+  margin: 0 16px;
+  opacity: 0.7;
 }
 
 .ticker-view-all {
   color: #FDE68A;
+  font-family: var(--font-label, sans-serif);
+  font-size: 0.72rem;
   font-weight: 700;
-  font-size: 0.76rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   text-decoration: none;
-  white-space: nowrap;
   flex-shrink: 0;
-  padding: 2px 8px;
+  padding: 4px 10px;
   border: 1px solid rgba(217, 184, 138, 0.4);
   border-radius: 4px;
+  background: rgba(217, 184, 138, 0.12);
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .ticker-view-all:hover {
-  background: rgba(217, 184, 138, 0.2);
+  background: rgba(217, 184, 138, 0.28);
   color: #FFF;
+  border-color: #D9B88A;
 }
 
 /* ----------------------------------------------------------------------------
