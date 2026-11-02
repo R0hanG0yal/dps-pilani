@@ -11693,3 +11693,33 @@ details.apple-expandable-item[open] > summary::after {
   color: #FDE68A !important;
   text-decoration: underline !important;
 }
+
+/* ============================================================================
+   RECTANGULAR LEADERSHIP PORTRAIT FRAME
+   ============================================================================ */
+.visual-rect {
+  border-radius: var(--radius-lg, 24px) !important;
+  overflow: hidden !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 420px;
+  position: relative !important;
+  margin: 0 !important;
+  box-shadow: 0 20px 48px -12px rgba(46, 8, 21, 0.18), 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+  border: 1.5px solid rgba(217, 184, 138, 0.45) !important;
+  background: #FFFFFF !important;
+}
+
+.visual-rect picture {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.visual-rect img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  border-radius: inherit !important;
+}
