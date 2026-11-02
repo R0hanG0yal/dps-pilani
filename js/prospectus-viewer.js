@@ -238,12 +238,20 @@
       resizeCanvas();
 
       if (foldingEngine && foldingEngine.gl && foldingEngine.program) {
+        if (canvas) canvas.classList.add('is-active');
         const isSpreadMode = (!getSpreadInfo(fromIdx).isSingle) || (!nextInfo.isSingle);
         foldingEngine.transition(canvases[0], canvases[1], direction, isSpreadMode, 660, function () {
           currentSpreadIdx = toIdx;
-          isAnimating = false;
           syncBaseSpread(toIdx);
           updateUI();
+          setTimeout(function () {
+            if (canvas) canvas.classList.remove('is-active');
+            isAnimating = false;
+            if (foldingEngine && foldingEngine.gl) {
+              foldingEngine.gl.clearColor(0, 0, 0, 0);
+              foldingEngine.gl.clear(foldingEngine.gl.COLOR_BUFFER_BIT);
+            }
+          }, 35);
         });
       } else {
         // Fallback
@@ -470,14 +478,15 @@
     });
 
     function onFsChange() {
+      syncBaseSpread(currentSpreadIdx);
       setTimeout(function () {
+        syncBaseSpread(currentSpreadIdx);
         resizeCanvas();
-        renderCurrentSpread();
-      }, 100);
+      }, 50);
       setTimeout(function () {
+        syncBaseSpread(currentSpreadIdx);
         resizeCanvas();
-        renderCurrentSpread();
-      }, 250);
+      }, 200);
     }
 
     document.addEventListener('fullscreenchange', onFsChange);
@@ -534,7 +543,6 @@
       if (canvases[0] && foldingEngine) {
         foldingEngine.uploadImage(foldingEngine.currentTexture, canvases[0]);
         if (canvases[1]) foldingEngine.uploadImage(foldingEngine.nextTexture, canvases[1]);
-        foldingEngine.renderFrame(0, 1, false);
       }
       if (loaderEl) loaderEl.classList.add('is-hidden');
     });

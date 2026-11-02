@@ -292,7 +292,15 @@
   width: 100%;
   height: 100%;
   display: block;
-  z-index: 2;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+#prospectusWebGLCanvas.is-active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* Loading Spinner on Canvas */
