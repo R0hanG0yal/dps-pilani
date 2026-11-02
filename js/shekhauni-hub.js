@@ -107,6 +107,11 @@
         if (activePane) {
           activePane.classList.add('active');
           activePane.removeAttribute('hidden');
+          if (targetTab === 'cuttings' && cuttingsSliderInstance) {
+            setTimeout(function () {
+              cuttingsSliderInstance._onResize();
+            }, 60);
+          }
         }
       });
     });
@@ -180,17 +185,88 @@
     }).join('');
   }
 
+  // 2B. Smooth Scroll Slider Instance (Originkit Architecture)
+  let cuttingsSliderInstance = null;
+
+  function initNewsCuttingsSlider(data) {
+    const sliderEl = document.getElementById('sCuttingsSlider');
+    if (!sliderEl || typeof SmoothScrollSlider === 'undefined') return;
+
+    cuttingsSliderInstance = new SmoothScrollSlider(sliderEl, {
+      items: data,
+      slideWidth: 320,
+      slideHeight: 420,
+      spacing: 2,
+      direction: 'right',
+      smoothness: 10,
+      radius: 16,
+      dim: 10,
+      background: '#0B0206',
+      sensitivity: 5,
+      loop: true,
+      autoplay: true,
+      autoplaySpeed: 0.6,
+      onSlideClick: function (item) {
+        openCuttingModal(item.id);
+      }
+    });
+
+    const prevBtn = document.getElementById('sSliderPrevBtn');
+    const nextBtn = document.getElementById('sSliderNextBtn');
+    if (prevBtn) {
+      prevBtn.addEventListener('click', function () {
+        if (cuttingsSliderInstance) cuttingsSliderInstance.prev();
+      });
+    }
+    if (nextBtn) {
+      nextBtn.addEventListener('click', function () {
+        if (cuttingsSliderInstance) cuttingsSliderInstance.next();
+      });
+    }
+  }
+
+  function setupViewModeToggle() {
+    const sliderWrap = document.getElementById('sSliderContainerWrap');
+    const gridEl = document.getElementById('sCuttingsGrid');
+    const btnSlider = document.getElementById('sViewBtnSlider');
+    const btnGrid = document.getElementById('sViewBtnGrid');
+
+    if (!btnSlider || !btnGrid || !sliderWrap || !gridEl) return;
+
+    btnSlider.addEventListener('click', function () {
+      btnSlider.classList.add('active');
+      btnSlider.setAttribute('aria-checked', 'true');
+      btnGrid.classList.remove('active');
+      btnGrid.setAttribute('aria-checked', 'false');
+      sliderWrap.style.display = 'block';
+      gridEl.style.display = 'none';
+      if (cuttingsSliderInstance) cuttingsSliderInstance._onResize();
+    });
+
+    btnGrid.addEventListener('click', function () {
+      btnGrid.classList.add('active');
+      btnGrid.setAttribute('aria-checked', 'true');
+      btnSlider.classList.remove('active');
+      btnSlider.setAttribute('aria-checked', 'false');
+      sliderWrap.style.display = 'none';
+      gridEl.style.display = 'grid';
+    });
+  }
+
   // Load News Cuttings from JSON metadata
   function loadNewsCuttings() {
     const grid = document.getElementById('sCuttingsGrid');
-    if (!grid) return;
+    const sliderEl = document.getElementById('sCuttingsSlider');
+    if (!grid && !sliderEl) return;
 
     fetch('assets/photos/news-cuttings/news-cuttings-metadata.json')
       .then(r => r.json())
       .then(data => {
         newsCuttings = data;
+        initNewsCuttingsSlider(data);
         renderCuttings(data, 'all');
         setupCuttingFilters(data);
+        setupViewModeToggle();
       })
       .catch(err => {
         console.warn('[NewsHub] Could not fetch news cuttings manifest:', err);
@@ -257,6 +333,12 @@
         btn.classList.add('active');
         const filter = btn.getAttribute('data-filter') || 'all';
         renderCuttings(allData, filter);
+        if (cuttingsSliderInstance) {
+          const filtered = filter === 'all'
+            ? allData
+            : allData.filter(it => (it.newspaper || '').toLowerCase().includes(filter.toLowerCase()));
+          cuttingsSliderInstance.setItems(filtered);
+        }
       });
     });
   }
@@ -373,9 +455,12 @@
     initShekhauniHub();
   }
 
-  // Expose global helper for office quick edit
+  // Expose global helper for office quick edit & external callers
+  window.openCuttingModal = openCuttingModal;
+  window.initCuttingLightbox = initCuttingLightbox;
   window.DPSShekhauniHub = {
     refreshNotices: renderNotifications,
-    openModal: openCuttingModal
+    openModal: openCuttingModal,
+    initLightbox: initCuttingLightbox
   };
 })();

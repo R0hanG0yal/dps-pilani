@@ -294,6 +294,27 @@
           <p class="scrapbook-chapter-lead">Modeled on Rajasthan's institutional portals (shekhauni.ac.in), featuring authentic newspaper coverage from Rajasthan Patrika, Dainik Bhaskar, and regional dailies across nearly two decades of educational excellence.</p>
         </header>
 
+        <!-- Interactive 3D Smooth Scroll Slider (Originkit Architecture) -->
+        <div class="s-slider-container-wrap" style="margin-bottom:32px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:10px;">
+            <span style="font-family:var(--font-label);font-size:0.75rem;font-weight:700;color:#B45309;text-transform:uppercase;letter-spacing:0.08em;">
+              Interactive Media Rail &bull; 3D Smooth Gliding Showcase
+            </span>
+            <span class="s-slider-hint-badge">
+              <span>Wheel, drag or swipe to glide</span> &harr;
+            </span>
+          </div>
+          <div id="galleryCuttingsSlider" class="s-slider-viewport" aria-label="Interactive Newspaper Clipping Rail">
+            <!-- Populated dynamically via smooth-scroll-slider.js -->
+          </div>
+          <button type="button" class="s-slider-arrow-btn prev" id="gallerySliderPrevBtn" aria-label="Previous News Clippings">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button type="button" class="s-slider-arrow-btn next" id="gallerySliderNextBtn" aria-label="Next News Clippings">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+
         <div class="scrapbook-grid">
           <!-- Print NC-01 -->
           <article class="scrapbook-frame-item scrapbook-item" data-category="news-cuttings" data-print="NC-01">
@@ -8101,7 +8122,49 @@
   </div>
 
 <script src="js/main.js"></script>
+  <script src="js/smooth-scroll-slider.js"></script>
   <script src="js/shekhauni-hub.js"></script>
   <script src="js/editorial-frames.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const gSliderEl = document.getElementById('galleryCuttingsSlider');
+      if (gSliderEl && typeof SmoothScrollSlider !== 'undefined') {
+        fetch('assets/photos/news-cuttings/news-cuttings-metadata.json')
+          .then(r => r.json())
+          .then(data => {
+            const gSlider = new SmoothScrollSlider(gSliderEl, {
+              items: data,
+              slideWidth: 320,
+              slideHeight: 420,
+              spacing: 2,
+              direction: 'right',
+              smoothness: 10,
+              radius: 16,
+              dim: 10,
+              background: '#0B0206',
+              sensitivity: 5,
+              loop: true,
+              autoplay: true,
+              autoplaySpeed: 0.5,
+              onSlideClick: function (item) {
+                // Trigger modal lightbox
+                if (typeof openCuttingModal === 'function') {
+                  openCuttingModal(item.id);
+                } else {
+                  const card = document.querySelector(`[data-print="${item.id.replace('cutting-', 'NC-')}"] .scrapbook-photo-card`);
+                  if (card) card.click();
+                }
+              }
+            });
+
+            const prevBtn = document.getElementById('gallerySliderPrevBtn');
+            const nextBtn = document.getElementById('gallerySliderNextBtn');
+            if (prevBtn) prevBtn.addEventListener('click', () => gSlider.prev());
+            if (nextBtn) nextBtn.addEventListener('click', () => gSlider.next());
+          })
+          .catch(err => console.warn('[Gallery] Could not load cuttings slider:', err));
+      }
+    });
+  </script>
 </body>
 </html>

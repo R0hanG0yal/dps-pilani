@@ -812,3 +812,214 @@
     font-size: 0.80rem;
   }
 }
+
+/* ----------------------------------------------------------------------------
+   6. SMOOTH SCROLL SLIDER (Originkit Model for News Cuttings)
+   ---------------------------------------------------------------------------- */
+.s-slider-container-wrap {
+  position: relative;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.s-slider-viewport {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  overflow: hidden;
+  background: #0B0206;
+  border-radius: 18px;
+  border: 1.5px solid rgba(217, 184, 138, 0.45);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35), inset 0 0 35px rgba(0, 0, 0, 0.6);
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.s-slider-viewport:active {
+  cursor: grabbing;
+}
+
+.smooth-slider-slide {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #120208;
+  will-change: transform, filter;
+  transform: translate3d(0, -50%, 0);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+  border: 1.5px solid rgba(217, 184, 138, 0.28);
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.smooth-slider-slide:hover {
+  border-color: #FDE68A;
+  box-shadow: 0 20px 48px rgba(217, 184, 138, 0.25);
+}
+
+.s-slider-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.s-slider-badge.patrika {
+  background: rgba(180, 83, 9, 0.92);
+  color: #FFF;
+  border: 1px solid rgba(253, 230, 138, 0.45);
+}
+
+.s-slider-badge.bhaskar {
+  background: rgba(125, 29, 63, 0.92);
+  color: #FDE68A;
+  border: 1px solid rgba(217, 184, 138, 0.45);
+}
+
+.s-slider-badge.other {
+  background: rgba(30, 58, 138, 0.92);
+  color: #FFF;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.s-slider-caption-bar {
+  pointer-events: none;
+}
+
+.s-slider-date {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #FDE68A;
+  margin-bottom: 2px;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.s-slider-title {
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 0.94rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #FFF;
+  margin: 0;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Nav Arrows overlaid on Slider Stage */
+.s-slider-arrow-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(26, 4, 14, 0.75);
+  border: 1.5px solid rgba(217, 184, 138, 0.5);
+  color: #FDE68A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.s-slider-arrow-btn:hover {
+  background: #7D1D3F;
+  border-color: #FDE68A;
+  color: #FFF;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.s-slider-arrow-btn.prev {
+  left: 14px;
+}
+
+.s-slider-arrow-btn.next {
+  right: 14px;
+}
+
+/* Toolbar Layout */
+.s-cuttings-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.s-view-mode-toggle {
+  display: inline-flex;
+  background: #FFF;
+  border: 1.5px solid #D9B88A;
+  border-radius: 8px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.s-view-mode-btn {
+  background: transparent;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--wine-950);
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.s-view-mode-btn.active {
+  background: #2E0815;
+  color: #FDE68A;
+}
+
+.s-slider-hint-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  color: #B45309;
+  background: rgba(180, 83, 9, 0.08);
+  border: 1px solid rgba(180, 83, 9, 0.22);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .s-slider-viewport {
+    height: 380px;
+    border-radius: 14px;
+  }
+  .s-slider-arrow-btn {
+    width: 36px;
+    height: 36px;
+  }
+  .s-slider-arrow-btn.prev {
+    left: 8px;
+  }
+  .s-slider-arrow-btn.next {
+    right: 8px;
+  }
+  .s-cuttings-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

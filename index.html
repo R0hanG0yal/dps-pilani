@@ -686,13 +686,44 @@
 
           <!-- PANE 3: NEWS CUTTING CORNER (23 Newspaper Clippings from Rajasthan Press) -->
           <div class="s-tab-pane" id="sTabPaneCuttings" role="tabpanel" aria-labelledby="sTabBtnCuttings" hidden>
-            <div class="s-cuttings-filter-bar">
-              <span style="font-size:0.80rem;font-weight:700;color:var(--wine-950);margin-right:6px;">Filter Publication:</span>
-              <button type="button" class="s-cutting-filter-btn active" data-filter="all">All Newspaper Clippings (23)</button>
-              <button type="button" class="s-cutting-filter-btn" data-filter="patrika">Rajasthan Patrika</button>
-              <button type="button" class="s-cutting-filter-btn" data-filter="bhaskar">Dainik Bhaskar</button>
+            <div class="s-cuttings-toolbar">
+              <div class="s-cuttings-filter-bar" style="margin-bottom:0;">
+                <span style="font-size:0.80rem;font-weight:700;color:var(--wine-950);margin-right:6px;">Filter Publication:</span>
+                <button type="button" class="s-cutting-filter-btn active" data-filter="all">All Newspaper Clippings (23)</button>
+                <button type="button" class="s-cutting-filter-btn" data-filter="patrika">Rajasthan Patrika</button>
+                <button type="button" class="s-cutting-filter-btn" data-filter="bhaskar">Dainik Bhaskar</button>
+              </div>
+
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <div class="s-view-mode-toggle" role="radiogroup" aria-label="News Cuttings Display View">
+                  <button type="button" class="s-view-mode-btn active" id="sViewBtnSlider" data-view="slider" aria-checked="true">
+                    3D Smooth Slider
+                  </button>
+                  <button type="button" class="s-view-mode-btn" id="sViewBtnGrid" data-view="grid" aria-checked="false">
+                    Grid View
+                  </button>
+                </div>
+                <span class="s-slider-hint-badge">
+                  <span>Wheel, drag or swipe to glide</span> &harr;
+                </span>
+              </div>
             </div>
-            <div id="sCuttingsGrid" class="s-cuttings-grid">
+
+            <!-- Smooth Scroll Slider Viewport (Originkit Architecture) -->
+            <div class="s-slider-container-wrap" id="sSliderContainerWrap">
+              <div id="sCuttingsSlider" class="s-slider-viewport" aria-label="Interactive Newspaper Clipping Rail">
+                <!-- Dynamically populated with all 23 clippings by smooth-scroll-slider.js -->
+              </div>
+              <button type="button" class="s-slider-arrow-btn prev" id="sSliderPrevBtn" aria-label="Previous News Clippings">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+              <button type="button" class="s-slider-arrow-btn next" id="sSliderNextBtn" aria-label="Next News Clippings">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+
+            <!-- Classic Grid View (Toggleable) -->
+            <div id="sCuttingsGrid" class="s-cuttings-grid" style="display:none;">
               <!-- Dynamically populated with all 23 clippings by shekhauni-hub.js -->
             </div>
           </div>
@@ -1438,6 +1469,7 @@
   </div>
 
 <script src="js/main.js"></script>
+  <script src="js/smooth-scroll-slider.js"></script>
   <script src="js/shekhauni-hub.js"></script>
   <script src="js/editorial-frames.js"></script>
 </body>
