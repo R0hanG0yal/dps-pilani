@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="css/premium.css">
   <link rel="stylesheet" href="css/editorial-frames.css">
   <link rel="stylesheet" href="css/shekhauni-hub.css">
+  <link rel="stylesheet" href="css/polaroid-line-carousel.css">
 </head>
 <body>
 
@@ -8013,48 +8014,76 @@
 
 <script src="js/main.js"></script>
   <script src="js/smooth-scroll-slider.js"></script>
+  <script src="js/polaroid-line-carousel.js"></script>
   <script src="js/shekhauni-hub.js"></script>
   <script src="js/editorial-frames.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const gSliderEl = document.getElementById('galleryCuttingsSlider');
-      if (gSliderEl && typeof SmoothScrollSlider !== 'undefined') {
+      if (gSliderEl && (typeof PolaroidLineCarousel !== 'undefined' || typeof SmoothScrollSlider !== 'undefined')) {
         const initialData = (typeof DEFAULT_NEWS_CUTTINGS !== 'undefined' ? DEFAULT_NEWS_CUTTINGS : (window.DEFAULT_NEWS_CUTTINGS || []));
         let gSlider = null;
         function initSlider(data) {
           if (!data || !data.length) return;
           if (gSlider) {
-            gSlider.setItems(data);
+            if (gSlider.setItems) gSlider.setItems(data);
             return;
           }
-          gSlider = new SmoothScrollSlider(gSliderEl, {
-            items: data,
-            slideWidth: 320,
-            slideHeight: 420,
-            spacing: 2,
-            direction: 'right',
-            smoothness: 10,
-            radius: 16,
-            dim: 10,
-            background: 'transparent',
-            sensitivity: 5,
-            loop: true,
-            autoplay: true,
-            autoplaySpeed: 0.5,
-            onSlideClick: function (item) {
-              if (typeof openCuttingModal === 'function') {
-                openCuttingModal(item.id);
-              } else {
-                const card = document.querySelector(`[data-print="${item.id.replace('cutting-', 'NC-')}"] .scrapbook-photo-card`);
-                if (card) card.click();
+          if (typeof PolaroidLineCarousel !== 'undefined') {
+            gSlider = new PolaroidLineCarousel(gSliderEl, {
+              slides: data.map(function (c) {
+                return {
+                  image: c.fullImage || c.image,
+                  title: c.title,
+                  caption: (c.date ? c.date + ' • ' : '') + (c.newspaper || 'Rajasthan Press'),
+                  note: (c.newspaper || 'Rajasthan Press') + (c.date ? ' ' + c.date : ''),
+                  id: c.id
+                };
+              }),
+              cardWidth: 290,
+              sag: 44,
+              swing: 1,
+              autoplay: 4000,
+              containFit: true,
+              string: '#8a7f72',
+              background: 'linear-gradient(180deg, rgba(251, 247, 239, 0.95) 0%, rgba(244, 236, 220, 0.98) 100%)',
+              ink: '#2E0815',
+              onSlideClick: function (slide) {
+                if (typeof openCuttingModal === 'function') {
+                  openCuttingModal(slide.id);
+                } else {
+                  const card = document.querySelector(`[data-print="${slide.id.replace('cutting-', 'NC-')}"] .scrapbook-photo-card`);
+                  if (card) card.click();
+                }
               }
-            }
-          });
+            });
+          } else {
+            gSlider = new SmoothScrollSlider(gSliderEl, {
+              items: data,
+              slideWidth: 320,
+              slideHeight: 420,
+              spacing: 2,
+              direction: 'right',
+              smoothness: 10,
+              radius: 16,
+              dim: 10,
+              background: 'transparent',
+              sensitivity: 5,
+              loop: true,
+              autoplay: true,
+              autoplaySpeed: 0.5,
+              onSlideClick: function (item) {
+                if (typeof openCuttingModal === 'function') {
+                  openCuttingModal(item.id);
+                }
+              }
+            });
+          }
 
           const prevBtn = document.getElementById('gallerySliderPrevBtn');
           const nextBtn = document.getElementById('gallerySliderNextBtn');
-          if (prevBtn) prevBtn.addEventListener('click', () => gSlider.prev());
-          if (nextBtn) nextBtn.addEventListener('click', () => gSlider.next());
+          if (prevBtn) prevBtn.addEventListener('click', () => (gSlider.step ? gSlider.step(-1) : gSlider.prev()));
+          if (nextBtn) nextBtn.addEventListener('click', () => (gSlider.step ? gSlider.step(1) : gSlider.next()));
         }
 
         if (initialData && initialData.length) {

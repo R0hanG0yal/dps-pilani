@@ -312,52 +312,73 @@
     const stageEl = document.getElementById('heroSpotlightStage');
     const photoPills = document.querySelectorAll('.photo-pill-btn');
 
-    if (!stageEl || typeof SpotlightFrames === 'undefined') return;
+    if (!stageEl) return;
 
-    heroSpotlightInstance = new SpotlightFrames(stageEl, {
-      images: HERO_SPOTLIGHT_ITEMS,
-      collapsedWidth: 72,
-      expandedWidth: 420,
-      gap: 6,
-      radius: 24,
-      startIndex: 0,
-      trigger: 'auto',
-      autoplay: true,
-      autoplayInterval: 2800, // Continuous video-like cycle
-      selector: {
-        box: true,
-        lines: true,
-        lineLength: 450,
-        thickness: 2.5,
-        color: '#D9B88A'
-      },
-      showControls: true,
-      showArrows: false,
-      onSelect: function (item, index) {
-        const pillMap = { 0: 0, 2: 1, 3: 2, 4: 3 };
-        const activePillIdx = pillMap[index];
-        photoPills.forEach(function (pill, pIdx) {
-          if (pIdx === activePillIdx) {
-            pill.classList.add('active');
-            pill.setAttribute('aria-selected', 'true');
-          } else {
-            pill.classList.remove('active');
-            pill.setAttribute('aria-selected', 'false');
-          }
-        });
-      },
-      onSlideClick: function (item) {
-        window.openHeroPhotoModal({
-          fullImage: item.src,
-          title: item.title,
-          tag: item.tag,
-          date: 'Campus Highlight'
-        });
-      }
-    });
+    if (typeof PolaroidLineCarousel !== 'undefined') {
+      heroSpotlightInstance = new PolaroidLineCarousel(stageEl, {
+        slides: HERO_SPOTLIGHT_ITEMS.map(function (it) {
+          return {
+            image: it.image,
+            title: it.title,
+            caption: it.sub,
+            note: it.tag || it.title
+          };
+        }),
+        cardWidth: 260,
+        sag: 36,
+        swing: 1,
+        autoplay: 4000,
+        string: '#c9a67a',
+        background: 'linear-gradient(160deg, #FDFBF7 0%, #F5EFE6 50%, #ECE4D4 100%)',
+        ink: '#2E0815',
+        onChange: function (index) {
+          const pillMap = { 0: 0, 1: 1, 2: 2, 3: 3 };
+          const activePillIdx = pillMap[index];
+          photoPills.forEach(function (pill, pIdx) {
+            if (pIdx === activePillIdx) {
+              pill.classList.add('active');
+              pill.setAttribute('aria-selected', 'true');
+            } else {
+              pill.classList.remove('active');
+              pill.setAttribute('aria-selected', 'false');
+            }
+          });
+        },
+        onSlideClick: function (item) {
+          window.openHeroPhotoModal({
+            fullImage: item.image,
+            title: item.title,
+            tag: item.note,
+            date: 'Campus Highlight'
+          });
+        }
+      });
+    } else if (typeof SpotlightFrames !== 'undefined') {
+      heroSpotlightInstance = new SpotlightFrames(stageEl, {
+        images: HERO_SPOTLIGHT_ITEMS,
+        collapsedWidth: 72,
+        expandedWidth: 420,
+        gap: 6,
+        radius: 24,
+        startIndex: 0,
+        trigger: 'auto',
+        autoplay: true,
+        autoplayInterval: 2800,
+        showControls: true,
+        showArrows: false,
+        onSlideClick: function (item) {
+          window.openHeroPhotoModal({
+            fullImage: item.src,
+            title: item.title,
+            tag: item.tag,
+            date: 'Campus Highlight'
+          });
+        }
+      });
+    }
 
-    // Wire Photo Selector Pills to Focus Corresponding Slat
-    const pillToSlatMap = [0, 2, 3, 4];
+    // Wire Photo Selector Pills to Focus Corresponding Slide
+    const pillToSlatMap = [0, 1, 2, 3];
     photoPills.forEach(function (pill, pillIdx) {
       pill.addEventListener('click', function () {
         photoPills.forEach(p => { p.classList.remove('active'); p.setAttribute('aria-selected', 'false'); });
@@ -365,8 +386,11 @@
         pill.setAttribute('aria-selected', 'true');
 
         if (heroSpotlightInstance) {
-          heroSpotlightInstance.tempPause();
-          heroSpotlightInstance.setFocus(pillToSlatMap[pillIdx]);
+          if (typeof heroSpotlightInstance.goTo === 'function') {
+            heroSpotlightInstance.goTo(pillToSlatMap[pillIdx] || 0);
+          } else if (typeof heroSpotlightInstance.setFocus === 'function') {
+            heroSpotlightInstance.setFocus(pillToSlatMap[pillIdx] || 0);
+          }
         }
       });
     });

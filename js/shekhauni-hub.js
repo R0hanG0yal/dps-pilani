@@ -625,50 +625,64 @@
 
   function initNewsCuttingsSpotlight(data) {
     const spotlightEl = document.getElementById('sCuttingsSpotlight');
-    if (!spotlightEl || typeof SpotlightFrames === 'undefined') return;
-
-    const items = data.map(function (c) {
-      return {
-        image: c.fullImage || c.image,
-        title: c.title,
-        tag: c.newspaper || c.paperName || 'Rajasthan Press',
-        sub: (c.date || '') + (c.edition ? ' &bull; ' + c.edition : ''),
-        id: c.id,
-        width: c.width || 0,
-        height: c.height || 0,
-        aspectRatio: c.aspectRatio || 0
-      };
-    });
+    if (!spotlightEl) return;
 
     if (cuttingsSpotlightInstance) {
       cuttingsSpotlightInstance.destroy();
     }
 
-    cuttingsSpotlightInstance = new SpotlightFrames(spotlightEl, {
-      images: items,
-      collapsedWidth: 72,
-      expandedWidth: 540,
-      gap: 8,
-      radius: 16,
-      startIndex: 0,
-      trigger: 'auto',
-      fitMode: 'contain',
-      expandByAspectRatio: true,
-      autoplay: true,
-      autoplayInterval: 3200,
-      selector: {
-        box: true,
-        lines: true,
-        lineLength: 450,
-        thickness: 2.5,
-        color: '#D9B88A'
-      },
-      showControls: true,
-      showArrows: true,
-      onSlideClick: function (item) {
-        openCuttingModal(item.id);
-      }
-    });
+    if (typeof PolaroidLineCarousel !== 'undefined') {
+      cuttingsSpotlightInstance = new PolaroidLineCarousel(spotlightEl, {
+        slides: data.map(function (c) {
+          return {
+            image: c.fullImage || c.image,
+            title: c.title,
+            caption: (c.date ? c.date + ' &bull; ' : '') + (c.newspaper || 'Rajasthan Press') + (c.edition ? ' &bull; ' + c.edition : ''),
+            note: (c.newspaper || 'Rajasthan Press') + (c.date ? ' ' + c.date : ''),
+            id: c.id
+          };
+        }),
+        cardWidth: 290,
+        sag: 44,
+        swing: 1,
+        autoplay: 4000,
+        containFit: true,
+        string: '#8a7f72',
+        background: 'linear-gradient(180deg, rgba(251, 247, 239, 0.95) 0%, rgba(244, 236, 220, 0.98) 100%)',
+        ink: '#2E0815',
+        onSlideClick: function (slide) {
+          openCuttingModal(slide.id);
+        }
+      });
+    } else if (typeof SpotlightFrames !== 'undefined') {
+      const items = data.map(function (c) {
+        return {
+          image: c.fullImage || c.image,
+          title: c.title,
+          tag: c.newspaper || c.paperName || 'Rajasthan Press',
+          sub: (c.date || '') + (c.edition ? ' &bull; ' + c.edition : ''),
+          id: c.id
+        };
+      });
+      cuttingsSpotlightInstance = new SpotlightFrames(spotlightEl, {
+        images: items,
+        collapsedWidth: 72,
+        expandedWidth: 540,
+        gap: 8,
+        radius: 16,
+        startIndex: 0,
+        trigger: 'auto',
+        fitMode: 'contain',
+        expandByAspectRatio: true,
+        autoplay: true,
+        autoplayInterval: 3200,
+        showControls: true,
+        showArrows: true,
+        onSlideClick: function (item) {
+          openCuttingModal(item.id);
+        }
+      });
+    }
   }
 
   function initNewsCuttingsSlider(data) {

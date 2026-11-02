@@ -1,0 +1,315 @@
+/**
+ * Polaroid Line Carousel — Instant photos pegged to a sagging string.
+ * Vanilla CSS implementation ported from React/Originkit Architecture.
+ * Durga Public School, Pilani, Rajasthan
+ */
+
+.pl-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 480px;
+  overflow: hidden;
+  background: var(--pl-bg, #FAF8F4);
+  color: var(--pl-ink, #2E0815);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y pinch-zoom;
+  outline: none;
+  cursor: grab;
+  border-radius: inherit;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+.pl-root[data-drag='1'] {
+  cursor: grabbing;
+}
+
+.pl-root:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--pl-ink, #2E0815);
+}
+
+/* The Sagging String SVG */
+.pl-string {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 2;
+}
+
+/* Pegged Print Card */
+.pl-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--pl-cw, 280px);
+  transform-origin: 50% 0;
+  will-change: transform;
+  cursor: inherit;
+  transition: opacity 0.3s ease;
+}
+
+/* Polaroid White/Cream Paper Mount */
+.pl-print {
+  margin-top: 10px;
+  background: #FCFBF9;
+  padding: 12px 12px 0 12px;
+  border-radius: 4px;
+  border: 1px solid rgba(217, 184, 138, 0.4);
+  box-shadow: 0 4px 12px rgba(46, 8, 21, 0.10), 0 20px 34px -16px rgba(46, 8, 21, 0.35);
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+              filter 0.5s ease,
+              box-shadow 0.5s ease,
+              border-color 0.5s ease;
+}
+
+.pl-card[data-on='0'] .pl-print {
+  transform: scale(0.9);
+  filter: saturate(0.72) brightness(0.95);
+  opacity: 0.92;
+}
+
+.pl-card[data-on='1'] .pl-print {
+  transform: scale(1);
+  filter: none;
+  border-color: rgba(217, 184, 138, 0.9);
+  box-shadow: 0 8px 20px rgba(46, 8, 21, 0.15), 0 26px 44px -16px rgba(46, 8, 21, 0.42);
+}
+
+/* Photo Snapshot Area */
+.pl-shot {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: #EAE6DD;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.pl-shot img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Special containment for newspaper clippings & document archival display */
+.pl-shot.pl-shot-contain {
+  background: #FAF8F5;
+}
+
+.pl-shot.pl-shot-contain img {
+  object-fit: contain;
+  padding: 6px;
+  box-sizing: border-box;
+}
+
+/* Handwritten / Serif Polaroid Note */
+.pl-note {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #3B3833;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+/* Wooden Clothespin Peg */
+.pl-peg {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 11px;
+  height: 28px;
+  margin-left: -5.5px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #C9A67A 0%, #E3C9A1 45%, #B8915F 100%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.28);
+  z-index: 10;
+}
+
+/* Peg Metal Spring Notch */
+.pl-peg::after {
+  content: '';
+  position: absolute;
+  left: 4.5px;
+  top: 9px;
+  width: 2px;
+  height: 8px;
+  background: rgba(80, 60, 30, 0.55);
+  border-radius: 1px;
+}
+
+/* Bottom Controls & Metadata Bar */
+.pl-bar {
+  position: absolute;
+  left: clamp(16px, 4vw, 44px);
+  right: clamp(16px, 4vw, 44px);
+  bottom: clamp(16px, 3vh, 28px);
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 2vw, 20px);
+  cursor: default;
+  z-index: 35;
+  background: rgba(46, 8, 21, 0.88);
+  border: 1px solid rgba(217, 184, 138, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 999px;
+  padding: 8px 18px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+}
+
+.pl-cap {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  padding-bottom: 0.1em;
+}
+
+.pl-cap > * {
+  display: block;
+  animation: pl-in 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.pl-title {
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  font-weight: 700;
+  font-size: clamp(15px, 1.8vw, 20px);
+  line-height: 1.2;
+  color: #FFFFFF;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pl-sub {
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.82);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Monospace Page / Print Counter */
+.pl-count {
+  font-family: 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.75);
+  flex-shrink: 0;
+}
+
+.pl-count b {
+  color: var(--gold-300, #F3D2A2);
+  font-weight: 700;
+}
+
+/* Round Step Chevrons */
+.pl-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(217, 184, 138, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.pl-btn:hover {
+  background: var(--gold-400, #E6C285);
+  color: var(--wine-950, #2E0815);
+  border-color: #FFFFFF;
+  transform: scale(1.08);
+}
+
+.pl-btn:focus-visible {
+  outline: 2px solid var(--gold-300, #F3D2A2);
+  outline-offset: 2px;
+}
+
+/* Accessibility screen-reader hidden span */
+.pl-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@keyframes pl-in {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pl-cap > * {
+    animation: none;
+  }
+  .pl-print {
+    transition: none;
+  }
+}
+
+/* Mobile & Tablet adjustments */
+@media (max-width: 768px) {
+  .pl-root {
+    min-height: 400px;
+  }
+  .pl-bar {
+    padding: 6px 14px;
+    gap: 8px;
+    bottom: 12px;
+  }
+  .pl-title {
+    font-size: 0.90rem;
+  }
+  .pl-sub {
+    font-size: 0.72rem;
+  }
+  .pl-count {
+    font-size: 11px;
+  }
+  .pl-btn {
+    width: 30px;
+    height: 30px;
+  }
+  .pl-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+}
