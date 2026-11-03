@@ -7,9 +7,75 @@
 (function () {
   'use strict';
 
+  // Cryptographic Vault Parameters
+  const SALT = 'dps_pilani_2026_salt_';
+  const SIGN_SECRET = 'dps_jwt_vault_secret_98878_pilani_auth';
+  const PRIMARY_HASH = '363a205a2cfbbafab7ac49ea7fbdcff196b9a13df608ed39e9945afaa1d1e635';
+  const ALIAS_HASH = '0ff3d098e52331aae592c5005b3dfb15ba3a24eb30d7038f5bf6eafe71bc1b4c';
+  const GUARD_KEY = '_dps_sec_guard';
+
+  // Universal Bitwise SHA-256 Engine
+  function calcSha256(ascii) {
+    function rightRotate(value, amount) {
+      return (value >>> amount) | (value << (32 - amount));
+    }
+    var mathPow = Math.pow;
+    var maxWord = mathPow(2, 32);
+    var lengthProperty = 'length';
+    var i, j;
+    var result = '';
+    var words = [];
+    var asciiBitLength = ascii[lengthProperty] * 8;
+    var hash = [];
+    var k = [];
+    var primeCounter = 0;
+    var isComposite = {};
+    for (var candidate = 2; primeCounter < 64; candidate++) {
+      if (!isComposite[candidate]) {
+        for (i = 0; i < 313; i += candidate) isComposite[i] = candidate;
+        hash[primeCounter] = (mathPow(candidate, 0.5) * maxWord) | 0;
+        k[primeCounter++] = (mathPow(candidate, 1 / 3) * maxWord) | 0;
+      }
+    }
+    ascii += '\x80';
+    while (ascii[lengthProperty] % 64 - 56) ascii += '\x00';
+    for (i = 0; i < ascii[lengthProperty]; i++) {
+      j = ascii.charCodeAt(i);
+      if (j >> 8) return '';
+      words[i >> 2] |= j << ((3 - i) % 4) * 8;
+    }
+    words[words[lengthProperty]] = (asciiBitLength / maxWord) | 0;
+    words[words[lengthProperty]] = asciiBitLength;
+    for (j = 0; j < words[lengthProperty]; ) {
+      var w = words.slice(j, (j += 16));
+      var oldHash = hash;
+      hash = hash.slice(0, 8);
+      for (i = 0; i < 64; i++) {
+        var w15 = w[i - 15], w2 = w[i - 2];
+        var s0 = rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3);
+        var s1 = rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10);
+        var ch = (hash[4] & hash[5]) ^ (~hash[4] & hash[6]);
+        var maj = (hash[0] & hash[1]) ^ (hash[0] & hash[2]) ^ (hash[1] & hash[2]);
+        var temp1 = hash[7] + (rightRotate(hash[4], 6) ^ rightRotate(hash[4], 11) ^ rightRotate(hash[4], 25)) + ch + k[i] + (w[i] = (i < 16) ? w[i] : (w[i - 16] + s0 + w[i - 7] + s1) | 0);
+        var temp2 = (rightRotate(hash[0], 2) ^ rightRotate(hash[0], 13) ^ rightRotate(hash[0], 22)) + maj;
+        hash = [(temp1 + temp2) | 0].concat(hash);
+        hash[4] = (hash[4] + temp1) | 0;
+      }
+      for (i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i]) | 0;
+    }
+    for (i = 0; i < 8; i++) {
+      for (var i2 = 3; i2 >= 0; i2--) {
+        var b = (hash[i] >> (8 * i2)) & 255;
+        result += (b < 16 ? '0' : '') + b.toString(16);
+      }
+    }
+    return result;
+  }
+
   // Storage Keys
   const STORAGE_KEYS = {
     AUTH: 'dps_admin_session',
+    TOKEN: 'dps_sec_token',
     LEADS: 'dps_admissions_leads',
     CONFIG: 'dps_site_config',
     HOUSES: 'dps_house_points',
@@ -578,8 +644,13 @@
 
     loadState: function () {
       try {
-        // Auth
-        this.state.auth = sessionStorage.getItem(STORAGE_KEYS.AUTH) === 'true';
+        // Cryptographic Token Verification
+        const hasValidToken = this.verifySessionToken();
+        this.state.auth = hasValidToken;
+        if (!hasValidToken) {
+          sessionStorage.removeItem(STORAGE_KEYS.AUTH);
+          sessionStorage.removeItem(STORAGE_KEYS.TOKEN);
+        }
 
         // Leads
         const storedLeads = localStorage.getItem(STORAGE_KEYS.LEADS);
@@ -683,38 +754,151 @@
       localStorage.setItem(STORAGE_KEYS.AUDIT, JSON.stringify(this.state.audit));
     },
 
+    verifySessionToken: function () {
+      try {
+        const raw = sessionStorage.getItem(STORAGE_KEYS.TOKEN);
+        if (!raw) return false;
+        const parts = raw.split('.');
+        if (parts.length !== 3) return false;
+        const nowTs = parseInt(parts[0], 10);
+        const expTs = parseInt(parts[1], 10);
+        const sig = parts[2];
+        if (Date.now() > expTs) return false;
+        const expectedSig = calcSha256(nowTs + ':' + expTs + ':' + SIGN_SECRET).slice(0, 32);
+        return sig === expectedSig;
+      } catch (_) {
+        return false;
+      }
+    },
+
+    createSessionToken: function () {
+      const now = Date.now();
+      const exp = now + (2 * 60 * 60 * 1000); // 2 hours
+      const sig = calcSha256(now + ':' + exp + ':' + SIGN_SECRET).slice(0, 32);
+      return now + '.' + exp + '.' + sig;
+    },
+
+    getGuardState: function () {
+      try {
+        const raw = localStorage.getItem(GUARD_KEY);
+        return raw ? JSON.parse(raw) : { fails: 0, lockedUntil: 0 };
+      } catch (_) {
+        return { fails: 0, lockedUntil: 0 };
+      }
+    },
+
+    setGuardState: function (st) {
+      try {
+        localStorage.setItem(GUARD_KEY, JSON.stringify(st));
+      } catch (_) {}
+    },
+
+    checkLockoutState: function () {
+      const st = this.getGuardState();
+      const now = Date.now();
+      if (st.lockedUntil && st.lockedUntil > now) {
+        const remSec = Math.ceil((st.lockedUntil - now) / 1000);
+        const m = Math.floor(remSec / 60);
+        const s = remSec % 60;
+        return { locked: true, msg: 'Console Locked: Excessive authentication failures. Try again in ' + m + 'm ' + (s < 10 ? '0' : '') + s + 's.' };
+      }
+      return { locked: false, fails: st.fails || 0 };
+    },
+
+    recordFailure: function () {
+      const st = this.getGuardState();
+      st.fails = (st.fails || 0) + 1;
+      if (st.fails >= 5) {
+        st.lockedUntil = Date.now() + (15 * 60 * 1000); // 15-minute lockout
+      }
+      this.setGuardState(st);
+      return st;
+    },
+
+    resetGuard: function () {
+      this.setGuardState({ fails: 0, lockedUntil: 0 });
+    },
+
+    checkLockoutUI: function () {
+      const lock = this.checkLockoutState();
+      const input = document.getElementById('adminLoginPassword');
+      const submitBtn = document.querySelector('#adminLoginForm button[type="submit"]');
+      let alertEl = document.getElementById('adminLockoutAlert');
+
+      if (!alertEl) {
+        alertEl = document.createElement('div');
+        alertEl.id = 'adminLockoutAlert';
+        alertEl.style.cssText = 'color:#EF4444;font-size:0.78rem;font-weight:700;margin-top:12px;padding:8px 12px;background:rgba(239,68,68,0.12);border-radius:8px;border:1px solid rgba(239,68,68,0.3);';
+        const form = document.getElementById('adminLoginForm');
+        if (form) form.insertBefore(alertEl, form.firstChild);
+      }
+
+      if (lock.locked) {
+        alertEl.style.display = 'block';
+        alertEl.textContent = lock.msg;
+        if (input) input.disabled = true;
+        if (submitBtn) submitBtn.disabled = true;
+      } else {
+        alertEl.style.display = 'none';
+        if (input) input.disabled = false;
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    },
+
     checkAuth: function () {
       const loginOverlay = document.getElementById('adminLoginOverlay');
-      if (!this.state.auth) {
+      const isValid = this.verifySessionToken();
+      this.state.auth = isValid;
+
+      if (!isValid) {
         if (loginOverlay) loginOverlay.style.display = 'flex';
+        this.checkLockoutUI();
       } else {
         if (loginOverlay) loginOverlay.style.display = 'none';
       }
     },
 
     login: function (pass) {
+      const lock = this.checkLockoutState();
+      if (lock.locked) {
+        this.toast(lock.msg, 'error');
+        this.checkLockoutUI();
+        return false;
+      }
+
       const cleanPass = (pass || '').trim();
-      const validPasswords = [
-        'durgadevipublicschoo;@pilani',
-        'durgadevipublicschool@pilani'
-      ];
-      if (validPasswords.includes(cleanPass)) {
-        this.state.auth = true;
+      const inputHash = calcSha256(SALT + cleanPass);
+
+      if (inputHash === PRIMARY_HASH || inputHash === ALIAS_HASH) {
+        this.resetGuard();
+        const token = this.createSessionToken();
+        sessionStorage.setItem(STORAGE_KEYS.TOKEN, token);
         sessionStorage.setItem(STORAGE_KEYS.AUTH, 'true');
+        this.state.auth = true;
         this.checkAuth();
-        this.toast('Welcome, Administrator. Admin Session Active.', 'success');
-        this.saveAudit('Administrator logged in successfully via Master Credential');
+        this.toast('Welcome, Administrator. Cryptographic Session Active.', 'success');
+        this.saveAudit('Administrator authenticated via salted SHA-256 validation');
         return true;
       }
-      this.toast('Invalid password. Access Denied.', 'error');
+
+      const st = this.recordFailure();
+      if (st.fails >= 5) {
+        this.toast('Security Threshold Exceeded: Console locked for 15 minutes.', 'error');
+        this.checkLockoutUI();
+      } else {
+        this.toast('Access Denied: Invalid Master Password (' + (5 - st.fails) + ' attempts remaining).', 'error');
+      }
       return false;
     },
 
     logout: function () {
       this.state.auth = false;
       sessionStorage.removeItem(STORAGE_KEYS.AUTH);
-      this.checkAuth();
-      this.toast('Signed out from School Admin Portal.', 'info');
+      sessionStorage.removeItem(STORAGE_KEYS.TOKEN);
+      this.toast('Signed out from School Admin Console.', 'info');
+      setTimeout(function () {
+        window.location.href = 'index.html';
+      }, 350);
     },
 
     switchTab: function (tabId) {
@@ -2086,6 +2270,18 @@
         const pass = document.getElementById('adminLoginPassword').value;
         self.login(pass);
       });
+
+      // Password Eye Toggle
+      const adminEye = document.getElementById('adminEyeToggle');
+      const adminPassInput = document.getElementById('adminLoginPassword');
+      if (adminEye && adminPassInput) {
+        adminEye.addEventListener('click', function () {
+          const isPass = adminPassInput.type === 'password';
+          adminPassInput.type = isPass ? 'text' : 'password';
+          adminEye.querySelector('.eye-open').style.display = isPass ? 'none' : 'block';
+          adminEye.querySelector('.eye-closed').style.display = isPass ? 'block' : 'none';
+        });
+      }
 
 // Direct 1-click login removed per security policy
 

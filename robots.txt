@@ -1,6 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /admin.html
 Disallow: /admin/
 Disallow: /api/
+Disallow: /*sec-*
+Disallow: /*console*
 
 Sitemap: https://durgapublicschoolpilani.edu.in/sitemap.xml
