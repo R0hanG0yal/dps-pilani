@@ -28,7 +28,7 @@
   // DOM Elements
   let container, viewport, canvas;
   let baseSpread, baseImgLeft, baseImgRight;
-  let flipSheet, flipFrontImg, flipBackImg, flipHighlight, flipShadow;
+  let flipSheet, flipFrontImg, flipBackImg, flipHighlight, flipShadow, flipFrontGloss, flipBackGloss;
   let prevBtn, nextBtn, pageNumEl, totalPagesEl, scrubber, thumbsDrawer, thumbsToggleBtn;
   let loaderEl, fullscreenBtn;
 
@@ -311,18 +311,54 @@
 
       flipSheet.style.transform = 'rotateY(' + currentAngle.toFixed(2) + 'deg)';
 
-      // Specular highlight and crease drop shadow peak at apex (45-55% turn)
+      // iPhone Duo liquid glass arc curve
       const arc = Math.sin(progress * Math.PI);
-      if (flipHighlight) flipHighlight.style.opacity = (arc * 0.72).toFixed(3);
-      if (flipShadow) flipShadow.style.opacity = (arc * 0.55).toFixed(3);
+
+      // 1. Dynamic progressive frosted glass blur & saturation boost
+      const blurPx = (arc * 6.5).toFixed(1);
+      const satVal = (1.0 + arc * 0.35).toFixed(2);
+      const imgFilter = 'blur(' + blurPx + 'px) saturate(' + satVal + ')';
+      if (flipFrontImg) flipFrontImg.style.filter = imgFilter;
+      if (flipBackImg) flipBackImg.style.filter = imgFilter;
+
+      // 2. Liquid glass semi-transparency (drops to ~0.84 at fold apex)
+      const sheetOpacity = (1.0 - arc * 0.16).toFixed(3);
+      flipSheet.style.opacity = sheetOpacity;
+
+      // 3. Dynamic 3D liquid shadow depth
+      const shadowDist = (16 + arc * 28).toFixed(0);
+      const shadowBlur = (30 + arc * 45).toFixed(0);
+      const shadowAlpha = (0.28 + arc * 0.28).toFixed(2);
+      flipSheet.style.boxShadow = '0 ' + shadowDist + 'px ' + shadowBlur + 'px -8px rgba(46, 8, 21, ' + shadowAlpha + '), 0 8px 24px rgba(0, 0, 0, 0.3)';
+
+      // 4. Specular caustic highlight along sheet bend
+      if (flipHighlight) flipHighlight.style.opacity = (arc * 0.78).toFixed(3);
+      if (flipShadow) flipShadow.style.opacity = (arc * 0.60).toFixed(3);
+
+      // 5. Liquid gloss refraction wave gliding across the glass face
+      const glossX = ((progress - 0.5) * 120).toFixed(1);
+      if (flipFrontGloss) {
+        flipFrontGloss.style.opacity = (arc * 0.85).toFixed(3);
+        flipFrontGloss.style.transform = 'translateX(' + glossX + '%)';
+      }
+      if (flipBackGloss) {
+        flipBackGloss.style.opacity = (arc * 0.85).toFixed(3);
+        flipBackGloss.style.transform = 'translateX(' + glossX + '%)';
+      }
 
       if (progress < 1) {
         requestAnimationFrame(tick);
       } else {
         flipSheet.classList.remove('is-active');
         flipSheet.style.transform = 'none';
+        flipSheet.style.opacity = '1';
+        flipSheet.style.boxShadow = '';
+        if (flipFrontImg) flipFrontImg.style.filter = 'none';
+        if (flipBackImg) flipBackImg.style.filter = 'none';
         if (flipHighlight) flipHighlight.style.opacity = '0';
         if (flipShadow) flipShadow.style.opacity = '0';
+        if (flipFrontGloss) flipFrontGloss.style.opacity = '0';
+        if (flipBackGloss) flipBackGloss.style.opacity = '0';
         if (typeof onComplete === 'function') onComplete();
       }
     }
@@ -618,12 +654,14 @@
     baseImgLeft = document.getElementById('prospectusBaseImgLeft');
     baseImgRight = document.getElementById('prospectusBaseImgRight');
 
-    // 3D Flip Sheet Stage Elements
+    // 3D Flip Sheet Stage Elements (iPhone Duo Liquid Glass Engine)
     flipSheet = document.getElementById('prospectusFlipSheet');
     flipFrontImg = document.getElementById('prospectusFlipFrontImg');
     flipBackImg = document.getElementById('prospectusFlipBackImg');
     flipHighlight = document.getElementById('prospectusFlipHighlight');
     flipShadow = document.getElementById('prospectusFlipShadow');
+    flipFrontGloss = document.getElementById('prospectusFlipFrontGloss');
+    flipBackGloss = document.getElementById('prospectusFlipBackGloss');
 
     prevBtn = document.getElementById('prospectusPrevBtn');
     nextBtn = document.getElementById('prospectusNextBtn');

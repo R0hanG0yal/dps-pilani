@@ -190,8 +190,14 @@
       vec2 sourceUV = v_texCoord;
       vec3 color = vec3(0.0);
 
-      // High-performance unrolled texture sampling (100% GLSL ES 1.0 & ANGLE compliant)
-      vec4 baseColor = texture2D(u_currentTex, sourceUV);
+      // Liquid Glass Prismatic Dispersion (Apple iPhone Duo chromatic refraction)
+      float disp = 0.0035 * motion * blurGradient;
+      vec4 baseColor = vec4(
+        texture2D(u_currentTex, clamp(sourceUV + vec2(disp, 0.0), 0.001, 0.999)).r,
+        texture2D(u_currentTex, sourceUV).g,
+        texture2D(u_currentTex, clamp(sourceUV - vec2(disp, 0.0), 0.001, 0.999)).b,
+        1.0
+      );
       vec3 color = baseColor.rgb;
 
       if (radius > 0.08) {
@@ -213,26 +219,33 @@
         color = mix(baseColor.rgb, blur, clamp(radius * 0.12, 0.0, 1.0));
       }
 
-      // --- BLURRY TRANSPARENT GLASS SHADING (NO BLACK SHADOW) ---
+      // --- IPHONE DUO LIQUID GLASS & GLASSMORPHISM REFRACTIVE SHADING ---
 
       // 1. Frosted glass luminance transmission (brightens slightly during motion)
-      float glassLuminance = 1.0 + 0.14 * motion * blurGradient;
+      float glassLuminance = 1.0 + 0.16 * motion * blurGradient;
       color *= glassLuminance;
 
-      // 2. Crystal glass specular sheen along the 3D bend apex
-      float specularSheen = pow(clamp(sin(u_progress * PI), 0.0, 1.0), 5.0) * pow(clamp(1.0 - abs(v_foldZ - 0.4), 0.0, 1.0), 3.0) * 0.42;
-      color += vec3(1.0, 0.98, 0.94) * specularSheen;
+      // 2. Glassmorphism transmission: underlying sheet softly refracts through frosted glass
+      vec4 underSheet = texture2D(u_nextTex, sourceUV);
+      float transmitFactor = 0.24 * motion * blurGradient;
+      color = mix(color, underSheet.rgb + vec3(0.04, 0.03, 0.04), transmitFactor);
 
-      // 3. Prismatic chromatic edge glow along moving glass rim
-      float rimGlow = smoothstep(0.72, 1.0, edge) * motion * 0.28;
-      color.r += rimGlow * 1.08;
-      color.g += rimGlow * 1.02;
-      color.b += rimGlow * 1.18; // Crisp crystal refraction
+      // 3. Liquid Glass Specular Apex Bend Caustics (Warm Gold + Royal Wine Sheen)
+      float apex = pow(clamp(1.0 - abs(v_foldZ - 0.36) * 3.0, 0.0, 1.0), 3.2);
+      float caustics = apex * motion;
+      vec3 liquidSheen = vec3(1.0, 0.97, 0.92) * caustics * 0.58 + vec3(0.49, 0.11, 0.25) * caustics * 0.22;
+      color += liquidSheen;
 
-      // 4. Subtle frosted glass transparency: allows underlying sheet to refract through
-      float glassAlpha = mix(1.0, 0.82, motion * pow(max(0.0001, blurGradient), 0.85));
+      // 4. Prismatic chromatic edge glow along moving glass rim
+      float rimGlow = smoothstep(0.80, 1.0, edge) * motion * 0.36;
+      color.r += rimGlow * 1.15;
+      color.g += rimGlow * 1.04;
+      color.b += rimGlow * 1.28; // Crystal refraction
 
-      // 5. Smooth dissolution as the turning sheet passes 90 degrees
+      // 5. Liquid Glass Frosted Transparency
+      float glassAlpha = mix(1.0, 0.80, motion * pow(max(0.0001, blurGradient), 0.85));
+
+      // 6. Smooth dissolution as the turning sheet passes 90 degrees
       if (u_progress > 0.50) {
         glassAlpha *= smoothstep(1.0, 0.50, u_progress);
       }
