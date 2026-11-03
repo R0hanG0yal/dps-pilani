@@ -311,9 +311,10 @@
 
   text-transform: uppercase;
 
-  color: #B45309;
+  color: #7D1D3F;
 
-  background: rgba(253, 230, 138, 0.95);
+  background: rgba(247, 238, 225, 0.95);
+  border: 1px solid rgba(217, 184, 138, 0.5);
 
   padding: 2px 8px;
 

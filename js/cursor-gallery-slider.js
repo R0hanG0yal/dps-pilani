@@ -20,7 +20,7 @@
     borderRadius: 16,
     dots: true,
     dotSize: 8,
-    dotActive: '#B45309',
+    dotActive: '#D9B88A',
     dotInactive: 'rgba(255, 255, 255, 0.45)',
     loop: true,
     autoplay: 0,

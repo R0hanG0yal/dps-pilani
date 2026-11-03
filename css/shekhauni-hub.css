@@ -19,7 +19,7 @@
   font-family: var(--font-label, sans-serif) !important;
   font-size: 0.68rem !important;
   font-weight: 700 !important;
-  color: #B45309 !important; /* Rich amber / saffron */
+  color: var(--wine-700, #7D1D3F) !important;
   letter-spacing: 0.02em !important;
   text-transform: none !important;
   font-style: italic !important;
@@ -122,16 +122,16 @@
 /* ----------------------------------------------------------------------------
    2. TOP NEWS MARQUEE TICKER (shekhauni.ac.in Model)
    ---------------------------------------------------------------------------- */
-.dps-top-ticker-bar {
-  background: linear-gradient(90deg, #1C040D 0%, #350A19 50%, #1C040D 100%);
-  color: #FFF;
-  border-bottom: 1.5px solid rgba(217, 184, 138, 0.45);
-  padding: 7px 0;
-  font-size: 0.82rem;
-  overflow: hidden;
-  position: relative;
-  z-index: 90;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+.dps-top-ticker-bar {
+  background: linear-gradient(90deg, #2E0815 0%, #420D20 50%, #2E0815 100%);
+  color: #FFFDF8;
+  border-bottom: 1px solid rgba(217, 184, 138, 0.28);
+  padding: 6px 0;
+  font-size: 0.82rem;
+  overflow: hidden;
+  position: relative;
+  z-index: 90;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
 }
 
 .dps-ticker-inner {
@@ -140,29 +140,31 @@
   gap: 16px;
 }
 
-.ticker-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: #D97706;
-  color: #FFF;
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-family: var(--font-label, sans-serif);
-  font-size: 0.70rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+.ticker-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, rgba(125, 29, 63, 0.92) 0%, rgba(74, 16, 37, 0.98) 100%);
+  border: 1px solid rgba(217, 184, 138, 0.45);
+  color: #FFFDF8;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-family: var(--font-label, sans-serif);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(46, 8, 21, 0.35);
 }
 
-.ticker-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #FFF;
-  animation: sPulseDot 1.2s infinite ease-in-out;
+.ticker-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #D9B88A;
+  box-shadow: 0 0 6px rgba(217, 184, 138, 0.8);
+  animation: sPulseDot 1.4s infinite ease-in-out;
 }
 
 @keyframes sPulseDot {
@@ -225,11 +227,11 @@
   white-space: nowrap;
 }
 
-.ticker-tag-rbse { background: rgba(22, 163, 74, 0.35); border: 1px solid #16A34A; color: #86EFAC; }
-.ticker-tag-adm { background: rgba(217, 119, 6, 0.4); border: 1px solid #F59E0B; color: #FDE68A; }
-.ticker-tag-bus { background: rgba(30, 58, 138, 0.4); border: 1px solid #3B82F6; color: #93C5FD; }
-.ticker-tag-doc { background: rgba(125, 29, 63, 0.4); border: 1px solid #D9B88A; color: #F5D0A9; }
-.ticker-tag-soc { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); color: #FFF; }
+.ticker-tag-rbse { background: rgba(217, 184, 138, 0.15); border: 1px solid rgba(217, 184, 138, 0.4); color: #F8F3ED; }
+.ticker-tag-adm { background: rgba(125, 29, 63, 0.45); border: 1px solid rgba(217, 184, 138, 0.45); color: #FFFDF8; }
+.ticker-tag-bus { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(217, 184, 138, 0.3); color: #F8F3ED; }
+.ticker-tag-doc { background: rgba(125, 29, 63, 0.35); border: 1px solid rgba(217, 184, 138, 0.35); color: #F8F3ED; }
+.ticker-tag-soc { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(217, 184, 138, 0.25); color: #FFFDF8; }
 
 .ticker-sep {
   color: #D9B88A;
@@ -237,21 +239,21 @@
   opacity: 0.7;
 }
 
-.ticker-view-all {
-  color: #FDE68A;
-  font-family: var(--font-label, sans-serif);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  text-decoration: none;
-  flex-shrink: 0;
-  padding: 4px 10px;
-  border: 1px solid rgba(217, 184, 138, 0.4);
-  border-radius: 4px;
-  background: rgba(217, 184, 138, 0.12);
-  transition: all 0.2s ease;
-  white-space: nowrap;
+.ticker-view-all {
+  color: #FFFDF8;
+  font-family: var(--font-label, sans-serif);
+  font-size: 0.70rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  flex-shrink: 0;
+  padding: 4px 12px;
+  border: 1px solid rgba(217, 184, 138, 0.4);
+  border-radius: 999px;
+  background: rgba(217, 184, 138, 0.14);
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .ticker-view-all:hover {
@@ -1120,7 +1122,7 @@
   height: 72px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2.5px solid #D97706;
+  border: 2.5px solid #D9B88A;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
 }
 
