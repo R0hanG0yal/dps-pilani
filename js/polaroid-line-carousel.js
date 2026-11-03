@@ -285,7 +285,7 @@
       img.src = imgSrc;
       img.alt = sl.alt || sl.title || '';
       img.draggable = false;
-      img.loading = i < 4 ? 'eager' : 'lazy';
+      img.loading = 'eager';
       img.decoding = 'async';
       shot.appendChild(img);
 
@@ -715,6 +715,12 @@
       this.root.parentNode.removeChild(this.root);
     }
   };
+
+    PolaroidLineCarousel.prototype.layout = function () {
+    this.updateSizes();
+  };
+
+  PolaroidLineCarousel.prototype.setSlides = PolaroidLineCarousel.prototype.setItems;
 
   return PolaroidLineCarousel;
 }));

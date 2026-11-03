@@ -68,3 +68,4 @@ if __name__ == '__main__':
         print("Example: python update_domain.py https://dpspilani.edu.in")
         sys.exit(1)
     update_domain(target)
+

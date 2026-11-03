@@ -1,456 +1,854 @@
-/**
- * Cursor Image Gallery Slider Styles (Originkit Architecture)
- * Durga Public School, Pilani, Rajasthan
- */
-
-.cgs-host {
-  position: relative;
-  width: 100%;
-}
-
-.cgs-root {
-  position: relative;
-  width: 100%;
-  height: 520px;
-  min-height: 440px;
-  background: #1A050E;
-  overflow: hidden;
-  border-radius: 18px;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: pan-y;
-  outline: none;
-  cursor: default;
-  box-shadow:
-    0 16px 40px -12px rgba(46, 8, 21, 0.35),
-    0 2px 10px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(217, 184, 138, 0.35);
-}
-
-.cgs-root:focus-visible {
-  box-shadow:
-    0 0 0 3px rgba(217, 184, 138, 0.9),
-    0 16px 40px -12px rgba(46, 8, 21, 0.45);
-}
-
-/* Sliding Viewport */
-.cgs-viewport {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  border-radius: inherit;
-}
-
-/* Slide Layers */
-.cgs-layer {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  will-change: transform;
-}
-
-.cgs-layer-active {
-  z-index: 1;
-}
-
-.cgs-layer-incoming {
-  z-index: 2;
-}
-
-.cgs-slide-content {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #0E0307;
-}
-
-.cgs-slide-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  pointer-events: none;
-}
-
-/* Contain Fit for Newspaper Clippings & Certificates */
-.cgs-fit-contain {
-  background: radial-gradient(circle at center, #FDFBF7 0%, #F5EFE4 70%, #E9DFC9 100%) !important;
-}
-
-.cgs-fit-contain .cgs-slide-img {
-  object-fit: contain;
-  padding: 16px 20px 72px 20px;
-  box-sizing: border-box;
-  filter: drop-shadow(0 10px 24px rgba(46, 8, 21, 0.18));
-}
-
-.cgs-slide-empty {
-  color: rgba(255, 255, 255, 0.6);
-  font-family: var(--font-ui, sans-serif);
-  font-size: 14px;
-}
-
-/* Floating Directional Cursor */
-.cgs-cursor {
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 120;
-  display: grid;
-  place-items: center;
-  opacity: 0;
-  visibility: hidden;
-  transform: translate(-50%, -50%) scale(0.7);
-  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow:
-    0 12px 30px -4px rgba(46, 8, 21, 0.55),
-    0 0 0 1.5px rgba(217, 184, 138, 0.75),
-    inset 0 1px 2px #FFFFFF;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.cgs-cursor.visible {
-  opacity: 1;
-  visibility: visible;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-.cgs-cursor .cgs-arrow {
-  display: none;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
-}
-
-.cgs-cursor.side-left .cgs-arrow-left {
-  display: block;
-  transform: translateX(-1px);
-}
-
-.cgs-cursor.side-right .cgs-arrow-right {
-  display: block;
-  transform: translateX(1px);
-}
-
-/* Floating Liquid Glass Caption Dock */
-.cgs-dock {
-  position: absolute;
-  left: clamp(14px, 3.5vw, 32px);
-  right: clamp(14px, 3.5vw, 32px);
-  bottom: clamp(14px, 2.5vh, 24px);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  z-index: 50;
-  pointer-events: none;
-}
-
-.cgs-info-pill {
-  pointer-events: auto;
-  flex: 1;
-  min-width: 0;
-  max-width: clamp(280px, 68%, 760px);
-  background: rgba(30, 6, 15, 0.82);
-  backdrop-filter: blur(24px) saturate(190%);
-  -webkit-backdrop-filter: blur(24px) saturate(190%);
-  border: 1px solid rgba(217, 184, 138, 0.55);
-  border-radius: 999px;
-  padding: 10px 22px;
-  color: #FFFFFF;
-  box-shadow:
-    0 14px 34px -6px rgba(14, 2, 7, 0.55),
-    0 2px 8px rgba(0, 0, 0, 0.2),
-    inset 0 1px 2px rgba(255, 255, 255, 0.25);
-  transition: transform 0.25s ease, border-color 0.25s ease;
-}
-
-.cgs-info-pill:hover {
-  border-color: rgba(217, 184, 138, 0.9);
-}
-
-.cgs-info-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-}
-
-.cgs-note-badge {
-  display: inline-block;
-  font-family: var(--font-label, monospace);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #B45309;
-  background: rgba(253, 230, 138, 0.95);
-  padding: 2px 8px;
-  border-radius: 999px;
-  flex-shrink: 0;
-}
-
-.cgs-title {
-  margin: 0;
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 15px;
-  font-weight: 700;
-  color: #FFFFFF;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  letter-spacing: -0.01em;
-}
-
-.cgs-caption {
-  margin: 2px 0 0 0;
-  font-family: var(--font-ui, sans-serif);
-  font-size: 12px;
-  line-height: 1.35;
-  color: rgba(255, 255, 255, 0.78);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Nav Pod (Counter & Zoom) */
-.cgs-nav-pod {
-  pointer-events: auto;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-}
-
-.cgs-count-capsule {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  height: 42px;
-  padding: 0 16px;
-  border-radius: 999px;
-  background: rgba(30, 6, 15, 0.82);
-  backdrop-filter: blur(24px) saturate(190%);
-  -webkit-backdrop-filter: blur(24px) saturate(190%);
-  border: 1px solid rgba(217, 184, 138, 0.55);
-  color: #FDE68A;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  font-weight: 700;
-  box-shadow: 0 8px 24px -4px rgba(14, 2, 7, 0.45);
-}
-
-.cgs-count-capsule strong {
-  color: #FFFFFF;
-  font-weight: 800;
-}
-
-.cgs-zoom-btn {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 1px solid rgba(217, 184, 138, 0.55);
-  background: rgba(30, 6, 15, 0.82);
-  backdrop-filter: blur(24px) saturate(190%);
-  -webkit-backdrop-filter: blur(24px) saturate(190%);
-  color: #FDE68A;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 8px 24px -4px rgba(14, 2, 7, 0.45);
-}
-
-.cgs-zoom-btn:hover {
-  background: #7D1D3F;
-  color: #FFFFFF;
-  border-color: #D9B88A;
-  transform: scale(1.06);
-}
-
-/* Pagination Dots */
-.cgs-dots {
-  position: absolute;
-  left: 50%;
-  bottom: clamp(14px, 2.5vh, 24px);
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  z-index: 45;
-  pointer-events: auto;
-  background: rgba(30, 6, 15, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 6px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(217, 184, 138, 0.3);
-}
-
-.cgs-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.4);
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.cgs-dot:hover {
-  background: rgba(255, 255, 255, 0.8);
-}
-
-.cgs-dot.active {
-  width: 24px;
-  border-radius: 999px;
-  background: #D9B88A;
-  box-shadow: 0 0 10px rgba(217, 184, 138, 0.7);
-}
-
-/* Touch Fallback Arrows (Hidden on mouse pointer, visible on touch/mobile) */
-.cgs-touch-btn {
-  display: none;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 46px;
-  height: 46px;
-  min-width: 46px;
-  min-height: 46px;
-  border-radius: 50%;
-  background: rgba(30, 6, 15, 0.88);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1.5px solid rgba(217, 184, 138, 0.8);
-  color: #FFFFFF;
-  place-items: center;
-  cursor: pointer;
-  z-index: 70;
-  touch-action: manipulation;
-  transition: all 0.2s ease;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
-}
-
-.cgs-touch-btn:active {
-  transform: translateY(-50%) scale(0.92);
-}
-
-.cgs-touch-prev {
-  left: 12px;
-}
-
-.cgs-touch-next {
-  right: 12px;
-}
-
-/* Mobile & Touch Devices */
-@media (max-width: 992px), (hover: none) and (pointer: coarse) {
-  .cgs-touch-btn {
-    display: grid !important;
-  }
-  .cgs-cursor {
-    display: none !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .cgs-root {
-    height: 430px;
-    min-height: 380px;
-  }
-  .cgs-touch-btn {
-    display: grid !important;
-    width: 44px !important;
-    height: 44px !important;
-    min-width: 44px !important;
-    min-height: 44px !important;
-    z-index: 70 !important;
-  }
-  .cgs-touch-prev {
-    left: 8px !important;
-  }
-  .cgs-touch-next {
-    right: 8px !important;
-  }
-  .cgs-dock {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
-    z-index: 55;
-    pointer-events: none;
-  }
-  .cgs-info-pill {
-    max-width: 100%;
-    padding: 9px 16px;
-    border-radius: 14px;
-    cursor: pointer;
-    touch-action: manipulation;
-    pointer-events: auto;
-  }
-  .cgs-title {
-    font-size: 14px;
-  }
-  .cgs-caption {
-    font-size: 11.5px;
-  }
-  .cgs-nav-pod {
-    justify-content: space-between;
-    width: 100%;
-    pointer-events: auto;
-  }
-  .cgs-count-capsule {
-    height: 40px;
-    padding: 0 14px;
-    font-size: 12px;
-  }
-  .cgs-zoom-btn {
-    width: 44px;
-    height: 44px;
-    min-width: 44px;
-    min-height: 44px;
-    touch-action: manipulation;
-  }
-  .cgs-dots {
-    display: none !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .cgs-root {
-    height: 390px;
-    min-height: 350px;
-  }
-  .cgs-touch-btn {
-    width: 42px !important;
-    height: 42px !important;
-    min-width: 42px !important;
-    min-height: 42px !important;
-  }
-  .cgs-touch-prev {
-    left: 6px !important;
-  }
-  .cgs-touch-next {
-    right: 6px !important;
-  }
-  .cgs-fit-contain .cgs-slide-img {
-    padding: 10px 10px 65px 10px !important;
-  }
-}
-
+/**
+
+ * Cursor Image Gallery Slider Styles (Originkit Architecture)
+
+ * Durga Public School, Pilani, Rajasthan
+
+ */
+
+
+
+.cgs-host {
+
+  position: relative;
+
+  width: 100%;
+
+}
+
+
+
+.cgs-root {
+
+  position: relative;
+
+  width: 100%;
+
+  height: 520px;
+
+  min-height: 440px;
+
+  background: #1A050E;
+
+  overflow: hidden;
+
+  border-radius: 18px;
+
+  user-select: none;
+
+  -webkit-user-select: none;
+
+  touch-action: pan-y;
+
+  outline: none;
+
+  cursor: default;
+
+  box-shadow:
+
+    0 16px 40px -12px rgba(46, 8, 21, 0.35),
+
+    0 2px 10px rgba(0, 0, 0, 0.08);
+
+  border: 1px solid rgba(217, 184, 138, 0.35);
+
+}
+
+
+
+.cgs-root:focus-visible {
+
+  box-shadow:
+
+    0 0 0 3px rgba(217, 184, 138, 0.9),
+
+    0 16px 40px -12px rgba(46, 8, 21, 0.45);
+
+}
+
+
+
+/* Sliding Viewport */
+
+.cgs-viewport {
+
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+
+  height: 100%;
+
+  overflow: hidden;
+
+  border-radius: inherit;
+
+}
+
+
+
+/* Slide Layers */
+
+.cgs-layer {
+
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+
+  height: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  will-change: transform;
+
+}
+
+
+
+.cgs-layer-active {
+
+  z-index: 1;
+
+}
+
+
+
+.cgs-layer-incoming {
+
+  z-index: 2;
+
+}
+
+
+
+.cgs-slide-content {
+
+  position: relative;
+
+  width: 100%;
+
+  height: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: #0E0307;
+
+}
+
+
+
+.cgs-slide-img {
+
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+
+  pointer-events: none;
+
+}
+
+
+
+/* Contain Fit for Newspaper Clippings & Certificates */
+
+.cgs-fit-contain {
+
+  background: radial-gradient(circle at center, #FDFBF7 0%, #F5EFE4 70%, #E9DFC9 100%) !important;
+
+}
+
+
+
+.cgs-fit-contain .cgs-slide-img {
+
+  object-fit: contain;
+
+  padding: 16px 20px 72px 20px;
+
+  box-sizing: border-box;
+
+  filter: drop-shadow(0 10px 24px rgba(46, 8, 21, 0.18));
+
+}
+
+
+
+.cgs-slide-empty {
+
+  color: rgba(255, 255, 255, 0.6);
+
+  font-family: var(--font-ui, sans-serif);
+
+  font-size: 14px;
+
+}
+
+
+
+/* Floating Directional Cursor */
+
+.cgs-cursor {
+
+  position: absolute;
+
+  top: 0;
+
+  left: 0;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+
+  z-index: 120;
+
+  display: grid;
+
+  place-items: center;
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  transform: translate(-50%, -50%) scale(0.7);
+
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+
+              transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+
+  box-shadow:
+
+    0 12px 30px -4px rgba(46, 8, 21, 0.55),
+
+    0 0 0 1.5px rgba(217, 184, 138, 0.75),
+
+    inset 0 1px 2px #FFFFFF;
+
+  backdrop-filter: blur(10px);
+
+  -webkit-backdrop-filter: blur(10px);
+
+}
+
+
+
+.cgs-cursor.visible {
+
+  opacity: 1;
+
+  visibility: visible;
+
+  transform: translate(-50%, -50%) scale(1);
+
+}
+
+
+
+.cgs-cursor .cgs-arrow {
+
+  display: none;
+
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+
+}
+
+
+
+.cgs-cursor.side-left .cgs-arrow-left {
+
+  display: block;
+
+  transform: translateX(-1px);
+
+}
+
+
+
+.cgs-cursor.side-right .cgs-arrow-right {
+
+  display: block;
+
+  transform: translateX(1px);
+
+}
+
+
+
+/* Floating Liquid Glass Caption Dock */
+
+.cgs-dock {
+
+  position: absolute;
+
+  left: clamp(14px, 3.5vw, 32px);
+
+  right: clamp(14px, 3.5vw, 32px);
+
+  bottom: clamp(14px, 2.5vh, 24px);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 14px;
+
+  z-index: 50;
+
+  pointer-events: none;
+
+}
+
+
+
+.cgs-info-pill {
+  pointer-events: auto;
+  flex: 1;
+  min-width: 0;
+  max-width: clamp(280px, 68%, 760px);
+  background: linear-gradient(135deg, rgba(64, 12, 32, 0.72) 0%, rgba(30, 6, 16, 0.80) 100%) !important;
+  backdrop-filter: blur(24px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+  border: 1px solid rgba(217, 184, 138, 0.45) !important;
+  border-radius: 999px;
+  padding: 10px 22px;
+  color: #FFFFFF;
+  box-shadow:
+    0 12px 32px -4px rgba(16, 2, 8, 0.45),
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.22) !important;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+
+
+.cgs-info-pill:hover {
+
+  border-color: rgba(217, 184, 138, 0.9);
+
+}
+
+
+
+.cgs-info-header {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  min-width: 0;
+
+}
+
+
+
+.cgs-note-badge {
+
+  display: inline-block;
+
+  font-family: var(--font-label, monospace);
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+
+  color: #B45309;
+
+  background: rgba(253, 230, 138, 0.95);
+
+  padding: 2px 8px;
+
+  border-radius: 999px;
+
+  flex-shrink: 0;
+
+}
+
+
+
+.cgs-title {
+
+  margin: 0;
+
+  font-family: 'Playfair Display', Georgia, serif;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  color: #FFFFFF;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  letter-spacing: -0.01em;
+
+}
+
+
+
+.cgs-caption {
+
+  margin: 2px 0 0 0;
+
+  font-family: var(--font-ui, sans-serif);
+
+  font-size: 12px;
+
+  line-height: 1.35;
+
+  color: rgba(255, 255, 255, 0.78);
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+}
+
+
+
+/* Nav Pod (Counter & Zoom) */
+
+.cgs-nav-pod {
+
+  pointer-events: auto;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  flex-shrink: 0;
+
+}
+
+
+
+.cgs-count-capsule {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 42px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(64, 12, 32, 0.72) 0%, rgba(30, 6, 16, 0.80) 100%) !important;
+  backdrop-filter: blur(24px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+  border: 1px solid rgba(217, 184, 138, 0.45) !important;
+  color: #FDE68A;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow:
+    0 8px 24px -4px rgba(16, 2, 8, 0.35),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.22) !important;
+}
+
+
+
+.cgs-count-capsule strong {
+
+  color: #FFFFFF;
+
+  font-weight: 800;
+
+}
+
+
+
+.cgs-zoom-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(217, 184, 138, 0.45) !important;
+  background: linear-gradient(135deg, rgba(64, 12, 32, 0.72) 0%, rgba(30, 6, 16, 0.80) 100%) !important;
+  backdrop-filter: blur(24px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+  color: #FDE68A;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow:
+    0 8px 24px -4px rgba(16, 2, 8, 0.35),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.22) !important;
+}
+
+
+
+.cgs-zoom-btn:hover {
+
+  background: #7D1D3F;
+
+  color: #FFFFFF;
+
+  border-color: #D9B88A;
+
+  transform: scale(1.06);
+
+}
+
+
+
+/* Pagination Dots */
+.cgs-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 74px; /* Repositioned safely above dock to prevent collision */
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 45;
+  pointer-events: auto;
+  background: linear-gradient(135deg, rgba(64, 12, 32, 0.65) 0%, rgba(30, 6, 16, 0.75) 100%) !important;
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(217, 184, 138, 0.4) !important;
+  box-shadow:
+    0 6px 20px -3px rgba(16, 2, 8, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
+}
+
+
+
+.cgs-dot {
+
+  width: 7px;
+
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.4);
+
+  border: none;
+
+  cursor: pointer;
+
+  padding: 0;
+
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+
+}
+
+
+
+.cgs-dot:hover {
+
+  background: rgba(255, 255, 255, 0.8);
+
+}
+
+
+
+.cgs-dot.active {
+
+  width: 24px;
+
+  border-radius: 999px;
+
+  background: #D9B88A;
+
+  box-shadow: 0 0 10px rgba(217, 184, 138, 0.7);
+
+}
+
+
+
+/* Touch Fallback Arrows (Hidden on mouse pointer, visible on touch/mobile) */
+
+.cgs-touch-btn {
+
+  display: none;
+
+  position: absolute;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  width: 46px;
+
+  height: 46px;
+
+  min-width: 46px;
+
+  min-height: 46px;
+
+  border-radius: 50%;
+
+  background: rgba(30, 6, 15, 0.88);
+
+  backdrop-filter: blur(16px);
+
+  -webkit-backdrop-filter: blur(16px);
+
+  border: 1.5px solid rgba(217, 184, 138, 0.8);
+
+  color: #FFFFFF;
+
+  place-items: center;
+
+  cursor: pointer;
+
+  z-index: 70;
+
+  touch-action: manipulation;
+
+  transition: all 0.2s ease;
+
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+
+}
+
+
+
+.cgs-touch-btn:active {
+
+  transform: translateY(-50%) scale(0.92);
+
+}
+
+
+
+.cgs-touch-prev {
+
+  left: 12px;
+
+}
+
+
+
+.cgs-touch-next {
+
+  right: 12px;
+
+}
+
+
+
+/* Mobile & Touch Devices */
+
+@media (max-width: 992px), (hover: none) and (pointer: coarse) {
+
+  .cgs-touch-btn {
+
+    display: grid !important;
+
+  }
+
+  .cgs-cursor {
+
+    display: none !important;
+
+  }
+
+}
+
+
+
+@media (max-width: 768px) {
+
+  .cgs-root {
+
+    height: 430px;
+
+    min-height: 380px;
+
+  }
+
+  .cgs-touch-btn {
+
+    display: grid !important;
+
+    width: 44px !important;
+
+    height: 44px !important;
+
+    min-width: 44px !important;
+
+    min-height: 44px !important;
+
+    z-index: 70 !important;
+
+  }
+
+  .cgs-touch-prev {
+
+    left: 8px !important;
+
+  }
+
+  .cgs-touch-next {
+
+    right: 8px !important;
+
+  }
+
+  .cgs-dock {
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 8px;
+
+    bottom: 10px;
+
+    left: 10px;
+
+    right: 10px;
+
+    z-index: 55;
+
+    pointer-events: none;
+
+  }
+
+  .cgs-info-pill {
+
+    max-width: 100%;
+
+    padding: 9px 16px;
+
+    border-radius: 14px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+
+    pointer-events: auto;
+
+  }
+
+  .cgs-title {
+
+    font-size: 14px;
+
+  }
+
+  .cgs-caption {
+
+    font-size: 11.5px;
+
+  }
+
+  .cgs-nav-pod {
+
+    justify-content: space-between;
+
+    width: 100%;
+
+    pointer-events: auto;
+
+  }
+
+  .cgs-count-capsule {
+
+    height: 40px;
+
+    padding: 0 14px;
+
+    font-size: 12px;
+
+  }
+
+  .cgs-zoom-btn {
+
+    width: 44px;
+
+    height: 44px;
+
+    min-width: 44px;
+
+    min-height: 44px;
+
+    touch-action: manipulation;
+
+  }
+
+  .cgs-dots {
+
+    display: none !important;
+
+  }
+
+}
+
+
+
+@media (max-width: 480px) {
+
+  .cgs-root {
+
+    height: 390px;
+
+    min-height: 350px;
+
+  }
+
+  .cgs-touch-btn {
+
+    width: 42px !important;
+
+    height: 42px !important;
+
+    min-width: 42px !important;
+
+    min-height: 42px !important;
+
+  }
+
+  .cgs-touch-prev {
+
+    left: 6px !important;
+
+  }
+
+  .cgs-touch-next {
+
+    right: 6px !important;
+
+  }
+
+  .cgs-fit-contain .cgs-slide-img {
+
+    padding: 10px 10px 65px 10px !important;
+
+  }
+
+}
+
+
+
