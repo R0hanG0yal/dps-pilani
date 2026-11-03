@@ -5,47 +5,157 @@
  */
 
 /* ----------------------------------------------------------------------------
-   1. BRAND HEADER TAGLINE (Placed ABOVE School Name on Every Page)
+   1. CLEAN LUXURY BRAND HEADER & EXPANDED AIRY NAVIGATION BAR
    ---------------------------------------------------------------------------- */
 .dps-brand-text {
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
-  line-height: 1.15 !important;
+  line-height: 1.18 !important;
   text-align: left !important;
 }
 
-.dps-brand-tagline {
-  font-family: var(--font-label, sans-serif) !important;
-  font-size: 0.68rem !important;
-  font-weight: 700 !important;
-  color: var(--wine-700, #7D1D3F) !important;
-  letter-spacing: 0.02em !important;
-  text-transform: none !important;
-  font-style: italic !important;
-  margin-bottom: 2px !important;
-  display: block !important;
-  white-space: nowrap !important;
+/* Hide cluttering tagline from sticky top navbar brand */
+.dps-header .dps-brand-tagline {
+  display: none !important;
 }
 
 .dps-brand-name {
   font-family: var(--font-display, Georgia, serif) !important;
-  font-size: 1.05rem !important;
+  font-size: 1.02rem !important;
   font-weight: 800 !important;
   color: var(--wine-950, #2E0815) !important;
   white-space: nowrap !important;
   letter-spacing: -0.01em !important;
-  line-height: 1.15 !important;
+  line-height: 1.18 !important;
 }
 
 .dps-brand-sub {
-  font-family: var(--font-label, monospace) !important;
-  font-size: 0.64rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.06em !important;
+  font-family: var(--font-ui, 'Plus Jakarta Sans', sans-serif) !important;
+  font-size: 0.63rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
   text-transform: uppercase !important;
   color: var(--wine-700, #7D1D3F) !important;
   margin-top: 1px !important;
+  white-space: nowrap !important;
+}
+
+/* Hide duplicate/crammed mega menu pill on desktop (>991px) */
+@media (min-width: 992px) {
+  .dps-mega-trigger-pill,
+  #dpsMegaMenuTrigger {
+    display: none !important;
+  }
+
+  .header-left-group {
+    gap: 0 !important;
+    flex-shrink: 0 !important;
+  }
+
+  .dps-header-inner {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 14px !important;
+    max-width: 1440px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 24px !important;
+  }
+
+  .dps-nav {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 16px !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+
+  .dps-nav > .nav-list {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .nav-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 6px 12px !important;
+    border-radius: 999px !important;
+    font-family: var(--font-ui, 'Plus Jakarta Sans', sans-serif) !important;
+    font-weight: 600 !important;
+    font-size: 0.81rem !important;
+    color: var(--ink-700, #334155) !important;
+    text-decoration: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    line-height: 1.2 !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  .nav-link:hover {
+    background: rgba(125, 29, 63, 0.08) !important;
+    color: var(--wine-700, #7D1D3F) !important;
+  }
+
+  .nav-link[aria-current="page"] {
+    background: linear-gradient(135deg, #7D1D3F 0%, #541128 100%) !important;
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 0 3px 10px rgba(125, 29, 63, 0.28) !important;
+  }
+
+  .dps-header-actions {
+    flex-shrink: 0 !important;
+  }
+
+  .dps-header-actions .btn {
+    padding: 8px 18px !important;
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+    border-radius: 999px !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* Fluid responsive sizing for laptops (992px to 1280px) */
+@media (min-width: 992px) and (max-width: 1280px) {
+  .dps-header-inner {
+    padding: 0 14px !important;
+    gap: 8px !important;
+  }
+  .dps-brand img {
+    width: 38px !important;
+    height: 38px !important;
+  }
+  .dps-brand-name {
+    font-size: 0.94rem !important;
+  }
+  .dps-brand-sub {
+    font-size: 0.58rem !important;
+  }
+  .dps-nav {
+    margin: 0 6px !important;
+  }
+  .dps-nav > .nav-list {
+    gap: 2px !important;
+  }
+  .nav-link {
+    font-size: 0.76rem !important;
+    padding: 5px 8px !important;
+  }
+  .dps-header-actions .btn {
+    font-size: 0.77rem !important;
+    padding: 7px 13px !important;
+  }
 }
 
 /* Mobile Brand Header & Floating Island Optimization */
