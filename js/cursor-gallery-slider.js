@@ -255,7 +255,9 @@
 
   CursorGallerySlider.prototype.renderSlide = function (idx) {
     if (this.count === 0) {
-      this.activeLayer.innerHTML = '<div class="cgs-empty">No slides available</div>';
+      this.activeLayer.innerHTML = '<div class="cgs-empty" style="color:rgba(255,255,255,0.7);font-family:sans-serif;font-size:0.95rem;text-align:center;padding:40px;">No archival prints in this sub-category</div>';
+      this.updateCaption();
+      this.updateDots();
       return;
     }
     const item = this.slides[idx];
@@ -267,14 +269,27 @@
 
   CursorGallerySlider.prototype.updateCaption = function () {
     if (!this.opts.showCaption || !this.dock) return;
-    const item = this.slides[this.index];
-    if (!item) return;
 
     const titleEl = this.dock.querySelector('.cgs-title');
     const noteEl = this.dock.querySelector('.cgs-note-badge');
     const captionEl = this.dock.querySelector('.cgs-caption');
     const idxEl = this.dock.querySelector('.cgs-idx');
     const totalEl = this.dock.querySelector('.cgs-total');
+
+    if (this.count === 0) {
+      if (titleEl) titleEl.textContent = 'No Prints In Selection';
+      if (noteEl) noteEl.style.display = 'none';
+      if (captionEl) {
+        captionEl.innerHTML = 'Please choose another sub-category above.';
+        captionEl.style.display = 'block';
+      }
+      if (idxEl) idxEl.textContent = '00';
+      if (totalEl) totalEl.textContent = '00';
+      return;
+    }
+
+    const item = this.slides[this.index];
+    if (!item) return;
 
     if (titleEl) titleEl.textContent = item.title || 'Heritage Photograph';
     if (noteEl) {
@@ -456,15 +471,34 @@
       if (self.opts.autoplay > 0) self.startAutoplay();
     });
 
-    // Click on slider: navigate according to side
+    // Click on slider: navigate according to side, or open lightbox if clicking photo / info
     this.root.addEventListener('click', function (e) {
-      // Ignore clicks on controls or caption links
-      if (e.target.closest('.cgs-dock, .cgs-dots, .cgs-touch-btn, .cgs-zoom-btn')) {
+      // Direct click on zoom button or info pill triggers lightbox
+      if (e.target.closest('.cgs-zoom-btn, .cgs-info-pill')) {
+        if (typeof self.opts.onSlideClick === 'function' && self.count > 0) {
+          self.opts.onSlideClick(self.slides[self.index], self.index);
+        }
         return;
       }
+
+      // Ignore clicks on dots or touch prev/next buttons
+      if (e.target.closest('.cgs-dots, .cgs-touch-btn')) {
+        return;
+      }
+
       const rect = self.root.getBoundingClientRect();
       const relX = e.clientX - rect.left;
-      const side = self.sideFor(relX, rect.width);
+      const width = rect.width;
+
+      // On narrow / mobile screens (< 700px), if tapped in the middle 55% of the slide, open lightbox!
+      if (width < 700 && relX > width * 0.22 && relX < width * 0.78) {
+        if (typeof self.opts.onSlideClick === 'function' && self.count > 0) {
+          self.opts.onSlideClick(self.slides[self.index], self.index);
+          return;
+        }
+      }
+
+      const side = self.sideFor(relX, width);
       if (side === 'left') {
         self.prev();
       } else if (side === 'right') {
@@ -478,7 +512,7 @@
       if (zoomBtn) {
         zoomBtn.addEventListener('click', function (e) {
           e.stopPropagation();
-          if (typeof self.opts.onSlideClick === 'function') {
+          if (typeof self.opts.onSlideClick === 'function' && self.count > 0) {
             self.opts.onSlideClick(self.slides[self.index], self.index);
           }
         });
@@ -575,6 +609,15 @@
     this.renderDots();
     this.renderSlide(0);
     if (this.opts.autoplay > 0) this.startAutoplay();
+  };
+
+  CursorGallerySlider.prototype.layout = function () {
+    this.updateCaption();
+    this.updateDots();
+  };
+
+  CursorGallerySlider.prototype.updateSizes = function () {
+    this.layout();
   };
 
   CursorGallerySlider.prototype.destroy = function () {
