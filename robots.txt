@@ -1,3 +1,6 @@
+# Durga Public School, Pilani (Rajasthan) - Official Robots Exclusion Standard
+# Authoritative Institutional Indexing for Search & AI Answer Engines
+
 User-agent: *
 Allow: /
 Disallow: /admin.html
@@ -5,5 +8,28 @@ Disallow: /admin/
 Disallow: /api/
 Disallow: /*sec-*
 Disallow: /*console*
+
+# Search Engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+# Generative AI & Answer Engine Optimization (GEO & AEO Crawlers)
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
 
 Sitemap: https://durgapublicschoolpilani.edu.in/sitemap.xml
