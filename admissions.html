@@ -43,9 +43,7 @@
   <link rel="stylesheet" href="css/premium.css">
   <link rel="stylesheet" href="css/editorial-frames.css">
   <link rel="stylesheet" href="css/shekhauni-hub.css">
-  <link rel="stylesheet" href="css/spotlight-frames.css">
-  <link rel="stylesheet" href="css/polaroid-line-carousel.css">
-  <link rel="stylesheet" href="css/cursor-gallery-slider.css">
+  <link rel="stylesheet" href="css/prospectus-viewer.css?v=20261103a">
 
   <!-- JSON-LD Institutional, Local GEO & AEO Answer Engine Schemas -->
   <script type="application/ld+json">
@@ -670,6 +668,18 @@
                 <img id="prospectusBaseImgRight" class="prospectus-base-page is-right" src="assets/prospectus/page-01.jpg" onerror="this.onerror=null;if(this.src.indexOf('.jpg')!==-1)this.src=this.src.replace('.jpg','.webp');" alt="Right Prospectus Page" style="width:100%;height:100%;object-fit:contain;display:block;">
               </div>
               <canvas id="prospectusWebGLCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%;display:block;z-index:5;opacity:0;pointer-events:none;"></canvas>
+
+              <!-- 3D Realistic Page Curl Flipping Sheet Stage -->
+              <div class="prospectus-flip-sheet" id="prospectusFlipSheet" aria-hidden="true">
+                <div class="prospectus-flip-front">
+                  <img class="prospectus-flip-img" id="prospectusFlipFrontImg" src="assets/prospectus/page-01.jpg" alt="Prospectus Turning Page Front">
+                  <div class="prospectus-flip-highlight" id="prospectusFlipHighlight"></div>
+                </div>
+                <div class="prospectus-flip-back">
+                  <img class="prospectus-flip-img" id="prospectusFlipBackImg" src="assets/prospectus/page-02.jpg" alt="Prospectus Turning Page Back">
+                  <div class="prospectus-flip-shadow" id="prospectusFlipShadow"></div>
+                </div>
+              </div>
 
               <!-- Loading spinner -->
               <div class="prospectus-loader" id="prospectusLoader">

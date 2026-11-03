@@ -1,12 +1,14 @@
 /**
  * ============================================================================
- * DURGA PUBLIC SCHOOL - PROSPECTUS VIEWER (UNFOLDED IPHONE DUO ENGINE)
+ * DURGA PUBLIC SCHOOL - PROSPECTUS VIEWER (3D PAGE CURL & UNFOLDED DUO ENGINE)
  * ============================================================================
  * - Page 1: Single Front Cover
- * - Pages 2-19: Unfolded iPhone Duo Two-Page Spread with Central Spine
+ * - Pages 2-19: Unfolded Two-Page Spreads with Central Spine
  * - Page 20: Single Back Cover
- * - Blurry Transparent Frosted Glass Shader Transition
- * - Fullscreen Reading Mode with Adaptive Canvas Re-Rendering
+ * - Hardware-Accelerated 3D Page Curl & Specular Highlight Turn Engine
+ * - WebGL Frosted Glass Bend Shaders with ANGLE Direct3D Compliance
+ * - Responsive Mobile Single-Page Flip & Touch Drag Gestures
+ * - Fullscreen Reading Mode with Adaptive Viewport Re-Centering
  * ============================================================================
  */
 
@@ -21,15 +23,12 @@
   // State
   let currentSpreadIdx = 0;
   let isAnimating = false;
-  let isDragging = false;
-  let dragStartX = 0;
-  let dragStartY = 0;
-  let dragProgress = 0;
   let foldingEngine = null;
 
   // DOM Elements
-  let container, viewport, canvas, gl;
+  let container, viewport, canvas;
   let baseSpread, baseImgLeft, baseImgRight;
+  let flipSheet, flipFrontImg, flipBackImg, flipHighlight, flipShadow;
   let prevBtn, nextBtn, pageNumEl, totalPagesEl, scrubber, thumbsDrawer, thumbsToggleBtn;
   let loaderEl, fullscreenBtn;
 
@@ -60,7 +59,7 @@
     };
   }
 
-  // Preload a single page image (same-origin safe)
+  // Preload a single page image
   function loadPageImage(pageNum) {
     return new Promise(function (resolve) {
       if (pageImageCache.has(pageNum)) {
@@ -69,8 +68,8 @@
       }
 
       const img = new Image();
-      const jpgSrc = `${BASE_ASSET_PATH}page-${padNum(pageNum)}.jpg`;
-      const webpSrc = `${BASE_ASSET_PATH}page-${padNum(pageNum)}.webp`;
+      const jpgSrc = BASE_ASSET_PATH + 'page-' + padNum(pageNum) + '.jpg';
+      const webpSrc = BASE_ASSET_PATH + 'page-' + padNum(pageNum) + '.webp';
 
       img.onload = function () {
         pageImageCache.set(pageNum, img);
@@ -84,7 +83,7 @@
           resolve(fallbackImg);
         };
         fallbackImg.onerror = function () {
-          console.warn(`[Prospectus] Failed to load page ${pageNum}`);
+          console.warn('[Prospectus] Failed to load page ' + pageNum);
           resolve(null);
         };
         fallbackImg.src = webpSrc;
@@ -94,7 +93,7 @@
     });
   }
 
-  // Preload/Compose an unfolded spread canvas (Single page: 1200x1572, Spread: 2400x1572)
+  // Preload/Compose an unfolded spread canvas for optional WebGL transition
   function loadSpreadCanvas(spreadIdx) {
     return new Promise(function (resolve) {
       if (spreadCanvasCache.has(spreadIdx)) {
@@ -123,12 +122,10 @@
           c.height = 1572;
           const ctx = c.getContext('2d');
 
-          // Left page
           if (imgs[0]) ctx.drawImage(imgs[0], 0, 0, 1200, 1572);
-          // Right page
           if (imgs[1]) ctx.drawImage(imgs[1], 1200, 0, 1200, 1572);
 
-          // Virtual center hinge crease (iPhone Duo central spine)
+          // Virtual center hinge crease
           ctx.fillStyle = 'rgba(0, 0, 0, 0.16)';
           ctx.fillRect(1198, 0, 4, 1572);
 
@@ -158,7 +155,7 @@
           this.src = this.src.replace('.jpg', '.webp');
         }
       };
-      el.src = `${BASE_ASSET_PATH}page-${padNum(pageNum)}.jpg`;
+      el.src = BASE_ASSET_PATH + 'page-' + padNum(pageNum) + '.jpg';
     }
 
     if (info.isSingle) {
@@ -188,17 +185,6 @@
     }
   }
 
-  // Render Current Spread on Canvas
-  function renderCurrentSpread() {
-    if (!foldingEngine) return;
-    const info = getSpreadInfo(currentSpreadIdx);
-    loadSpreadCanvas(currentSpreadIdx).then(function (canvasEl) {
-      if (!canvasEl) return;
-      foldingEngine.uploadImage(foldingEngine.currentTexture, canvasEl);
-      foldingEngine.renderFrame(0, 1, !info.isSingle);
-    });
-  }
-
   // Canvas Resize Handler
   function resizeCanvas() {
     if (!canvas || !viewport) return;
@@ -216,7 +202,135 @@
     }
   }
 
-  // Navigate between Spreads with 3D Frosted Glass Folding Transition
+  // 3D Realistic Page Curl / Flip Animation
+  function animate3DPageTurn(fromIdx, toIdx, direction, onComplete) {
+    if (!flipSheet || !flipFrontImg || !flipBackImg) {
+      if (typeof onComplete === 'function') onComplete();
+      return;
+    }
+
+    const fromInfo = getSpreadInfo(fromIdx);
+    const toInfo = getSpreadInfo(toIdx);
+    const isMobile = window.innerWidth <= 768;
+
+    let frontPageNum = 1;
+    let backPageNum = 2;
+    let startAngle = 0;
+    let endAngle = -180;
+    let sheetLeft = '50%';
+    let sheetWidth = '50%';
+    let transformOrigin = 'left center';
+
+    if (direction > 0) {
+      // TURNING FORWARD (Next)
+      if (fromIdx === 0) {
+        // Opening Front Cover (Page 1 -> Pages 2-3)
+        frontPageNum = 1;
+        backPageNum = 2;
+        startAngle = 0;
+        endAngle = -180;
+        sheetLeft = isMobile ? '0%' : '50%';
+        sheetWidth = isMobile ? '100%' : '50%';
+        transformOrigin = 'left center';
+      } else if (toIdx === 10) {
+        // Closing to Back Cover (Pages 18-19 -> Page 20)
+        frontPageNum = fromInfo.right || 19;
+        backPageNum = 20;
+        startAngle = 0;
+        endAngle = -180;
+        sheetLeft = isMobile ? '0%' : '50%';
+        sheetWidth = isMobile ? '100%' : '50%';
+        transformOrigin = 'left center';
+      } else {
+        // Standard Spread Forward Turn (e.g. 2-3 -> 4-5)
+        frontPageNum = fromInfo.right; // Turning right page (e.g. 3)
+        backPageNum = toInfo.left;    // Back of turning page becomes new left page (e.g. 4)
+        startAngle = 0;
+        endAngle = -180;
+        sheetLeft = isMobile ? '0%' : '50%';
+        sheetWidth = isMobile ? '100%' : '50%';
+        transformOrigin = 'left center';
+      }
+    } else {
+      // TURNING BACKWARD (Prev)
+      if (toIdx === 0) {
+        // Closing Cover backwards (Pages 2-3 -> Page 1)
+        frontPageNum = fromInfo.left || 2;
+        backPageNum = 1;
+        startAngle = 0;
+        endAngle = 180;
+        sheetLeft = '0%';
+        sheetWidth = isMobile ? '100%' : '50%';
+        transformOrigin = 'right center';
+      } else {
+        // Standard Spread Backward Turn (e.g. 4-5 -> 2-3)
+        frontPageNum = fromInfo.left; // Turning left page (e.g. 4)
+        backPageNum = toInfo.right;  // Back of turning page becomes new right page (e.g. 3)
+        startAngle = 0;
+        endAngle = 180;
+        sheetLeft = '0%';
+        sheetWidth = isMobile ? '100%' : '50%';
+        transformOrigin = 'right center';
+      }
+    }
+
+    // Set turning sheet images
+    flipFrontImg.src = BASE_ASSET_PATH + 'page-' + padNum(frontPageNum) + '.jpg';
+    flipBackImg.src = BASE_ASSET_PATH + 'page-' + padNum(backPageNum) + '.jpg';
+
+    // Position & activate 3D flipping sheet
+    flipSheet.style.left = sheetLeft;
+    flipSheet.style.width = sheetWidth;
+    flipSheet.style.transformOrigin = transformOrigin;
+    flipSheet.style.transform = 'rotateY(' + startAngle + 'deg)';
+    flipSheet.classList.add('is-active');
+
+    // Pre-reveal underlying destination pages so user sees the new spread beneath the peel
+    if (direction > 0) {
+      if (baseImgRight && toInfo.right) {
+        baseImgRight.src = BASE_ASSET_PATH + 'page-' + padNum(toInfo.right) + '.jpg';
+      }
+    } else {
+      if (baseImgLeft && toInfo.left) {
+        baseImgLeft.src = BASE_ASSET_PATH + 'page-' + padNum(toInfo.left) + '.jpg';
+      }
+    }
+
+    const duration = 580;
+    const startTime = performance.now();
+
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function tick(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(1, elapsed / duration);
+      const ease = easeInOutCubic(progress);
+      const currentAngle = startAngle + (endAngle - startAngle) * ease;
+
+      flipSheet.style.transform = 'rotateY(' + currentAngle.toFixed(2) + 'deg)';
+
+      // Specular highlight and crease drop shadow peak at apex (45-55% turn)
+      const arc = Math.sin(progress * Math.PI);
+      if (flipHighlight) flipHighlight.style.opacity = (arc * 0.72).toFixed(3);
+      if (flipShadow) flipShadow.style.opacity = (arc * 0.55).toFixed(3);
+
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        flipSheet.classList.remove('is-active');
+        flipSheet.style.transform = 'none';
+        if (flipHighlight) flipHighlight.style.opacity = '0';
+        if (flipShadow) flipShadow.style.opacity = '0';
+        if (typeof onComplete === 'function') onComplete();
+      }
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  // Navigate between Spreads with 3D Page Turn
   function goToSpread(targetIdx) {
     if (targetIdx === currentSpreadIdx || targetIdx < 0 || targetIdx >= TOTAL_SPREADS || isAnimating) return;
 
@@ -226,86 +340,53 @@
     const direction = toIdx > fromIdx ? 1 : -1;
     const nextInfo = getSpreadInfo(toIdx);
 
-    // Preload both spreads
-    Promise.all([loadSpreadCanvas(fromIdx), loadSpreadCanvas(toIdx)]).then(function (canvases) {
-      if (!canvases[0] || !canvases[1]) {
-        // Direct jump if load failed
-        currentSpreadIdx = toIdx;
-        isAnimating = false;
-        syncBaseSpread(toIdx);
-        updateUI();
-        return;
-      }
+    // Update viewport single vs spread layout
+    if (nextInfo.isSingle) {
+      viewport.classList.remove('is-spread');
+      viewport.classList.add('is-single');
+    } else {
+      viewport.classList.remove('is-single');
+      viewport.classList.add('is-spread');
+    }
+    resizeCanvas();
 
-      // Update viewport container sizing to accommodate single vs spread
-      if (nextInfo.isSingle) {
-        viewport.classList.remove('is-spread');
-        viewport.classList.add('is-single');
-      } else {
-        viewport.classList.remove('is-single');
-        viewport.classList.add('is-spread');
+    function finishNavigation() {
+      currentSpreadIdx = toIdx;
+      syncBaseSpread(toIdx);
+      updateUI();
+      if (canvas) {
+        canvas.style.opacity = '0';
+        canvas.style.pointerEvents = 'none';
+        canvas.classList.remove('is-active');
       }
-      resizeCanvas();
+      isAnimating = false;
+    }
 
-      let transitionTriggered = false;
-      if (foldingEngine && foldingEngine.gl && foldingEngine.program) {
-        try {
-          if (canvas) {
+    // Run 3D page turn animation
+    animate3DPageTurn(fromIdx, toIdx, direction, finishNavigation);
+
+    // Optional WebGL visual layer (runs concurrently if available)
+    if (foldingEngine && foldingEngine.gl && foldingEngine.program) {
+      Promise.all([loadSpreadCanvas(fromIdx), loadSpreadCanvas(toIdx)]).then(function (canvases) {
+        if (canvases[0] && canvases[1] && canvas) {
+          try {
             canvas.style.opacity = '1';
             canvas.style.pointerEvents = 'auto';
             canvas.classList.add('is-active');
-          }
-          const isSpreadMode = (!getSpreadInfo(fromIdx).isSingle) || (!nextInfo.isSingle);
-
-          const safetyTimer = setTimeout(function () {
-            if (canvas) {
-              canvas.style.opacity = '0';
-              canvas.style.pointerEvents = 'none';
-              canvas.classList.remove('is-active');
-            }
-            isAnimating = false;
-            currentSpreadIdx = toIdx;
-            syncBaseSpread(toIdx);
-            updateUI();
-          }, 850);
-
-          foldingEngine.transition(canvases[0], canvases[1], direction, isSpreadMode, 660, function () {
-            clearTimeout(safetyTimer);
-            currentSpreadIdx = toIdx;
-            syncBaseSpread(toIdx);
-            updateUI();
-            setTimeout(function () {
+            const isSpreadMode = (!getSpreadInfo(fromIdx).isSingle) || (!nextInfo.isSingle);
+            foldingEngine.transition(canvases[0], canvases[1], direction, isSpreadMode, 580, function () {
               if (canvas) {
                 canvas.style.opacity = '0';
                 canvas.style.pointerEvents = 'none';
                 canvas.classList.remove('is-active');
               }
-              isAnimating = false;
-              if (foldingEngine && foldingEngine.gl) {
-                foldingEngine.gl.clearColor(0, 0, 0, 0);
-                foldingEngine.gl.clear(foldingEngine.gl.COLOR_BUFFER_BIT);
-              }
-            }, 30);
-          });
-          transitionTriggered = true;
-        } catch (err) {
-          console.warn('[Prospectus] Transition error, jumping directly:', err);
-          transitionTriggered = false;
+            });
+          } catch (e) {
+            // WebGL failed, 3D CSS animation seamlessly carries the presentation
+          }
         }
-      }
-
-      if (!transitionTriggered) {
-        if (canvas) {
-          canvas.style.opacity = '0';
-          canvas.style.pointerEvents = 'none';
-          canvas.classList.remove('is-active');
-        }
-        currentSpreadIdx = toIdx;
-        isAnimating = false;
-        syncBaseSpread(toIdx);
-        updateUI();
-      }
-    });
+      }).catch(function () {});
+    }
   }
 
   function nextSpread() {
@@ -341,7 +422,7 @@
       if (info.isSingle) {
         pageNumEl.textContent = info.right === 1 ? '1 (Cover)' : '20 (Back)';
       } else {
-        pageNumEl.textContent = `${info.left}–${info.right}`;
+        pageNumEl.textContent = info.left + '–' + info.right;
       }
     }
     if (totalPagesEl) totalPagesEl.textContent = TOTAL_PAGES;
@@ -380,11 +461,11 @@
       item.className = 'prospectus-thumb-item' + (i === 1 ? ' is-active' : '');
       item.setAttribute('role', 'button');
       item.setAttribute('tabindex', '0');
-      item.setAttribute('aria-label', `Jump to page ${i}`);
+      item.setAttribute('aria-label', 'Jump to page ' + i);
 
       const img = document.createElement('img');
-      img.src = `${BASE_ASSET_PATH}page-${padNum(i)}.webp`;
-      img.alt = `Page ${i}`;
+      img.src = BASE_ASSET_PATH + 'page-' + padNum(i) + '.webp';
+      img.alt = 'Page ' + i;
       img.loading = 'lazy';
 
       const num = document.createElement('span');
@@ -406,47 +487,33 @@
   function initGestures() {
     if (!viewport) return;
 
+    let startX = 0;
+    let startY = 0;
+    let currentX = 0;
+    let isTracking = false;
+
     function handleStart(clientX, clientY) {
       if (isAnimating) return;
-      isDragging = true;
-      dragStartX = clientX;
-      dragStartY = clientY;
-      dragProgress = 0;
+      isTracking = true;
+      startX = clientX;
+      startY = clientY;
+      currentX = clientX;
     }
 
     function handleMove(clientX, clientY) {
-      if (!isDragging || isAnimating) return;
-      const deltaX = clientX - dragStartX;
-      const deltaY = clientY - dragStartY;
-
-      if (Math.abs(deltaY) > Math.abs(deltaX) && dragProgress === 0) {
-        return; // Allow vertical page scrolling
-      }
-
-      const rect = viewport.getBoundingClientRect();
-      const normDelta = deltaX / (rect.width * 0.7);
-
-      if (normDelta < 0 && currentSpreadIdx < TOTAL_SPREADS - 1) {
-        dragProgress = Math.min(1, Math.abs(normDelta));
-      } else if (normDelta > 0 && currentSpreadIdx > 0) {
-        dragProgress = Math.min(1, Math.abs(normDelta));
-      } else {
-        dragProgress = 0;
-      }
+      if (!isTracking || isAnimating) return;
+      currentX = clientX;
     }
 
     function handleEnd() {
-      if (!isDragging) return;
-      isDragging = false;
-
-      if (dragProgress >= 0.18) {
-        if (dragStartX > window.innerWidth / 2 || dragProgress > 0.25) {
-          nextSpread();
-        } else {
-          prevSpread();
-        }
+      if (!isTracking) return;
+      isTracking = false;
+      const deltaX = currentX - startX;
+      if (deltaX < -32) {
+        nextSpread();
+      } else if (deltaX > 32) {
+        prevSpread();
       }
-      dragProgress = 0;
     }
 
     viewport.addEventListener('touchstart', function (e) {
@@ -454,7 +521,7 @@
     }, { passive: true });
 
     viewport.addEventListener('touchmove', function (e) {
-      if (e.touches.length === 1 && isDragging) handleMove(e.touches[0].clientX, e.touches[0].clientY);
+      if (e.touches.length === 1 && isTracking) handleMove(e.touches[0].clientX, e.touches[0].clientY);
     }, { passive: true });
 
     viewport.addEventListener('touchend', handleEnd, { passive: true });
@@ -465,11 +532,11 @@
     });
 
     window.addEventListener('mousemove', function (e) {
-      if (isDragging) handleMove(e.clientX, e.clientY);
+      if (isTracking) handleMove(e.clientX, e.clientY);
     });
 
     window.addEventListener('mouseup', function () {
-      if (isDragging) handleEnd();
+      if (isTracking) handleEnd();
     });
   }
 
@@ -550,6 +617,14 @@
     baseSpread = document.getElementById('prospectusBaseSpread');
     baseImgLeft = document.getElementById('prospectusBaseImgLeft');
     baseImgRight = document.getElementById('prospectusBaseImgRight');
+
+    // 3D Flip Sheet Stage Elements
+    flipSheet = document.getElementById('prospectusFlipSheet');
+    flipFrontImg = document.getElementById('prospectusFlipFrontImg');
+    flipBackImg = document.getElementById('prospectusFlipBackImg');
+    flipHighlight = document.getElementById('prospectusFlipHighlight');
+    flipShadow = document.getElementById('prospectusFlipShadow');
+
     prevBtn = document.getElementById('prospectusPrevBtn');
     nextBtn = document.getElementById('prospectusNextBtn');
     pageNumEl = document.getElementById('prospectusCurrentPage');
@@ -567,14 +642,12 @@
           canvas: canvas,
           gridCols: 54,
           gridRows: 28,
-          duration: 660
+          duration: 580
         });
         if (!foldingEngine.gl || !foldingEngine.program) {
-          console.warn('[Prospectus] WebGL engine missing valid program');
           foldingEngine = null;
         }
       } catch (err) {
-        console.warn('[Prospectus] ProspectusFoldingTransition init fallback:', err);
         foldingEngine = null;
       }
     }
@@ -582,6 +655,7 @@
     // Set initial Cover spread (Spread 0)
     currentSpreadIdx = 0;
     syncBaseSpread(0);
+    resizeCanvas();
 
     // Preload first two spreads (Cover & Pages 2-3)
     Promise.all([loadSpreadCanvas(0), loadSpreadCanvas(1)]).then(function (canvases) {
@@ -589,6 +663,8 @@
         foldingEngine.uploadImage(foldingEngine.currentTexture, canvases[0]);
         if (canvases[1]) foldingEngine.uploadImage(foldingEngine.nextTexture, canvases[1]);
       }
+      if (loaderEl) loaderEl.classList.add('is-hidden');
+    }).catch(function () {
       if (loaderEl) loaderEl.classList.add('is-hidden');
     });
 
