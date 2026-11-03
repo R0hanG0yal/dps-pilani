@@ -1747,7 +1747,7 @@
       }
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:36px;color:#64748B;">No faculty records found matching current filter or search criteria.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:36px;color:#64748B;">No faculty records found matching current filter or search criteria.</td></tr>`;
         return;
       }
 
@@ -1757,11 +1757,6 @@
         const avatarHtml = (f.photo && f.photo.trim() !== "")
           ? `<img src="${f.photo}" alt="${f.name}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:1.5px solid #D9B88A;" onerror="this.onerror=null;this.parentElement.innerHTML='<span style=\'display:inline-flex;width:38px;height:38px;border-radius:50%;background:#FAF6EE;border:1.5px solid #D9B88A;color:#7D1D3F;font-weight:700;font-size:0.75rem;align-items:center;justify-content:center;\'>${initials}</span>'">`
           : `<span style="display:inline-flex;width:38px;height:38px;border-radius:50%;background:#FAF6EE;border:1.5px solid #D9B88A;color:#7D1D3F;font-weight:700;font-size:0.75rem;align-items:center;justify-content:center;">${initials}</span>`;
-
-        const sched = f.schedule || {};
-        const schedSummary = sched.periods || sched.days || "Regular Timetable";
-        const consultSummary = sched.consultation ? `<div style="font-size:0.70rem;color:#64748B;margin-top:2px;">Consult: ${sched.consultation}</div>` : "";
-        const labsSummary = sched.labs ? `<div style="font-size:0.70rem;color:#7D1D3F;margin-top:2px;">${sched.labs}</div>` : "";
         const catLabel = f.categoryLabel || self.getFacultyCategoryLabel(f.category);
 
         return `
@@ -1779,16 +1774,6 @@
               <span class="badge" style="background:#FAF6EE;color:#7D1D3F;border:1px solid rgba(125,29,63,0.2);font-size:0.72rem;padding:3px 8px;border-radius:4px;font-weight:600;white-space:nowrap;">
                 ${catLabel}
               </span>
-            </td>
-            <td>
-              <span style="font-size:0.78rem;color:#334155;background:#F1F5F9;padding:2px 8px;border-radius:4px;display:inline-block;">
-                ${f.classes || "Secondary Wing"}
-              </span>
-            </td>
-            <td>
-              <div style="font-size:0.78rem;color:#1E293B;line-height:1.35;">${schedSummary}</div>
-              ${labsSummary}
-              ${consultSummary}
             </td>
             <td>
               <div style="font-size:0.78rem;color:#334155;">${f.qualifications || f.qual || "B.Ed."}</div>
@@ -2074,14 +2059,9 @@
       document.getElementById("facCategory").value = "science";
       document.getElementById("facSubject").value = "";
       document.getElementById("facDesignation").value = "";
-      document.getElementById("facClasses").value = "";
       document.getElementById("facQual").value = "";
       document.getElementById("facExp").value = "";
       document.getElementById("facPhotoSrc").value = "";
-      document.getElementById("facScheduleDays").value = "Monday to Saturday";
-      document.getElementById("facSchedulePeriods").value = "Period 1 (08:30 AM – 09:15 AM)";
-      document.getElementById("facScheduleLabs").value = "";
-      document.getElementById("facScheduleConsultation").value = "02:00 PM – 02:45 PM Daily";
       document.getElementById("facBio").value = "";
 
       this.updateFacultyPhotoPreview("");
@@ -2098,7 +2078,7 @@
       }
 
       document.getElementById("facModalTitle").textContent = "Edit Faculty Profile (" + f.name + ")";
-      document.getElementById("facModalSubtitle").textContent = "Update subject discipline, photo, classes taught, and weekly timetable";
+      document.getElementById("facModalSubtitle").textContent = "Update subject discipline, qualifications, experience, and photo";
       document.getElementById("facSubmitBtn").textContent = "Save Changes";
       document.getElementById("facEditId").value = f.id;
 
@@ -2107,16 +2087,9 @@
       document.getElementById("facCategory").value = f.category || "science";
       document.getElementById("facSubject").value = f.subject || "";
       document.getElementById("facDesignation").value = f.designation || "";
-      document.getElementById("facClasses").value = f.classes || "";
       document.getElementById("facQual").value = f.qualifications || f.qual || "";
       document.getElementById("facExp").value = f.experience || f.exp || "";
       document.getElementById("facPhotoSrc").value = f.photo || "";
-
-      const sched = f.schedule || {};
-      document.getElementById("facScheduleDays").value = sched.days || "Monday to Saturday";
-      document.getElementById("facSchedulePeriods").value = sched.periods || "";
-      document.getElementById("facScheduleLabs").value = sched.labs || "";
-      document.getElementById("facScheduleConsultation").value = sched.consultation || "02:00 PM – 02:45 PM Daily";
       document.getElementById("facBio").value = f.bio || "";
 
       this.updateFacultyPhotoPreview(f.photo || "", f.name);
@@ -2160,14 +2133,9 @@
       const category = document.getElementById("facCategory")?.value || "science";
       const subject = document.getElementById("facSubject")?.value.trim();
       const designation = document.getElementById("facDesignation")?.value.trim();
-      const classes = document.getElementById("facClasses")?.value.trim();
       const qualifications = document.getElementById("facQual")?.value.trim();
       const experience = document.getElementById("facExp")?.value.trim();
       const photo = document.getElementById("facPhotoSrc")?.value.trim();
-      const days = document.getElementById("facScheduleDays")?.value.trim() || "Monday to Saturday";
-      const periods = document.getElementById("facSchedulePeriods")?.value.trim();
-      const labs = document.getElementById("facScheduleLabs")?.value.trim();
-      const consultation = document.getElementById("facScheduleConsultation")?.value.trim() || "02:00 PM – 02:45 PM Daily";
       const bio = document.getElementById("facBio")?.value.trim();
 
       if (!id || !name || !subject) {
@@ -2183,16 +2151,9 @@
         categoryLabel: categoryLabel,
         subject: subject,
         designation: designation || "Teacher",
-        classes: classes || "Secondary Classes",
         qualifications: qualifications || "Graduate, B.Ed.",
         experience: experience || "5+ Years",
         photo: photo || "",
-        schedule: {
-          days: days,
-          periods: periods || "Period 1 (08:30 AM – 09:15 AM)",
-          labs: labs || "",
-          consultation: consultation
-        },
         bio: bio || ""
       };
 

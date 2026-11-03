@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title>Faculty & Academic Stewards | Subject Mentors & Timetable | Durga Public School Pilani</title>
-  <meta name="description" content="Meet the esteemed faculty of Durga Public School Pilani across Science, Mathematics, Languages, Commerce, Social Sciences, Computer Science, and Primary disciplines with complete timetables and consultation schedules.">
-  <meta name="keywords" content="Durga Public School teachers, DPS Pilani faculty, science teachers Pilani, maths faculty Pilani, commerce teachers Pilani, school timetable Pilani, teacher schedule consultation, पिलानी स्कूल टीचर्स, दुर्गा पब्लिक स्कूल शिक्षक">
+  <title>Faculty & Academic Stewards | Subject Mentors | Durga Public School Pilani</title>
+  <meta name="description" content="Meet the esteemed faculty of Durga Public School Pilani across Science, Mathematics, Languages, Commerce, Social Sciences, Computer Science, and Primary disciplines.">
+  <meta name="keywords" content="Durga Public School teachers, DPS Pilani faculty, science teachers Pilani, maths faculty Pilani, commerce teachers Pilani, faculty directory Pilani, पिलानी स्कूल टीचर्स, दुर्गा पब्लिक स्कूल शिक्षक">
   <meta name="author" content="Durga Public School, Pilani">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
@@ -24,7 +24,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://durgapublicschoolpilani.edu.in/faculty.html">
   <meta property="og:title" content="Faculty & Academic Stewards | Durga Public School Pilani">
-  <meta property="og:description" content="Explore subject-wise faculty profiles, academic qualifications, classes taught, and weekly consultation schedules.">
+  <meta property="og:description" content="Explore subject-wise faculty profiles, academic disciplines, teaching qualifications, and scholarly mentorship at Durga Public School Pilani.">
   <meta property="og:image" content="https://durgapublicschoolpilani.edu.in/assets/social-preview.svg">
   <meta property="og:site_name" content="Durga Public School Pilani">
   <meta property="og:locale" content="en_US">
@@ -33,7 +33,7 @@
   <!-- Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Faculty & Academic Stewards | Durga Public School Pilani">
-  <meta name="twitter:description" content="Explore subject-wise faculty profiles, academic qualifications, classes taught, and weekly consultation schedules.">
+  <meta name="twitter:description" content="Explore subject-wise faculty profiles, academic disciplines, teaching qualifications, and scholarly mentorship at Durga Public School Pilani.">
   <meta name="twitter:image" content="https://durgapublicschoolpilani.edu.in/assets/social-preview.svg">
 
   <!-- Premium Typography -->
@@ -293,136 +293,18 @@
       background: #F1F5F9;
       color: #334155;
     }
-    .faculty-tag-classes {
-      background: #FAF6EE;
-      color: #7D1D3F;
-      border: 1px solid rgba(125, 29, 63, 0.15);
-    }
     .faculty-tag-exp {
       background: #F0FDF4;
       color: #166534;
       border: 1px solid rgba(22, 101, 52, 0.15);
     }
-
-    /* Timetable preview box inside card */
-    .faculty-schedule-preview {
-      background: #FAF8F5;
-      border: 1px solid rgba(217, 184, 138, 0.35);
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 0.78rem;
+    .faculty-bio-text {
+      font-size: 0.83rem;
       color: #475569;
-      line-height: 1.45;
-      margin-bottom: 8px;
-    }
-    .faculty-schedule-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-    .faculty-schedule-item:last-child {
-      margin-bottom: 0;
-    }
-    .fac-sched-icon {
-      color: #7D1D3F;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    .faculty-card-footer {
-      padding: 16px 24px;
-      background: #FAF6EE;
-      border-top: 1px solid rgba(0, 0, 0, 0.06);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .btn-view-schedule {
-      width: 100%;
-      background: rgba(125, 29, 63, 0.06);
-      border: 1px solid rgba(125, 29, 63, 0.22);
-      color: #7D1D3F;
-      border-radius: 999px;
-      font-size: 0.80rem;
-      font-weight: 700;
-      padding: 8px 14px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-    }
-    .btn-view-schedule:hover {
-      background: #7D1D3F;
-      border-color: #7D1D3F;
-      color: #FFFFFF;
-      box-shadow: 0 4px 12px rgba(125, 29, 63, 0.18);
-    }
-
-    /* Interactive Schedule Modal */
-    .schedule-modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(46, 8, 21, 0.65);
-      backdrop-filter: blur(8px);
-      z-index: 99999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease;
-    }
-    .schedule-modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .schedule-modal-card {
-      background: #FFFFFF;
-      border-radius: 20px;
-      width: 100%;
-      max-width: 620px;
-      max-height: 85vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.3);
-      transform: translateY(20px);
-      transition: transform 0.25s ease;
-    }
-    .schedule-modal-overlay.active .schedule-modal-card {
-      transform: translateY(0);
-    }
-    .sched-modal-head {
-      background: linear-gradient(135deg, #2E0815 0%, #7D1D3F 100%);
-      color: #FFF;
-      padding: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .sched-modal-body {
-      padding: 24px;
-      overflow-y: auto;
-    }
-    .sched-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.85rem;
-      margin-top: 14px;
-    }
-    .sched-table th, .sched-table td {
-      padding: 10px 14px;
-      border-bottom: 1px solid #E2E8F0;
-      text-align: left;
-    }
-    .sched-table th {
-      background: #FAF6EE;
-      color: #7D1D3F;
-      font-weight: 700;
+      line-height: 1.55;
+      margin-top: 12px;
+      border-top: 1px solid #F1F5F9;
+      padding-top: 10px;
     }
 
     @media (max-width: 768px) {
@@ -620,7 +502,7 @@
           <span class="faculty-stat-pill"><strong>100%</strong> Board Certified Educators</span>
           <span class="faculty-stat-pill"><strong>14+ Years</strong> Avg. Teaching Mastery</span>
           <span class="faculty-stat-pill"><strong>1:20</strong> Student-Faculty Mentorship Ratio</span>
-          <span class="faculty-stat-pill"><strong>Daily</strong> Structured Consultation &amp; Doubt Hours</span>
+          <span class="faculty-stat-pill"><strong>Scholastic</strong> Mentorship &amp; Guidance</span>
         </div>
       </div>
     </section>
@@ -632,7 +514,7 @@
           <!-- Search input -->
           <div class="faculty-search-box">
             <svg class="faculty-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <input type="text" id="facultySearchInput" placeholder="Search teacher by name, subject, or classes taught..." aria-label="Search faculty members">
+            <input type="text" id="facultySearchInput" placeholder="Search teacher by name, subject, or department..." aria-label="Search faculty members">
           </div>
 
           <div style="display:flex;align-items:center;gap:10px;">
@@ -671,62 +553,6 @@
     </section>
 
   </main>
-
-  <!-- TEACHER SCHEDULE & CONSULTATION MODAL -->
-  <div id="teacherScheduleModal" class="schedule-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTeacherName">
-    <div class="schedule-modal-card">
-      <div class="sched-modal-head">
-        <div>
-          <span style="font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:#D9B88A;font-weight:700;">Academic Timetable &bull; Consultation Hours</span>
-          <h3 id="modalTeacherName" style="margin:2px 0 0 0;font-size:1.25rem;font-family:var(--font-display,serif);color:#FFF;">Teacher Name</h3>
-          <span id="modalTeacherSubject" style="font-size:0.80rem;color:rgba(255,255,255,0.85);">Subject Focus</span>
-        </div>
-        <button type="button" class="modal-close-btn" style="color:#FFF;background:none;border:none;font-size:1.5rem;cursor:pointer;" onclick="window.closeScheduleModal()">&times;</button>
-      </div>
-      <div class="sched-modal-body">
-        <div style="display:flex;gap:14px;align-items:center;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid #E2E8F0;">
-          <div id="modalTeacherAvatar" style="width:60px;height:60px;border-radius:50%;background:#7D1D3F;color:#FFF;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;overflow:hidden;flex-shrink:0;"></div>
-          <div>
-            <div id="modalTeacherDesignation" style="font-weight:700;color:#2E0815;font-size:0.92rem;">Designation</div>
-            <div id="modalTeacherQual" style="font-size:0.80rem;color:#64748B;">Qualifications</div>
-            <div id="modalTeacherClasses" style="font-size:0.78rem;color:#7D1D3F;font-weight:600;margin-top:2px;">Classes: XI &amp; XII</div>
-          </div>
-        </div>
-
-        <h4 style="color:#7D1D3F;font-size:0.92rem;margin:0 0 10px 0;">Teaching Periods &amp; Availability Schedule</h4>
-        <table class="sched-table">
-          <tbody>
-            <tr>
-              <th style="width:35%;">Teaching Days</th>
-              <td id="modalSchedDays">Monday to Saturday</td>
-            </tr>
-            <tr>
-              <th>Class Periods</th>
-              <td id="modalSchedPeriods">Periods 1, 3, 5</td>
-            </tr>
-            <tr>
-              <th>Lab &amp; Practicals</th>
-              <td id="modalSchedLabs">Practical Sessions</td>
-            </tr>
-            <tr>
-              <th>Parent &amp; Student Consultation</th>
-              <td id="modalSchedConsultation" style="color:#7D1D3F;font-weight:700;">02:00 PM – 02:45 PM</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div style="margin-top:20px;padding:14px;background:#FAF6EE;border-radius:12px;border:1px solid rgba(217,184,138,0.4);">
-          <strong style="color:#7D1D3F;font-size:0.82rem;display:block;margin-bottom:4px;">Parent-Teacher Consultation Booking:</strong>
-          <span style="font-size:0.78rem;color:#475569;line-height:1.45;display:block;">
-            Parents wishing to consult with this subject mentor during designated hours are requested to coordinate via school office or call <a href="tel:+919887870013" style="color:#7D1D3F;font-weight:700;text-decoration:underline;">+91 98878 70013</a>.
-          </span>
-        </div>
-      </div>
-      <div style="padding:14px 24px;background:#F8FAFC;border-top:1px solid #E2E8F0;text-align:right;">
-        <button type="button" class="btn btn-sm btn-outline" onclick="window.closeScheduleModal()">Close Schedule</button>
-      </div>
-    </div>
-  </div>
 
   <!-- FOOTER -->
   <footer class="dps-footer">
@@ -781,7 +607,7 @@
                   <li><a href="academics.html#preparatory">Preparatory Wing (Class I&ndash;V)</a></li>
                   <li><a href="academics.html#middle">Middle School (Class VI&ndash;VIII)</a></li>
                   <li><a href="academics.html#senior">Senior Secondary (Science &amp; Commerce)</a></li>
-                  <li><a href="faculty.html">Faculty &amp; Timetable Directory</a></li>
+                  <li><a href="faculty.html">Faculty &amp; Subject Mentors</a></li>
                 </ul>
               </div>
               <div class="vestra-col">
@@ -1140,9 +966,8 @@
           var q = searchQuery.toLowerCase();
           var nameMatch = (f.name || '').toLowerCase().includes(q);
           var subjectMatch = (f.subject || '').toLowerCase().includes(q);
-          var classMatch = (f.classes || '').toLowerCase().includes(q);
           var deptMatch = (f.categoryLabel || '').toLowerCase().includes(q);
-          return nameMatch || subjectMatch || classMatch || deptMatch;
+          return nameMatch || subjectMatch || deptMatch;
         });
 
         if (countBadge) {
@@ -1165,90 +990,33 @@
             avatarHtml = getInitials(f.name);
           }
 
-          var sched = f.schedule || {};
-          var days = sched.days || 'Monday to Saturday';
-          var periods = sched.periods || 'Scheduled Periods';
-          var consultation = sched.consultation || 'Consultation Desk Available';
+          var bioHtml = f.bio ? '<p class="faculty-bio-text">' + f.bio + '</p>' : '';
 
           return `
             <div class="faculty-card" data-faculty-id="${f.id}" data-category="${f.category || 'general'}">
-              <div>
-                <div class="faculty-card-header">
-                  <div class="faculty-avatar-wrap">
-                    ${avatarHtml}
-                  </div>
-                  <div class="faculty-meta">
-                    <span class="faculty-cat-badge">${f.categoryLabel || f.category}</span>
-                    <h3 class="faculty-name">${f.name}</h3>
-                    <div class="faculty-subject">${f.subject}</div>
-                    <div class="faculty-designation">${f.designation}</div>
-                  </div>
+              <div class="faculty-card-header">
+                <div class="faculty-avatar-wrap">
+                  ${avatarHtml}
                 </div>
-
-                <div class="faculty-card-body">
-                  <div class="faculty-tags-row">
-                    <span class="faculty-tag faculty-tag-classes">${f.classes || 'Secondary Wing'}</span>
-                    <span class="faculty-tag faculty-tag-exp">${f.experience || '10+ Years Exp.'}</span>
-                    <span class="faculty-tag" style="background:#F8FAFC;border:1px solid #E2E8F0;">${f.qualifications || 'Certified Educator'}</span>
-                  </div>
-
-                  <!-- Schedule Preview Box -->
-                  <div class="faculty-schedule-preview">
-                    <div class="faculty-schedule-item">
-                      <svg class="fac-sched-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                      <span><strong>Periods:</strong> ${periods}</span>
-                    </div>
-                    <div class="faculty-schedule-item">
-                      <svg class="fac-sched-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                      <span><strong>Consultation:</strong> ${consultation}</span>
-                    </div>
-                  </div>
+                <div class="faculty-meta">
+                  <span class="faculty-cat-badge">${f.categoryLabel || f.category}</span>
+                  <h3 class="faculty-name">${f.name}</h3>
+                  <div class="faculty-subject">${f.subject}</div>
+                  <div class="faculty-designation">${f.designation}</div>
                 </div>
               </div>
 
-              <div class="faculty-card-footer">
-                <button type="button" class="btn-view-schedule" onclick="window.openTeacherSchedule('${f.id}')">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                  <span>View Full Schedule &amp; Timetable</span>
-                </button>
+              <div class="faculty-card-body">
+                <div class="faculty-tags-row">
+                  <span class="faculty-tag faculty-tag-exp">${f.experience || '10+ Years Exp.'}</span>
+                  <span class="faculty-tag" style="background:#F8FAFC;border:1px solid #E2E8F0;">${f.qualifications || 'Certified Educator'}</span>
+                </div>
+                ${bioHtml}
               </div>
             </div>
           `;
         }).join('');
       }
-
-      // Schedule modal triggers
-      window.openTeacherSchedule = function (id) {
-        var allFaculty = window.getLiveFacultyList();
-        var f = allFaculty.find(function (item) { return item.id === id; });
-        if (!f) return;
-
-        document.getElementById('modalTeacherName').textContent = f.name;
-        document.getElementById('modalTeacherSubject').textContent = f.subject + ' • ' + (f.categoryLabel || f.category);
-        document.getElementById('modalTeacherDesignation').textContent = f.designation;
-        document.getElementById('modalTeacherQual').textContent = f.qualifications + ' • Experience: ' + f.experience;
-        document.getElementById('modalTeacherClasses').textContent = 'Classes Taught: ' + (f.classes || 'Not specified');
-
-        var sched = f.schedule || {};
-        document.getElementById('modalSchedDays').textContent = sched.days || 'Monday to Saturday';
-        document.getElementById('modalSchedPeriods').textContent = sched.periods || 'Scheduled daily periods';
-        document.getElementById('modalSchedLabs').textContent = sched.labs || 'As per academic calendar';
-        document.getElementById('modalSchedConsultation').textContent = sched.consultation || '02:00 PM – 02:45 PM Daily';
-
-        var avatarContainer = document.getElementById('modalTeacherAvatar');
-        if (f.photo && f.photo.trim() !== '') {
-          avatarContainer.innerHTML = '<img src="' + f.photo + '" alt="' + f.name + '" style="width:100%;height:100%;object-fit:cover;">';
-        } else {
-          avatarContainer.textContent = getInitials(f.name);
-        }
-
-        document.getElementById('teacherScheduleModal').classList.add('active');
-      };
-
-      window.closeScheduleModal = function () {
-        var modal = document.getElementById('teacherScheduleModal');
-        if (modal) modal.classList.remove('active');
-      };
 
       window.resetFacultyFilters = function () {
         currentFilter = 'all';
@@ -1260,17 +1028,6 @@
         });
         renderFacultyCards();
       };
-
-      // Close modal on click outside or Escape
-      document.addEventListener('click', function (e) {
-        var modal = document.getElementById('teacherScheduleModal');
-        if (modal && modal.classList.contains('active') && e.target === modal) {
-          window.closeScheduleModal();
-        }
-      });
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') window.closeScheduleModal();
-      });
 
       // Category tab click
       document.querySelectorAll('.fac-cat-btn').forEach(function (btn) {

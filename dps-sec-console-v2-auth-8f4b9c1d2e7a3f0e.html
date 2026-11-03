@@ -725,7 +725,7 @@
             <!-- Filter & Search Toolbar -->
             <div style="padding:14px 20px;background:#FAF6EE;border-bottom:1px solid rgba(0,0,0,0.06);display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
               <div style="flex:1;min-width:220px;position:relative;">
-                <input type="text" id="adminFacultySearchInput" class="form-input" placeholder="Search teacher by name, subject, class, or ID..." oninput="window.DPSAdmin.renderFacultyTable()" style="padding-left:36px;height:38px;font-size:0.84rem;">
+                <input type="text" id="adminFacultySearchInput" class="form-input" placeholder="Search teacher by name, subject, department, or ID..." oninput="window.DPSAdmin.renderFacultyTable()" style="padding-left:36px;height:38px;font-size:0.84rem;">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
               </div>
               <div style="min-width:220px;">
@@ -752,8 +752,6 @@
                       <th style="width:75px;">Emp ID</th>
                       <th>Faculty Member &amp; Subject</th>
                       <th>Category</th>
-                      <th>Classes Taught</th>
-                      <th>Schedule &amp; Timetable</th>
                       <th>Qualifications &amp; Exp</th>
                       <th style="width:90px;text-align:center;">Actions</th>
                     </tr>
@@ -1063,7 +1061,7 @@
       <div class="modal-header" style="background:#FAF6EE;padding:18px 24px;border-bottom:1px solid rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:space-between;">
         <div>
           <h3 class="modal-title" id="facModalTitle" style="color:#7D1D3F;font-size:1.15rem;margin:0;">Add Faculty Member Profile</h3>
-          <p id="facModalSubtitle" style="font-size:0.75rem;color:#64748B;margin:3px 0 0 0;">Manage teacher details, subject stream, classes taught, timetable &amp; consultation</p>
+          <p id="facModalSubtitle" style="font-size:0.75rem;color:#64748B;margin:3px 0 0 0;">Manage teacher details, subject stream, qualifications, experience &amp; photograph</p>
         </div>
         <button type="button" class="modal-close-btn" onclick="document.getElementById('addFacultyModal').classList.remove('active')">&times;</button>
       </div>
@@ -1103,16 +1101,10 @@
           </div>
         </div>
 
-        <!-- Designation & Classes Taught -->
-        <div class="form-grid-2" style="margin-bottom:14px;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-          <div class="form-group" style="margin-bottom:0;">
-            <label class="form-label" for="facDesignation" style="font-weight:700;color:#1E293B;">Designation / Title *</label>
-            <input type="text" id="facDesignation" class="form-input" placeholder="e.g. Principal &amp; Head of Institution" required>
-          </div>
-          <div class="form-group" style="margin-bottom:0;">
-            <label class="form-label" for="facClasses" style="font-weight:700;color:#1E293B;">Classes Taught *</label>
-            <input type="text" id="facClasses" class="form-input" placeholder="e.g. Classes XI &amp; XII (Science Stream)" required>
-          </div>
+        <!-- Designation -->
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="form-label" for="facDesignation" style="font-weight:700;color:#1E293B;">Designation / Title *</label>
+          <input type="text" id="facDesignation" class="form-input" placeholder="e.g. Principal &amp; Head of Institution" required>
         </div>
 
         <!-- Qualifications & Experience -->
@@ -1146,35 +1138,6 @@
             <div style="font-size:0.78rem;color:#64748B;line-height:1.45;">
               <strong style="color:#7D1D3F;display:block;font-size:0.82rem;margin-bottom:2px;">Live Photo Preview</strong>
               <span>Supports site asset paths, direct device uploads (PNG/JPG), and web URLs.</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Schedule & Timetable Section -->
-        <div style="padding:14px;background:#FAF6EE;border:1px solid rgba(217,184,138,0.4);border-radius:10px;margin-bottom:14px;">
-          <span style="display:block;font-size:0.80rem;font-weight:800;color:#7D1D3F;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">
-            Weekly Teaching Timetable &amp; Consultation
-          </span>
-
-          <div class="form-grid-2" style="margin-bottom:10px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-            <div class="form-group" style="margin-bottom:0;">
-              <label class="form-label" for="facScheduleDays" style="font-weight:600;color:#334155;font-size:0.78rem;">Teaching Days *</label>
-              <input type="text" id="facScheduleDays" class="form-input" placeholder="e.g. Monday to Saturday" value="Monday to Saturday">
-            </div>
-            <div class="form-group" style="margin-bottom:0;">
-              <label class="form-label" for="facSchedulePeriods" style="font-weight:600;color:#334155;font-size:0.78rem;">Daily Periods &amp; Time Slots *</label>
-              <input type="text" id="facSchedulePeriods" class="form-input" placeholder="e.g. Periods 1, 3, 5 (08:30 AM – 12:15 PM)">
-            </div>
-          </div>
-
-          <div class="form-grid-2" style="margin-bottom:0;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-            <div class="form-group" style="margin-bottom:0;">
-              <label class="form-label" for="facScheduleLabs" style="font-weight:600;color:#334155;font-size:0.78rem;">Labs / Practicals</label>
-              <input type="text" id="facScheduleLabs" class="form-input" placeholder="e.g. Science Lab Demonstration (Tue &amp; Thu)">
-            </div>
-            <div class="form-group" style="margin-bottom:0;">
-              <label class="form-label" for="facScheduleConsultation" style="font-weight:600;color:#334155;font-size:0.78rem;">Doubt / Consultation Hours</label>
-              <input type="text" id="facScheduleConsultation" class="form-input" placeholder="e.g. 02:00 PM – 02:45 PM Daily" value="02:00 PM – 02:45 PM Daily">
             </div>
           </div>
         </div>
