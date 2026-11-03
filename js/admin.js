@@ -1420,18 +1420,7 @@
     },
 
     editPhotoDetail: function (photoId) {
-      const p = this.state.gallery.find(item => item.id === photoId);
-      if (!p) return;
-      const newTitle = prompt('Edit Photograph Title:', p.title);
-      if (newTitle !== null) {
-        p.title = newTitle;
-        const newDesc = prompt('Edit Photograph Description / Archival Notes:', p.desc);
-        if (newDesc !== null) p.desc = newDesc;
-        this.saveGallery();
-        this.saveAudit(`Updated photo #${photoId} title & description`);
-        this.toast(`Photo #${photoId} updated successfully.`, 'success');
-        this.renderGalleryCatalog();
-      }
+      this.openEditPhotoModal(photoId);
     },
 
     deletePhoto: function (photoId) {
@@ -1999,48 +1988,201 @@
       document.getElementById('addFacultyModal')?.classList.remove('active');
     },
 
-    openAddPhotoModal: function () {
-      document.getElementById('newPhotoTitle').value = '';
-      document.getElementById('newPhotoCat').value = 'campus';
-      document.getElementById('newPhotoSrc').value = 'assets/photos/client/events/event-sports-day-sprint-race-1.jpg';
-      document.getElementById('newPhotoDesc').value = '';
-      document.getElementById('addPhotoModal')?.classList.add('active');
+    GALLERY_CATEGORIES: {
+      campus: { label: 'Campus Architecture', subcats: ['Portals Facades', 'Pillared Colonnades', 'Campus Greens Lawns'] },
+      academics: { label: 'Academic Wings', subcats: ['Junior Kindergarten Wing', 'Primary Interactive Classrooms', 'Senior Secondary Study Halls'] },
+      labs: { label: 'Science & IT Labs', subcats: ['Physics Laboratory', 'Chemistry Laboratory', 'Biology Laboratory', 'Computer Science It Hub', 'Mathematics Logic Lab', 'Music Performing Arts', 'Library Sanctuary'] },
+      cultural: { label: 'Cultural Festivals', subcats: ['Annual Day Gala', 'Folk Heritage Music', 'Saraswati Vandana', 'Independence Republic'] },
+      sports: { label: 'Sports Arena', subcats: ['Athletic Track Sprints', 'Martial Arts Karate', 'Indoor Chess Badminton', 'Yoga Wellness Ground'] },
+      'student-life': { label: 'Student Life & Fleet', subcats: ['Morning Prayer Assembly', 'GPS School Bus Fleet', 'Safe Boarding Care', 'Scouts & Guides'] },
+      'news-cuttings': { label: 'News Cuttings', subcats: ['Rajasthan Patrika', 'Dainik Bhaskar'] }
     },
 
-    submitNewPhoto: function () {
-      const title = document.getElementById('newPhotoTitle')?.value.trim();
-      const src = document.getElementById('newPhotoSrc')?.value.trim();
-      if (!title || !src) {
-        this.toast('Please provide Photo Title and Image URL/Path.', 'error');
+    onPhotoCatChange: function (cat, selectedSubcat) {
+      const subcatSelect = document.getElementById('photoModalSubcat');
+      if (!subcatSelect) return;
+      const catConfig = this.GALLERY_CATEGORIES[cat] || { subcats: [] };
+      let html = catConfig.subcats.map(sub => '<option value="' + sub + '">' + sub + '</option>').join('');
+      html += '<option value="__custom__">+ Custom Subcategory...</option>';
+      subcatSelect.innerHTML = html;
+
+      const customInput = document.getElementById('photoModalSubcatCustom');
+      if (selectedSubcat && !catConfig.subcats.includes(selectedSubcat)) {
+        subcatSelect.value = '__custom__';
+        if (customInput) {
+          customInput.style.display = 'block';
+          customInput.value = selectedSubcat;
+        }
+      } else if (selectedSubcat) {
+        subcatSelect.value = selectedSubcat;
+        if (customInput) customInput.style.display = 'none';
+      } else {
+        if (customInput) customInput.style.display = 'none';
+      }
+    },
+
+    onPhotoSubcatSelect: function (val) {
+      const customInput = document.getElementById('photoModalSubcatCustom');
+      if (customInput) {
+        customInput.style.display = (val === '__custom__') ? 'block' : 'none';
+        if (val === '__custom__') customInput.focus();
+      }
+    },
+
+    updatePhotoPreview: function (src) {
+      const previewImg = document.getElementById('photoModalPreviewImg');
+      if (previewImg && src) {
+        previewImg.src = src;
+      }
+    },
+
+    handlePhotoFileUpload: function (e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      const self = this;
+      reader.onload = function (evt) {
+        const dataUrl = evt.target.result;
+        const srcInput = document.getElementById('photoModalSrc');
+        if (srcInput) srcInput.value = dataUrl;
+        self.updatePhotoPreview(dataUrl);
+        self.toast('Image file loaded successfully for upload.', 'info');
+      };
+      reader.readAsDataURL(file);
+    },
+
+    openAddPhotoModal: function () {
+      const modal = document.getElementById('addPhotoModal');
+      if (!modal) return;
+      document.getElementById('photoModalTitle').textContent = 'Add Archival Photo to Scrapbook';
+      document.getElementById('photoModalSubtitle').textContent = 'Upload new prints or edit existing titles, categories & archival stories';
+      document.getElementById('photoModalSubmitBtn').textContent = 'Add to Gallery';
+      document.getElementById('photoModalId').value = '';
+      document.getElementById('photoModalTitleInput').value = '';
+      document.getElementById('photoModalCat').value = 'campus';
+      this.onPhotoCatChange('campus');
+      document.getElementById('photoModalSrc').value = 'assets/photos/client/events/event-sports-day-sprint-race-1.jpg';
+      this.updatePhotoPreview('assets/photos/client/events/event-sports-day-sprint-race-1.jpg');
+      document.getElementById('photoModalDesc').value = '';
+      const feat = document.getElementById('photoModalFeatured');
+      if (feat) feat.checked = false;
+      modal.classList.add('active');
+    },
+
+    openEditPhotoModal: function (photoId) {
+      const modal = document.getElementById('addPhotoModal');
+      if (!modal) return;
+      const p = this.state.gallery.find(item => item.id === photoId);
+      if (!p) {
+        this.toast('Photograph #' + photoId + ' not found.', 'error');
         return;
       }
-      const cat = document.getElementById('newPhotoCat')?.value || 'campus';
-      const catLabels = {
-        campus: 'Campus & Architecture',
-        sports: 'Sports Day & Athletics',
-        republic: 'Republic & Independence Day',
-        saraswati: 'Saraswati Puja & Assemblies',
-        labs: 'Science Labs & IT',
-        classroom: 'Classroom Life & Activities'
-      };
-      const desc = document.getElementById('newPhotoDesc')?.value.trim() || 'Campus life archival capture at Durga Public School, Pilani.';
-      const newId = (this.state.gallery.length > 0 ? Math.max(...this.state.gallery.map(g => g.id || 0)) + 1 : 1);
+      document.getElementById('photoModalTitle').textContent = 'Edit Photograph #' + photoId;
+      document.getElementById('photoModalSubtitle').textContent = 'Update category, subcategory album, photograph title, asset & story';
+      document.getElementById('photoModalSubmitBtn').textContent = 'Save Changes';
+      document.getElementById('photoModalId').value = String(photoId);
+      document.getElementById('photoModalTitleInput').value = p.title || '';
+      const cat = p.cat || 'campus';
+      document.getElementById('photoModalCat').value = cat;
+      this.onPhotoCatChange(cat, p.subcat || p.note);
+      document.getElementById('photoModalSrc').value = p.src || '';
+      this.updatePhotoPreview(p.src || 'assets/logo-badge.png');
+      document.getElementById('photoModalDesc').value = p.desc || '';
+      const feat = document.getElementById('photoModalFeatured');
+      if (feat) feat.checked = !!p.featured;
+      modal.classList.add('active');
+    },
 
-      this.state.gallery.unshift({
-        id: newId,
-        title: title,
-        cat: cat,
-        catLabel: catLabels[cat] || cat,
-        src: src,
-        desc: desc
-      });
+    submitPhotoModal: function () {
+      const title = document.getElementById('photoModalTitleInput')?.value.trim();
+      const src = document.getElementById('photoModalSrc')?.value.trim();
+      if (!title || !src) {
+        this.toast('Please provide Photograph Title and Image Asset / URL.', 'error');
+        return;
+      }
 
-      this.saveGallery();
-      this.saveAudit('Added photograph #' + newId + ' to gallery (' + title + ')');
-      this.toast('Photograph #' + newId + ' added to gallery!', 'success');
+      const cat = document.getElementById('photoModalCat')?.value || 'campus';
+      const catConfig = this.GALLERY_CATEGORIES[cat] || { label: cat, subcats: [] };
+      const catLabel = catConfig.label;
+
+      let subcat = document.getElementById('photoModalSubcat')?.value;
+      if (subcat === '__custom__') {
+        subcat = document.getElementById('photoModalSubcatCustom')?.value.trim() || 'General Archival';
+      }
+      if (!subcat) subcat = catConfig.subcats[0] || 'General';
+
+      const desc = document.getElementById('photoModalDesc')?.value.trim() || 'Archival photograph from the Durga Public School heritage collection.';
+      const featured = !!document.getElementById('photoModalFeatured')?.checked;
+      const subcatSlug = subcat.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+      const editIdStr = document.getElementById('photoModalId')?.value;
+      const editId = editIdStr ? parseInt(editIdStr, 10) : null;
+
+      if (editId) {
+        // UPDATE EXISTING PHOTO
+        const p = this.state.gallery.find(item => item.id === editId);
+        if (p) {
+          p.title = title;
+          p.cat = cat;
+          p.catLabel = catLabel;
+          p.subcat = subcat;
+          p.subcatSlug = subcatSlug;
+          p.src = src;
+          p.desc = desc;
+          p.featured = featured;
+          p.note = subcat;
+          this.saveGallery();
+          this.saveAudit('Updated photograph #' + editId + ' (' + title + ') in ' + catLabel);
+          this.toast('Photograph #' + editId + ' updated successfully.', 'success');
+        }
+      } else {
+        // ADD NEW PHOTO
+        const newId = (this.state.gallery.length > 0 ? Math.max(...this.state.gallery.map(g => g.id || 0)) + 1 : 1);
+        this.state.gallery.unshift({
+          id: newId,
+          cat: cat,
+          catLabel: catLabel,
+          subcat: subcat,
+          subcatSlug: subcatSlug,
+          title: title,
+          desc: desc,
+          src: src,
+          featured: featured,
+          note: subcat
+        });
+        this.saveGallery();
+        this.saveAudit('Added photograph #' + newId + ' (' + title + ') to ' + catLabel);
+        this.toast('Photograph #' + newId + ' added to gallery!', 'success');
+      }
+
       this.updateCounters();
       this.renderGalleryCatalog();
       document.getElementById('addPhotoModal')?.classList.remove('active');
+    },
+
+    submitNewPhoto: function () {
+      this.submitPhotoModal();
+    },
+
+    exportGalleryDataJs: function () {
+      const grouped = {};
+      for (const p of this.state.gallery) {
+        const c = p.cat || 'campus';
+        if (!grouped[c]) grouped[c] = [];
+        grouped[c].push(p);
+      }
+      const fileContent = 'window.DPS_GALLERY_DATA = ' + JSON.stringify(grouped, null, 2) + ';\n';
+      const blob = new Blob([fileContent], { type: 'application/javascript;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'gallery-data.js';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      this.toast('Downloaded updated gallery-data.js for permanent site sync!', 'success');
+      this.saveAudit('Exported gallery-data.js code');
     },
 
     openAddContactModal: function () {

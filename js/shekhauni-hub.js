@@ -1051,7 +1051,7 @@
 
     try {
 
-      const stored = localStorage.getItem('dps_toppers');
+      const stored = localStorage.getItem('dps_board_toppers') || localStorage.getItem('dps_toppers');
 
       if (stored) {
 
@@ -1123,7 +1123,7 @@
 
     try {
 
-      const stored = localStorage.getItem('dps_circulars') || localStorage.getItem('dps_official_circulars') || localStorage.getItem('dps_school_news');
+      const stored = localStorage.getItem('dps_live_circulars') || localStorage.getItem('dps_circulars') || localStorage.getItem('dps_official_circulars') || localStorage.getItem('dps_school_news');
 
       if (stored) {
 
@@ -1567,7 +1567,7 @@
 
         const isLegacyMock = Array.isArray(parsed) && parsed.some(it => String(it.id).startsWith('CUT-'));
 
-        if (Array.isArray(parsed) && parsed.length >= 20 && !isLegacyMock) {
+        if (Array.isArray(parsed) && parsed.length > 0 && !isLegacyMock) {
 
           activeData = parsed;
 

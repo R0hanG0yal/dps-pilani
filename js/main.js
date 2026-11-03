@@ -1016,21 +1016,48 @@
         }
       }
 
-      // B. Live Phone Number Updates
-      if (config.contact && config.contact.phonePrimary) {
-        const cleanPhone = config.contact.phonePrimary.replace(/\s+/g, '');
-        document.querySelectorAll('a[href^="tel:"]').forEach(function (el) {
-          el.href = 'tel:' + cleanPhone;
-          if (!el.querySelector('svg') && el.textContent.includes('94140')) {
-            el.textContent = config.contact.phonePrimary;
-          }
-        });
-      }
-    } catch (e) {
-      console.warn('Live Config Sync:', e);
-    }
-  }
-
+      // B. Live Phone & Contact Updates
+      if (config.contact && config.contact.phonePrimary) {
+        const cleanPhone = config.contact.phonePrimary.replace(/\s+/g, '');
+        document.querySelectorAll('a[href^="tel:"]').forEach(function (el) {
+          el.href = 'tel:' + cleanPhone;
+          if (!el.querySelector('svg') && (el.textContent.includes('94140') || el.textContent.includes('98878') || el.textContent.includes('94148') || el.textContent.includes('86195'))) {
+            el.textContent = config.contact.phonePrimary;
+          }
+        });
+      }
+      if (config.contact && config.contact.emailPrimary) {
+        document.querySelectorAll('a[href^="mailto:"]').forEach(function (el) {
+          el.href = 'mailto:' + config.contact.emailPrimary;
+          if (!el.querySelector('svg') && el.textContent.includes('@')) {
+            el.textContent = config.contact.emailPrimary;
+          }
+        });
+      }
+
+      // C. Affiliation Code & Recognition Updates
+      if (config.affiliationCode) {
+        document.querySelectorAll('.affiliation-code-val, .rbse-code-val').forEach(function (el) {
+          el.textContent = config.affiliationCode;
+        });
+      }
+
+      // D. Principal Name & Leadership Updates
+      if (config.principal && config.principal.name) {
+        document.querySelectorAll('.leadership-principal .signature-name').forEach(function (el) {
+          el.textContent = config.principal.name;
+        });
+      }
+      if (config.principal && config.principal.message) {
+        document.querySelectorAll('.leadership-principal .principal-quote').forEach(function (el) {
+          el.textContent = '“' + config.principal.message + '”';
+        });
+      }
+    } catch (e) {
+      console.warn('Live Config Sync:', e);
+    }
+  }
+
   // ==========================================================================
     // ==========================================================================
   // 16. MILITARY-GRADE CRYPTOGRAPHIC ADMIN ACCESS VAULT

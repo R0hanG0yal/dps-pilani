@@ -653,7 +653,11 @@
                 <span class="card-title">Campus Scrapbook &amp; Archival Gallery</span>
                 <span id="galleryFilterCount" class="card-badge">271 Prints</span>
               </div>
-              <div class="admin-card-actions">
+              <div class="admin-card-actions" style="display:flex;gap:8px;align-items:center;">
+                <a href="gallery.html" target="_blank" class="btn btn-sm btn-outline" style="text-decoration:none;color:#7D1D3F;border-color:rgba(125,29,63,0.3);display:inline-flex;align-items:center;gap:6px;">
+                  <span>View Live Gallery</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
                 <button type="button" class="btn btn-sm btn-wine" onclick="window.DPSAdmin.openAddPhotoModal()">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                   <span>+ Add Photograph</span>
@@ -1079,45 +1083,84 @@
     </div>
   </div>
 
-  <!-- ADD PHOTO MODAL -->
+  <!-- ADD / EDIT PHOTO MODAL -->
   <div id="addPhotoModal" class="modal-overlay">
-    <div class="modal-container">
-      <div class="modal-header">
-        <h3 class="modal-title">Add Archival Photo to Scrapbook</h3>
+    <div class="modal-container" style="max-width: 680px;">
+      <div class="modal-header" style="background:#FAF6EE;padding:18px 24px;border-bottom:1px solid rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <h3 class="modal-title" id="photoModalTitle" style="color:#7D1D3F;font-size:1.15rem;margin:0;">Add Archival Photo to Scrapbook</h3>
+          <p id="photoModalSubtitle" style="font-size:0.75rem;color:#64748B;margin:3px 0 0 0;">Upload new prints or edit existing titles, categories &amp; archival stories</p>
+        </div>
         <button type="button" class="modal-close-btn" onclick="document.getElementById('addPhotoModal').classList.remove('active')">&times;</button>
       </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label" for="newPhotoTitle">Photograph Title *</label>
-          <input type="text" id="newPhotoTitle" class="form-input" placeholder="e.g. Senior Secondary Physics Lab Practical Session" required>
+      <div class="modal-body" style="padding:22px 24px;max-height:calc(85vh - 130px);overflow-y:auto;">
+        <input type="hidden" id="photoModalId" value="">
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="form-label" for="photoModalTitleInput" style="font-weight:700;color:#1E293B;">Photograph Title *</label>
+          <input type="text" id="photoModalTitleInput" class="form-input" placeholder="e.g. Senior Secondary Physics Lab Practical Session" required>
         </div>
 
-        <div class="form-grid-2">
-          <div class="form-group">
-            <label class="form-label" for="newPhotoCat">Category *</label>
-            <select id="newPhotoCat" class="form-select-full">
-              <option value="campus" selected>Campus &amp; Architecture</option>
-              <option value="sports">Sports Day &amp; Athletics</option>
-              <option value="republic">Republic &amp; Independence Day</option>
-              <option value="saraswati">Saraswati Puja &amp; Assemblies</option>
-              <option value="labs">Science Labs &amp; IT</option>
-              <option value="classroom">Classroom Life &amp; Activities</option>
+        <div class="form-grid-2" style="margin-bottom:14px;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label" for="photoModalCat" style="font-weight:700;color:#1E293B;">Category / Chapter *</label>
+            <select id="photoModalCat" class="form-select-full" onchange="window.DPSAdmin.onPhotoCatChange(this.value)">
+              <option value="campus">Campus Architecture</option>
+              <option value="academics">Academic Wings</option>
+              <option value="labs">Science &amp; IT Labs</option>
+              <option value="cultural">Cultural Festivals</option>
+              <option value="sports">Sports Arena</option>
+              <option value="student-life">Student Life &amp; Fleet</option>
+              <option value="news-cuttings">News Cuttings</option>
             </select>
           </div>
-          <div class="form-group">
-            <label class="form-label" for="newPhotoSrc">Image File Path / URL *</label>
-            <input type="text" id="newPhotoSrc" class="form-input" placeholder="e.g. assets/photos/class-x-graduating-batch-turban.jpg" value="assets/photos/client/events/event-sports-day-sprint-race-1.jpg" required>
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label" for="photoModalSubcat" style="font-weight:700;color:#1E293B;">Sub-Category / Album *</label>
+            <select id="photoModalSubcat" class="form-select-full" onchange="window.DPSAdmin.onPhotoSubcatSelect(this.value)">
+              <!-- Dynamically populated based on category -->
+            </select>
+            <input type="text" id="photoModalSubcatCustom" class="form-input" style="display:none;margin-top:6px;" placeholder="Type custom subcategory...">
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="newPhotoDesc">Archival Caption / Story</label>
-          <textarea id="newPhotoDesc" class="form-textarea" rows="3" placeholder="Enter archival context, batch year, event details, or participants..."></textarea>
+        <div class="form-group" style="margin-bottom:14px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <label class="form-label" style="font-weight:700;color:#1E293B;margin:0;">Photograph Asset / Image *</label>
+            <label class="btn btn-sm btn-outline" style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:4px 10px;font-size:0.72rem;margin:0;color:#7D1D3F;border-color:rgba(125,29,63,0.3);">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+              <span>Upload Picture</span>
+              <input type="file" id="photoModalFileInput" accept="image/*" style="display:none;" onchange="window.DPSAdmin.handlePhotoFileUpload(event)">
+            </label>
+          </div>
+          <input type="text" id="photoModalSrc" class="form-input" placeholder="assets/photos/... or https://..." required oninput="window.DPSAdmin.updatePhotoPreview(this.value)">
+
+          <!-- Live Image Preview Card -->
+          <div id="photoModalPreviewWrap" style="margin-top:10px;padding:10px;background:#F8FAFC;border:1px solid rgba(0,0,0,0.08);border-radius:10px;display:flex;align-items:center;gap:14px;">
+            <div style="width:100px;height:75px;border-radius:8px;overflow:hidden;background:#E2E8F0;flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,0.1);">
+              <img id="photoModalPreviewImg" src="assets/photos/client/events/event-sports-day-sprint-race-1.jpg" alt="Preview" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='assets/logo-badge.png'">
+            </div>
+            <div style="font-size:0.78rem;color:#64748B;line-height:1.45;">
+              <strong style="color:#7D1D3F;display:block;font-size:0.82rem;margin-bottom:2px;">Live Image Preview</strong>
+              <span>Supports server asset paths, online URLs, and direct file uploads.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="form-label" for="photoModalDesc" style="font-weight:700;color:#1E293B;">Archival Caption / Story</label>
+          <textarea id="photoModalDesc" class="form-textarea" rows="3" placeholder="Enter archival context, event details, batch year, or notable participants..."></textarea>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0;">
+          <label style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:0.85rem;color:#1E293B;font-weight:600;">
+            <input type="checkbox" id="photoModalFeatured" style="accent-color:#7D1D3F;width:16px;height:16px;">
+            <span>Feature as Highlight Print in Chapter Carousels</span>
+          </label>
         </div>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" style="padding:14px 24px;background:#FAF6EE;border-top:1px solid rgba(0,0,0,0.08);display:flex;justify-content:flex-end;gap:10px;">
         <button type="button" class="btn btn-outline" onclick="document.getElementById('addPhotoModal').classList.remove('active')">Cancel</button>
-        <button type="button" class="btn btn-wine" onclick="window.DPSAdmin.submitNewPhoto()">Add to Gallery</button>
+        <button type="button" id="photoModalSubmitBtn" class="btn btn-wine" onclick="window.DPSAdmin.submitPhotoModal()">Add to Gallery</button>
       </div>
     </div>
   </div>

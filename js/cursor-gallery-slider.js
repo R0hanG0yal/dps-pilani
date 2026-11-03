@@ -571,11 +571,45 @@ function initDpsCursorGallery() {
     });
   }
 
+  // Get live updated gallery data from localStorage (saved by Admin Suite) or fallback to static catalog
+  function getLiveChapterData(catKey) {
+    try {
+      const stored = localStorage.getItem('dps_gallery_catalog') || localStorage.getItem('dps_gallery_prints');
+      if (stored) {
+        const catalog = JSON.parse(stored);
+        if (Array.isArray(catalog) && catalog.length > 0) {
+          const matched = catalog.filter(function (p) {
+            return p.cat === catKey;
+          });
+          if (matched.length > 0) {
+            return matched.map(function (it) {
+              return {
+                id: it.id,
+                title: it.title,
+                subcat: it.subcat || it.note || it.catLabel || '',
+                subcatSlug: it.subcatSlug || (it.subcat ? it.subcat.toLowerCase().replace(/[^a-z0-9]+/g, '-') : ''),
+                desc: it.desc || '',
+                caption: it.desc || '',
+                src: it.src,
+                image: it.src,
+                featured: !!it.featured,
+                note: it.note || it.subcat || ''
+              };
+            });
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('Live gallery sync error:', e);
+    }
+    return (window.DPS_GALLERY_DATA && window.DPS_GALLERY_DATA[catKey]) ? window.DPS_GALLERY_DATA[catKey] : [];
+  }
+
   hosts.forEach(function (host) {
     const chapterKey = host.getAttribute('data-cursor-chapter');
     if (!chapterKey) return;
 
-    const dataPool = (window.DPS_GALLERY_DATA && window.DPS_GALLERY_DATA[chapterKey]) ? window.DPS_GALLERY_DATA[chapterKey] : [];
+    let dataPool = getLiveChapterData(chapterKey);
     if (!dataPool.length) return;
 
     const slider = new CursorGallerySlider(host, {
@@ -601,17 +635,32 @@ function initDpsCursorGallery() {
           pills.forEach(function (p) { p.classList.remove('active'); });
           this.classList.add('active');
 
+          const currentPool = getLiveChapterData(chapterKey);
           const subcat = this.getAttribute('data-subcat');
           if (!subcat || subcat === 'all') {
-            slider.setItems(dataPool);
+            slider.setItems(currentPool);
           } else {
-            const filtered = dataPool.filter(function (it) {
+            const filtered = currentPool.filter(function (it) {
               const itemSub = (it.subcat || '').toLowerCase();
-              return itemSub === subcat.toLowerCase();
+              return itemSub === subcat.toLowerCase() || (it.subcatSlug && it.subcatSlug === subcat.toLowerCase());
             });
-            slider.setItems(filtered.length ? filtered : dataPool);
+            slider.setItems(filtered.length ? filtered : currentPool);
           }
         });
+      });
+    }
+  });
+
+  // Cross-tab real-time synchronization with Admin Suite
+  window.addEventListener('storage', function (e) {
+    if (e.key === 'dps_gallery_catalog' || e.key === 'dps_gallery_prints') {
+      hosts.forEach(function (host) {
+        const chapterKey = host.getAttribute('data-cursor-chapter');
+        if (!chapterKey || !window.dpsCursorSliders[chapterKey]) return;
+        const freshData = getLiveChapterData(chapterKey);
+        if (freshData.length) {
+          window.dpsCursorSliders[chapterKey].setItems(freshData);
+        }
       });
     }
   });
