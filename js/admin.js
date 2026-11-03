@@ -502,7 +502,9 @@
   }
 ];
 
-  const DEFAULT_FACULTY = [];
+  const DEFAULT_FACULTY = (typeof window !== 'undefined' && Array.isArray(window.DPS_DEFAULT_FACULTY) && window.DPS_DEFAULT_FACULTY.length > 0)
+    ? window.DPS_DEFAULT_FACULTY
+    : [];
 
   const DEFAULT_CONTACTS = [];
 
@@ -592,7 +594,24 @@
 
         // Faculty
         const storedFac = localStorage.getItem(STORAGE_KEYS.FACULTY);
-        this.state.faculty = storedFac ? JSON.parse(storedFac) : DEFAULT_FACULTY;
+        let facultyList = null;
+        if (storedFac) {
+          try {
+            const parsed = JSON.parse(storedFac);
+            if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].category) {
+              facultyList = parsed;
+            }
+          } catch (e) {}
+        }
+        if (!facultyList) {
+          facultyList = (typeof window !== "undefined" && Array.isArray(window.DPS_DEFAULT_FACULTY) && window.DPS_DEFAULT_FACULTY.length > 0)
+            ? window.DPS_DEFAULT_FACULTY
+            : DEFAULT_FACULTY;
+          try {
+            localStorage.setItem(STORAGE_KEYS.FACULTY, JSON.stringify(facultyList));
+          } catch (e) {}
+        }
+        this.state.faculty = facultyList;
 
         // Contacts
         const storedContacts = localStorage.getItem(STORAGE_KEYS.CONTACTS);
@@ -1688,32 +1707,116 @@
     },
 
     // FACULTY ROSTER
+    getFacultyCategoryLabel: function (slug) {
+      const map = {
+        "science": "Science & Laboratories",
+        "mathematics": "Mathematics & Statistics",
+        "languages": "Languages & Literature",
+        "commerce": "Commerce & Accountancy",
+        "social-sciences": "Social Sciences & Humanities",
+        "computers": "Computer Science & IT",
+        "sports-arts": "Sports, PE & Arts",
+        "primary": "Primary & Foundational Wing"
+      };
+      return map[slug] || (slug ? slug.charAt(0).toUpperCase() + slug.slice(1) : "General Discipline");
+    },
+
     renderFacultyTable: function () {
-      const tbody = document.getElementById('facultyTableBody');
+      const tbody = document.getElementById("facultyTableBody");
       if (!tbody) return;
-      tbody.innerHTML = this.state.faculty.map(f => `
-        <tr>
-          <td><strong>${f.id}</strong></td>
-          <td><strong>${f.name}</strong></td>
-          <td>${f.designation}</td>
-          <td><span class="badge-status" style="background:#F1F5F9;color:#334155;">${f.dept}</span></td>
-          <td>${f.qual}</td>
-          <td>${f.exp}</td>
-          <td>
-            <button class="btn-icon" style="color:#DC2626;" onclick="window.DPSAdmin.deleteFaculty('${f.id}')">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-            </button>
-          </td>
-        </tr>
-      `).join('');
+
+      const search = (document.getElementById("adminFacultySearchInput")?.value || "").toLowerCase().trim();
+      const catFilter = document.getElementById("adminFacultyCategoryFilter")?.value || "all";
+
+      const filtered = (this.state.faculty || []).filter(f => {
+        if (catFilter !== "all" && f.category !== catFilter) return false;
+        if (search) {
+          const matchName = (f.name || "").toLowerCase().includes(search);
+          const matchSubject = (f.subject || "").toLowerCase().includes(search);
+          const matchClasses = (f.classes || "").toLowerCase().includes(search);
+          const matchId = (f.id || "").toLowerCase().includes(search);
+          const matchDesig = (f.designation || "").toLowerCase().includes(search);
+          return matchName || matchSubject || matchClasses || matchId || matchDesig;
+        }
+        return true;
+      });
+
+      const countBadge = document.getElementById("facultyRosterCountBadge");
+      if (countBadge) {
+        countBadge.textContent = filtered.length + " Teachers";
+      }
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:36px;color:#64748B;">No faculty records found matching current filter or search criteria.</td></tr>`;
+        return;
+      }
+
+      const self = this;
+      tbody.innerHTML = filtered.map(f => {
+        const initials = (f.name || "F").split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase();
+        const avatarHtml = (f.photo && f.photo.trim() !== "")
+          ? `<img src="${f.photo}" alt="${f.name}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:1.5px solid #D9B88A;" onerror="this.onerror=null;this.parentElement.innerHTML='<span style=\'display:inline-flex;width:38px;height:38px;border-radius:50%;background:#FAF6EE;border:1.5px solid #D9B88A;color:#7D1D3F;font-weight:700;font-size:0.75rem;align-items:center;justify-content:center;\'>${initials}</span>'">`
+          : `<span style="display:inline-flex;width:38px;height:38px;border-radius:50%;background:#FAF6EE;border:1.5px solid #D9B88A;color:#7D1D3F;font-weight:700;font-size:0.75rem;align-items:center;justify-content:center;">${initials}</span>`;
+
+        const sched = f.schedule || {};
+        const schedSummary = sched.periods || sched.days || "Regular Timetable";
+        const consultSummary = sched.consultation ? `<div style="font-size:0.70rem;color:#64748B;margin-top:2px;">Consult: ${sched.consultation}</div>` : "";
+        const labsSummary = sched.labs ? `<div style="font-size:0.70rem;color:#7D1D3F;margin-top:2px;">${sched.labs}</div>` : "";
+        const catLabel = f.categoryLabel || self.getFacultyCategoryLabel(f.category);
+
+        return `
+          <tr>
+            <td style="width:50px;text-align:center;">
+              <div style="display:flex;align-items:center;justify-content:center;">${avatarHtml}</div>
+            </td>
+            <td><strong style="color:#7D1D3F;font-size:0.82rem;">${f.id}</strong></td>
+            <td>
+              <div style="font-weight:700;color:#1E293B;font-size:0.88rem;">${f.name}</div>
+              <div style="font-size:0.78rem;color:#7D1D3F;font-weight:600;">${f.subject || "Subject Mentor"}</div>
+              <div style="font-size:0.72rem;color:#64748B;">${f.designation || ""}</div>
+            </td>
+            <td>
+              <span class="badge" style="background:#FAF6EE;color:#7D1D3F;border:1px solid rgba(125,29,63,0.2);font-size:0.72rem;padding:3px 8px;border-radius:4px;font-weight:600;white-space:nowrap;">
+                ${catLabel}
+              </span>
+            </td>
+            <td>
+              <span style="font-size:0.78rem;color:#334155;background:#F1F5F9;padding:2px 8px;border-radius:4px;display:inline-block;">
+                ${f.classes || "Secondary Wing"}
+              </span>
+            </td>
+            <td>
+              <div style="font-size:0.78rem;color:#1E293B;line-height:1.35;">${schedSummary}</div>
+              ${labsSummary}
+              ${consultSummary}
+            </td>
+            <td>
+              <div style="font-size:0.78rem;color:#334155;">${f.qualifications || f.qual || "B.Ed."}</div>
+              <div style="font-size:0.72rem;color:#64748B;">Exp: ${f.experience || f.exp || "5+ Years"}</div>
+            </td>
+            <td style="text-align:center;">
+              <div style="display:inline-flex;gap:6px;align-items:center;">
+                <button type="button" class="btn-icon" title="Edit Teacher Profile" style="color:#7D1D3F;background:#FAF6EE;border:1px solid #D9B88A;padding:5px 8px;border-radius:4px;cursor:pointer;" onclick="window.DPSAdmin.openEditFacultyModal('${f.id}')">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                </button>
+                <button type="button" class="btn-icon" title="Remove Profile" style="color:#DC2626;background:#FEF2F2;border:1px solid #FECACA;padding:5px 8px;border-radius:4px;cursor:pointer;" onclick="window.DPSAdmin.deleteFaculty('${f.id}')">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
     },
 
     deleteFaculty: function (id) {
-      if (!confirm(`Remove staff member ${id}?`)) return;
-      this.state.faculty = this.state.faculty.filter(f => f.id !== id);
+      const f = this.state.faculty.find(item => item.id === id);
+      const name = f ? f.name : id;
+      if (!confirm("Are you sure you want to remove " + name + " (" + id + ") from the faculty roster?")) return;
+      this.state.faculty = this.state.faculty.filter(item => item.id !== id);
       this.saveFaculty();
-      this.saveAudit(`Removed faculty profile ${id}`);
-      this.toast('Faculty profile removed.', 'info');
+      this.saveAudit("Removed faculty profile " + id + " (" + name + ")");
+      this.toast("Faculty profile " + name + " removed.", "info");
       this.renderFacultyTable();
     },
 
@@ -1958,34 +2061,167 @@
     },
 
     openAddFacultyModal: function () {
-      const nextNum = (this.state.faculty.length + 1).toString().padStart(2, '0');
-      document.getElementById('newFacId').value = 'FAC-' + nextNum;
-      document.getElementById('newFacName').value = '';
-      document.getElementById('newFacDesignation').value = '';
-      document.getElementById('newFacDept').value = 'Humanities & Languages';
-      document.getElementById('newFacQual').value = '';
-      document.getElementById('newFacExp').value = '';
-      document.getElementById('addFacultyModal')?.classList.add('active');
+      const modal = document.getElementById("addFacultyModal");
+      if (!modal) return;
+      document.getElementById("facModalTitle").textContent = "Add Faculty Member Profile";
+      document.getElementById("facModalSubtitle").textContent = "Add new teacher with subject discipline, classes taught, timetable & consultation";
+      document.getElementById("facSubmitBtn").textContent = "Save Faculty Profile";
+      document.getElementById("facEditId").value = "";
+
+      const nextNum = (this.state.faculty.length + 1).toString().padStart(2, "0");
+      document.getElementById("facId").value = "FAC-" + nextNum;
+      document.getElementById("facName").value = "";
+      document.getElementById("facCategory").value = "science";
+      document.getElementById("facSubject").value = "";
+      document.getElementById("facDesignation").value = "";
+      document.getElementById("facClasses").value = "";
+      document.getElementById("facQual").value = "";
+      document.getElementById("facExp").value = "";
+      document.getElementById("facPhotoSrc").value = "";
+      document.getElementById("facScheduleDays").value = "Monday to Saturday";
+      document.getElementById("facSchedulePeriods").value = "Period 1 (08:30 AM – 09:15 AM)";
+      document.getElementById("facScheduleLabs").value = "";
+      document.getElementById("facScheduleConsultation").value = "02:00 PM – 02:45 PM Daily";
+      document.getElementById("facBio").value = "";
+
+      this.updateFacultyPhotoPreview("");
+      modal.classList.add("active");
+    },
+
+    openEditFacultyModal: function (id) {
+      const modal = document.getElementById("addFacultyModal");
+      if (!modal) return;
+      const f = this.state.faculty.find(item => item.id === id);
+      if (!f) {
+        this.toast("Faculty profile " + id + " not found.", "error");
+        return;
+      }
+
+      document.getElementById("facModalTitle").textContent = "Edit Faculty Profile (" + f.name + ")";
+      document.getElementById("facModalSubtitle").textContent = "Update subject discipline, photo, classes taught, and weekly timetable";
+      document.getElementById("facSubmitBtn").textContent = "Save Changes";
+      document.getElementById("facEditId").value = f.id;
+
+      document.getElementById("facId").value = f.id;
+      document.getElementById("facName").value = f.name || "";
+      document.getElementById("facCategory").value = f.category || "science";
+      document.getElementById("facSubject").value = f.subject || "";
+      document.getElementById("facDesignation").value = f.designation || "";
+      document.getElementById("facClasses").value = f.classes || "";
+      document.getElementById("facQual").value = f.qualifications || f.qual || "";
+      document.getElementById("facExp").value = f.experience || f.exp || "";
+      document.getElementById("facPhotoSrc").value = f.photo || "";
+
+      const sched = f.schedule || {};
+      document.getElementById("facScheduleDays").value = sched.days || "Monday to Saturday";
+      document.getElementById("facSchedulePeriods").value = sched.periods || "";
+      document.getElementById("facScheduleLabs").value = sched.labs || "";
+      document.getElementById("facScheduleConsultation").value = sched.consultation || "02:00 PM – 02:45 PM Daily";
+      document.getElementById("facBio").value = f.bio || "";
+
+      this.updateFacultyPhotoPreview(f.photo || "", f.name);
+      modal.classList.add("active");
+    },
+
+    handleFacultyPhotoUpload: function (event) {
+      const file = event.target?.files?.[0];
+      if (!file) return;
+      if (!file.type.startsWith("image/")) {
+        this.toast("Please select an image file (PNG, JPG, WebP).", "error");
+        return;
+      }
+      const reader = new FileReader();
+      const self = this;
+      reader.onload = function (e) {
+        const dataUrl = e.target.result;
+        const photoInput = document.getElementById("facPhotoSrc");
+        if (photoInput) photoInput.value = dataUrl;
+        self.updateFacultyPhotoPreview(dataUrl);
+        self.toast("Photo loaded from device successfully!", "info");
+      };
+      reader.readAsDataURL(file);
+    },
+
+    updateFacultyPhotoPreview: function (src, teacherName) {
+      const preview = document.getElementById("facPhotoPreview");
+      if (!preview) return;
+      if (src && src.trim() !== "") {
+        preview.innerHTML = `<img src="${src}" alt="Preview" style="width:100%;height:100%;object-fit:cover;" onerror="this.onerror=null;this.parentElement.textContent='FAC';">`;
+      } else {
+        const initials = teacherName ? teacherName.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase() : "FAC";
+        preview.textContent = initials;
+      }
+    },
+
+    submitFacultyModal: function () {
+      const editId = document.getElementById("facEditId")?.value;
+      const id = document.getElementById("facId")?.value.trim();
+      const name = document.getElementById("facName")?.value.trim();
+      const category = document.getElementById("facCategory")?.value || "science";
+      const subject = document.getElementById("facSubject")?.value.trim();
+      const designation = document.getElementById("facDesignation")?.value.trim();
+      const classes = document.getElementById("facClasses")?.value.trim();
+      const qualifications = document.getElementById("facQual")?.value.trim();
+      const experience = document.getElementById("facExp")?.value.trim();
+      const photo = document.getElementById("facPhotoSrc")?.value.trim();
+      const days = document.getElementById("facScheduleDays")?.value.trim() || "Monday to Saturday";
+      const periods = document.getElementById("facSchedulePeriods")?.value.trim();
+      const labs = document.getElementById("facScheduleLabs")?.value.trim();
+      const consultation = document.getElementById("facScheduleConsultation")?.value.trim() || "02:00 PM – 02:45 PM Daily";
+      const bio = document.getElementById("facBio")?.value.trim();
+
+      if (!id || !name || !subject) {
+        this.toast("Please provide Employee ID, Teacher Name, and Primary Subject.", "error");
+        return;
+      }
+
+      const categoryLabel = this.getFacultyCategoryLabel(category);
+      const facultyData = {
+        id: id,
+        name: name,
+        category: category,
+        categoryLabel: categoryLabel,
+        subject: subject,
+        designation: designation || "Teacher",
+        classes: classes || "Secondary Classes",
+        qualifications: qualifications || "Graduate, B.Ed.",
+        experience: experience || "5+ Years",
+        photo: photo || "",
+        schedule: {
+          days: days,
+          periods: periods || "Period 1 (08:30 AM – 09:15 AM)",
+          labs: labs || "",
+          consultation: consultation
+        },
+        bio: bio || ""
+      };
+
+      if (editId) {
+        const idx = this.state.faculty.findIndex(item => item.id === editId);
+        if (idx !== -1) {
+          this.state.faculty[idx] = facultyData;
+          this.saveAudit("Updated faculty profile " + id + " (" + name + ")");
+          this.toast("Faculty profile " + name + " updated successfully!", "success");
+        }
+      } else {
+        if (this.state.faculty.some(item => item.id === id)) {
+          this.toast("Employee ID " + id + " already exists. Please choose a unique ID.", "error");
+          return;
+        }
+        this.state.faculty.unshift(facultyData);
+        this.saveAudit("Added faculty profile " + id + " (" + name + ")");
+        this.toast("Faculty member " + name + " added successfully!", "success");
+      }
+
+      this.saveFaculty();
+      this.renderFacultyTable();
+      document.getElementById("addFacultyModal")?.classList.remove("active");
+      const fileInput = document.getElementById("facPhotoFileInput");
+      if (fileInput) fileInput.value = "";
     },
 
     submitNewFaculty: function () {
-      const id = document.getElementById('newFacId')?.value.trim();
-      const name = document.getElementById('newFacName')?.value.trim();
-      const designation = document.getElementById('newFacDesignation')?.value.trim();
-      if (!id || !name || !designation) {
-        this.toast('Please provide Faculty ID, Name, and Designation.', 'error');
-        return;
-      }
-      const dept = document.getElementById('newFacDept')?.value || 'Science';
-      const qual = document.getElementById('newFacQual')?.value.trim() || 'Post Graduate';
-      const exp = document.getElementById('newFacExp')?.value.trim() || '5+ Years';
-
-      this.state.faculty.push({ id, name, designation, dept, qual, exp });
-      this.saveFaculty();
-      this.saveAudit('Added faculty profile ' + id + ' (' + name + ')');
-      this.toast('Faculty member ' + name + ' added!', 'success');
-      this.renderFacultyTable();
-      document.getElementById('addFacultyModal')?.classList.remove('active');
+      return this.submitFacultyModal();
     },
 
     GALLERY_CATEGORIES: {
