@@ -1029,14 +1029,178 @@
     }
   }
 
-  // 16. ADMIN PORTAL KEYBOARD SHORTCUT (Ctrl + Shift + A)
+  // ==========================================================================
+  // 16. SECRET ADMIN ACCESS SYSTEM (5 Taps in <= 4s on School Logo + Password)
+  // Master Password: durgadevipublicschoo;@pilani (tolerance alias: durgadevipublicschool@pilani)
+  // ==========================================================================
   function initAdminShortcut() {
+    let tapTimes = [];
+    const TAP_LIMIT = 5;
+    const TIME_WINDOW_MS = 4000;
+    const MASTER_PASSWORDS = [
+      'durgadevipublicschoo;@pilani',
+      'durgadevipublicschool@pilani'
+    ];
+
+    function handleLogoTap(e) {
+      const now = Date.now();
+      tapTimes = tapTimes.filter(function (t) { return now - t <= TIME_WINDOW_MS; });
+      tapTimes.push(now);
+
+      // Visual feedback pulse on the tapped logo
+      const target = e.currentTarget || e.target;
+      if (target && target.classList) {
+        target.classList.add('logo-tap-pulse');
+        setTimeout(function () { target.classList.remove('logo-tap-pulse'); }, 220);
+      }
+
+      if (tapTimes.length >= TAP_LIMIT) {
+        e.preventDefault();
+        e.stopPropagation();
+        tapTimes = [];
+        if (typeof navigator !== 'undefined' && navigator.vibrate) {
+          try { navigator.vibrate([40, 50, 60]); } catch (_) {}
+        }
+        openSecretAdminModal();
+      }
+    }
+
+    // Attach to school logos across the page
+    const logoSelectors = [
+      '.dps-brand',
+      '.dps-brand img',
+      '.foot-brand img',
+      '.gate-crest-img',
+      'img[src*="logo-badge.png"]'
+    ];
+
+    document.querySelectorAll(logoSelectors.join(', ')).forEach(function (el) {
+      el.addEventListener('click', handleLogoTap);
+    });
+
+    // Also support keyboard shortcut Ctrl + Shift + A to trigger the same secret challenge
     window.addEventListener('keydown', function (e) {
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
         e.preventDefault();
-        window.location.href = 'admin.html';
+        openSecretAdminModal();
       }
     });
+
+    function openSecretAdminModal() {
+      let modal = document.getElementById('secretAdminModal');
+      if (!modal) {
+        modal = createSecretAdminModal();
+      }
+      modal.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      const input = document.getElementById('samPasswordInput');
+      if (input) {
+        input.value = '';
+        setTimeout(function () { input.focus(); }, 120);
+      }
+      const feedback = document.getElementById('samFeedback');
+      if (feedback) {
+        feedback.className = 'sam-feedback';
+        feedback.textContent = '';
+      }
+    }
+
+    function createSecretAdminModal() {
+      const modal = document.createElement('div');
+      modal.id = 'secretAdminModal';
+      modal.className = 'secret-admin-modal';
+      modal.setAttribute('role', 'dialog');
+      modal.setAttribute('aria-modal', 'true');
+      modal.setAttribute('aria-label', 'Institutional Administrative Console');
+
+      modal.innerHTML = 
+        '<div class="sam-backdrop" id="samBackdrop"></div>' +
+        '<div class="sam-card">' +
+          '<button type="button" class="sam-close" id="samCloseBtn" aria-label="Close">&times;</button>' +
+          '<div class="sam-crest-disc">' +
+            '<img src="assets/logo-badge.png" alt="Durga Public School Crest" class="sam-crest-img" width="54" height="54">' +
+          '</div>' +
+          '<h3 class="sam-title">Administrative Access</h3>' +
+          '<p class="sam-sub">Durga Public School &bull; Pilani, Rajasthan<br><strong>Authorized Institutional Personnel Only</strong></p>' +
+          '<form id="samForm" class="sam-form">' +
+            '<div class="sam-field">' +
+              '<label for="samPasswordInput" class="sam-label">Master Access Password</label>' +
+              '<div class="sam-input-wrap">' +
+                '<input type="password" id="samPasswordInput" class="sam-input" placeholder="Enter master access password" autocomplete="current-password" required>' +
+                '<button type="button" id="samEyeToggle" class="sam-eye-btn" aria-label="Toggle password visibility">' +
+                  '<svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>' +
+                  '<svg class="eye-closed" style="display:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>' +
+                '</button>' +
+              '</div>' +
+              '<div id="samFeedback" class="sam-feedback" aria-live="polite"></div>' +
+            '</div>' +
+            '<button type="submit" class="sam-submit-btn">' +
+              '<span>Verify &amp; Launch Console</span>' +
+              '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>' +
+            '</button>' +
+          '</form>' +
+          '<div class="sam-foot-note">Protected Administrative Console &bull; DPDP Act 2023 Compliant</div>' +
+        '</div>';
+
+      document.body.appendChild(modal);
+
+      function closeModal() {
+        modal.classList.remove('is-open');
+        document.body.style.overflow = '';
+      }
+
+      modal.querySelector('#samCloseBtn').addEventListener('click', closeModal);
+      modal.querySelector('#samBackdrop').addEventListener('click', closeModal);
+
+      // Eye toggle
+      const eyeBtn = modal.querySelector('#samEyeToggle');
+      const input = modal.querySelector('#samPasswordInput');
+      const eyeOpen = eyeBtn.querySelector('.eye-open');
+      const eyeClosed = eyeBtn.querySelector('.eye-closed');
+
+      eyeBtn.addEventListener('click', function () {
+        const isPass = input.type === 'password';
+        input.type = isPass ? 'text' : 'password';
+        eyeOpen.style.display = isPass ? 'none' : 'block';
+        eyeClosed.style.display = isPass ? 'block' : 'none';
+      });
+
+      // Submit password
+      const form = modal.querySelector('#samForm');
+      const feedback = modal.querySelector('#samFeedback');
+      const card = modal.querySelector('.sam-card');
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const entered = (input.value || '').trim();
+        if (MASTER_PASSWORDS.indexOf(entered) !== -1) {
+          feedback.className = 'sam-feedback success';
+          feedback.textContent = 'Credential Verified. Opening Admin Portal...';
+          try {
+            sessionStorage.setItem('dps_admin_session', 'true');
+          } catch (_) {}
+          setTimeout(function () {
+            window.location.href = 'admin.html';
+          }, 350);
+        } else {
+          feedback.className = 'sam-feedback error';
+          feedback.textContent = 'Access Denied: Incorrect Master Password.';
+          card.classList.add('sam-shake');
+          setTimeout(function () { card.classList.remove('sam-shake'); }, 450);
+          input.value = '';
+          input.focus();
+        }
+      });
+
+      // Escape key to close
+      window.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('is-open')) {
+          closeModal();
+        }
+      });
+
+      return modal;
+    }
   }
 
 

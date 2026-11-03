@@ -693,15 +693,20 @@
     },
 
     login: function (pass) {
-      if (pass === 'dps@admin2026' || pass === 'admin') {
+      const cleanPass = (pass || '').trim();
+      const validPasswords = [
+        'durgadevipublicschoo;@pilani',
+        'durgadevipublicschool@pilani'
+      ];
+      if (validPasswords.includes(cleanPass)) {
         this.state.auth = true;
         sessionStorage.setItem(STORAGE_KEYS.AUTH, 'true');
         this.checkAuth();
         this.toast('Welcome, Administrator. Admin Session Active.', 'success');
-        this.saveAudit('Administrator logged in successfully');
+        this.saveAudit('Administrator logged in successfully via Master Credential');
         return true;
       }
-      this.toast('Invalid password. Please try again.', 'error');
+      this.toast('Invalid password. Access Denied.', 'error');
       return false;
     },
 
@@ -2082,9 +2087,7 @@
         self.login(pass);
       });
 
-      document.getElementById('btnQuickDefaultLogin')?.addEventListener('click', function () {
-        self.login('dps@admin2026');
-      });
+// Direct 1-click login removed per security policy
 
       document.getElementById('adminLogoutBtn')?.addEventListener('click', function () {
         self.logout();

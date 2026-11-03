@@ -2085,3 +2085,269 @@ details.apple-expandable-item summary,
   transform: translate3d(0, 0, 0);
   -webkit-transform: translate3d(0, 0, 0);
 }
+
+/* ============================================================================
+   SECRET ADMINISTRATIVE CONSOLE & LOGO GESTURE STYLES
+   ============================================================================ */
+
+/* Logo Tap Pulse Feedback */
+.logo-tap-pulse {
+  transform: scale(0.92) !important;
+  filter: brightness(1.25) drop-shadow(0 0 10px rgba(217, 184, 138, 0.8)) !important;
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), filter 0.15s ease !important;
+}
+
+/* Modal Overlay Container */
+.secret-admin-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.secret-admin-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Backdrop */
+.sam-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(22, 4, 11, 0.86);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+}
+
+/* Card */
+.sam-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  background: rgba(30, 6, 15, 0.94);
+  backdrop-filter: blur(32px) saturate(190%);
+  -webkit-backdrop-filter: blur(32px) saturate(190%);
+  border: 1.5px solid rgba(217, 184, 138, 0.65);
+  border-radius: 24px;
+  padding: 36px 30px;
+  box-shadow:
+    0 30px 80px -10px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 2px rgba(255, 255, 255, 0.25);
+  text-align: center;
+  transform: scale(0.92) translateY(12px);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.secret-admin-modal.is-open .sam-card {
+  transform: scale(1) translateY(0);
+}
+
+/* Close Button */
+.sam-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(217, 184, 138, 0.35);
+  background: rgba(255, 255, 255, 0.08);
+  color: #FDE68A;
+  font-size: 22px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sam-close:hover {
+  background: #7D1D3F;
+  color: #FFFFFF;
+  border-color: #D9B88A;
+  transform: rotate(90deg);
+}
+
+/* Crest Disc */
+.sam-crest-disc {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2.5px solid #D9B88A;
+  display: grid;
+  place-items: center;
+  box-shadow:
+    0 0 24px rgba(217, 184, 138, 0.5),
+    0 8px 18px rgba(0, 0, 0, 0.3);
+}
+
+.sam-crest-img {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+}
+
+/* Title & Subtitle */
+.sam-title {
+  margin: 0 0 6px 0;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: -0.01em;
+}
+
+.sam-sub {
+  margin: 0 0 24px 0;
+  font-family: var(--font-ui, sans-serif);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: rgba(253, 230, 138, 0.85);
+}
+
+.sam-sub strong {
+  color: #FFFFFF;
+}
+
+/* Form Fields */
+.sam-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}
+
+.sam-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sam-label {
+  font-family: var(--font-label, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #D9B88A;
+}
+
+.sam-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.sam-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 46px 0 16px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(217, 184, 138, 0.45);
+  background: rgba(14, 2, 7, 0.75);
+  color: #FFFFFF;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.sam-input:focus {
+  border-color: #D9B88A;
+  box-shadow: 0 0 0 3px rgba(217, 184, 138, 0.35);
+  background: rgba(14, 2, 7, 0.95);
+}
+
+.sam-eye-btn {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: rgba(217, 184, 138, 0.8);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 6px;
+  transition: color 0.15s ease;
+}
+
+.sam-eye-btn:hover {
+  color: #FFFFFF;
+}
+
+/* Feedback message */
+.sam-feedback {
+  min-height: 18px;
+  font-family: var(--font-ui, sans-serif);
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.sam-feedback.error {
+  color: #EF4444;
+}
+
+.sam-feedback.success {
+  color: #10B981;
+}
+
+/* Submit Button */
+.sam-submit-btn {
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 12px;
+  border: 1px solid #D9B88A;
+  background: linear-gradient(135deg, #7D1D3F 0%, #460B21 100%);
+  color: #FFFFFF;
+  font-family: var(--font-ui, sans-serif);
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 24px -4px rgba(46, 8, 21, 0.5);
+}
+
+.sam-submit-btn:hover {
+  background: linear-gradient(135deg, #912249 0%, #5C0E2C 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px -4px rgba(46, 8, 21, 0.7);
+}
+
+.sam-submit-btn:active {
+  transform: translateY(0);
+}
+
+.sam-foot-note {
+  margin-top: 18px;
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.45);
+  font-family: var(--font-ui, sans-serif);
+}
+
+/* Shake Animation on Wrong Password */
+@keyframes samShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+.sam-card.sam-shake {
+  animation: samShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
