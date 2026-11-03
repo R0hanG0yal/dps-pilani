@@ -2059,7 +2059,7 @@
     openAddPhotoModal: function () {
       document.getElementById('newPhotoTitle').value = '';
       document.getElementById('newPhotoCat').value = 'campus';
-      document.getElementById('newPhotoSrc').value = 'assets/photos/karate-students-ground.jpg';
+      document.getElementById('newPhotoSrc').value = 'assets/photos/client/events/event-sports-day-sprint-race-1.jpg';
       document.getElementById('newPhotoDesc').value = '';
       document.getElementById('addPhotoModal')?.classList.add('active');
     },

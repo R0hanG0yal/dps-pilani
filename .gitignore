@@ -1,9 +1,11 @@
 # Scratch and development test files
 scratch/
+test_*.py
 
 # Archives
 *.zip
 *.rar
+*.tar.gz
 
 # Raw source media folders in root (processed into assets/photos/)
 /Director's Desk/
@@ -11,11 +13,16 @@ scratch/
 /News Cuttings/
 /Principal's Desk/
 /Transport/
+/Selected Photos/
+/Website (Durga Public School Pilani)/
+
+# Unused root raw camera files and logos
+DSC_*.JPG
+DSC_*.jpg
+logo.jpg
+Prospectus.pdf
 
 # OS metadata
 .DS_Store
 Thumbs.db
 desktop.ini
-
-# Original high-res raw PDF
-Prospectus.pdf
