@@ -319,16 +319,14 @@
         slides: HERO_SPOTLIGHT_ITEMS.map(function (it) {
           return {
             image: it.image,
-            title: it.title,
-            caption: it.sub,
-            note: it.tag || it.title
+            title: '', caption: '', note: ''
           };
         }),
         imageFit: 'cover',
         durationMs: 600,
         autoplay: 4000,
         borderRadius: 20,
-        showCaption: true,
+        showCaption: false,
         ariaLabel: 'Campus Highlights Cursor Gallery',
         onChange: function (index) {
           const pillMap = { 0: 0, 1: 1, 2: 2, 3: 3 };
@@ -357,9 +355,7 @@
         slides: HERO_SPOTLIGHT_ITEMS.map(function (it) {
           return {
             image: it.image,
-            title: it.title,
-            caption: it.sub,
-            note: it.tag || it.title
+            title: '', caption: '', note: ''
           };
         }),
         cardWidth: 260,
@@ -446,20 +442,12 @@
       modal.setAttribute('aria-label', 'Campus Gallery Photo Full View');
       modal.innerHTML = `
         <div class="s-modal-backdrop" id="heroPhotoBackdrop"></div>
-        <div class="s-modal-box">
-          <div class="s-modal-header">
-            <div class="s-modal-titles">
-              <span id="heroModalTag" class="s-paper-badge patrika">Campus</span>
-              <h3 id="heroModalTitle" class="s-modal-heading">Photo</h3>
-            </div>
+        <div class="s-modal-box" style="padding:16px;">
+          <div class="s-modal-header" style="justify-content:flex-end;margin-bottom:8px;">
             <button type="button" class="s-modal-close-btn" id="heroPhotoClose" aria-label="Close photo modal">&times;</button>
           </div>
           <div class="s-modal-body">
             <img id="heroModalImg" src="" alt="DPS Campus Photo" class="s-modal-clipping-img">
-          </div>
-          <div class="s-modal-footer">
-            <span id="heroModalDate" style="font-size:0.85rem;color:#7D1D3F;font-weight:700;">Durga Public School, Pilani</span>
-            <a href="gallery.html" class="pillar-chip" style="color:var(--wine-800);font-weight:600;">View Complete 271-Photo Archive &rarr;</a>
           </div>
         </div>
       `;

@@ -1,3 +1,18 @@
+
+/* Strict Removal of All Text Overlays and Slat Captions Over Images */
+.spotlight-slat-top-badge,
+.spotlight-slat-index,
+.spotlight-slat-scrim,
+.spotlight-slat-title,
+.spotlight-slat-sub,
+.spotlight-scrim-meta,
+.spotlight-read-btn {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 /**
  * Spotlight Frames — Originkit Architecture
  * Vanilla CSS for High-Performance Slats Accordion & Auto-Panning Strip
@@ -106,7 +121,7 @@
   transform: none !important;
   object-fit: contain !important;
   background: #FAF8F5 !important;
-  padding: 14px 14px 74px 14px !important; /* Reserve space for bottom floating glass caption */
+  padding: 14px !important; /* Reserve space for bottom floating glass caption */
   box-sizing: border-box;
 }
 

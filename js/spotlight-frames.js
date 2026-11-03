@@ -175,58 +175,11 @@
 
       inner.appendChild(img);
 
-      // Closed index badge (fades out when active)
-      const idxBadge = document.createElement('span');
-      idxBadge.className = 'spotlight-slat-index';
-      idxBadge.textContent = String(index + 1).padStart(2, '0');
-      inner.appendChild(idxBadge);
+      // Index badge removed
 
-      // Editorial Tag at Top Left of active slat
-      if (item.tag) {
-        const topBadge = document.createElement('div');
-        topBadge.className = 'spotlight-slat-top-badge';
-        topBadge.innerHTML = '<span class="spotlight-tag-text">' + escapeText(item.tag) + '</span>';
-        inner.appendChild(topBadge);
-      }
+      // Top tag removed
 
-      // Floating Glass Caption at Bottom of active slat
-      if (item.title || item.sub) {
-        const scrim = document.createElement('div');
-        scrim.className = 'spotlight-slat-scrim';
-
-        const metaWrap = document.createElement('div');
-        metaWrap.className = 'spotlight-scrim-meta';
-
-        if (item.title) {
-          const title = document.createElement('h4');
-          title.className = 'spotlight-slat-title';
-          title.textContent = item.title;
-          metaWrap.appendChild(title);
-        }
-        if (item.sub) {
-          const sub = document.createElement('span');
-          sub.className = 'spotlight-slat-sub';
-          sub.innerHTML = item.sub;
-          metaWrap.appendChild(sub);
-        }
-        scrim.appendChild(metaWrap);
-
-        // Click to enlarge full document action button
-        const fullBtn = document.createElement('button');
-        fullBtn.type = 'button';
-        fullBtn.className = 'spotlight-read-btn';
-        fullBtn.setAttribute('aria-label', 'Open full high-resolution document');
-        fullBtn.innerHTML = '<span>Full View</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
-        fullBtn.addEventListener('click', function (e) {
-          e.stopPropagation();
-          if (typeof self.opts.onSlideClick === 'function') {
-            self.opts.onSlideClick(item, index);
-          }
-        });
-        scrim.appendChild(fullBtn);
-
-        inner.appendChild(scrim);
-      }
+      // Caption scrim removed
 
       slat.appendChild(inner);
       self.stage.appendChild(slat);

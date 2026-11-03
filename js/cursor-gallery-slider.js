@@ -24,7 +24,7 @@
     dotInactive: 'rgba(255, 255, 255, 0.45)',
     loop: true,
     autoplay: 0,
-    showCaption: true,
+    showCaption: false,
     ariaLabel: 'Image Gallery Slider'
   };
 
@@ -108,22 +108,8 @@
     this.cursorEl.innerHTML = '<svg class="cgs-arrow-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="' + this.opts.cursorColor + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"></polyline></svg>';
     this.root.appendChild(this.cursorEl);
 
-    if (this.opts.showCaption) {
-      this.dock = document.createElement('div');
-      this.dock.className = 'cgs-dock';
-
-      this.captionCard = document.createElement('div');
-      this.captionCard.className = 'cgs-caption-card';
-      this.captionCard.innerHTML = '<span class="cgs-tag-pill" style="display:none;"></span><h4 class="cgs-title"></h4><p class="cgs-desc"></p>';
-      this.dock.appendChild(this.captionCard);
-
-      this.dockRight = document.createElement('div');
-      this.dockRight.className = 'cgs-dock-right';
-      this.dockRight.innerHTML = '<div class="cgs-counter"><span class="cgs-counter-current">01</span><span class="cgs-counter-sep">/</span><span class="cgs-counter-total">01</span></div><button type="button" class="cgs-zoom-btn" title="View Fullscreen" aria-label="Expand image in lightbox"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg></button>';
-      this.dock.appendChild(this.dockRight);
-
-      this.root.appendChild(this.dock);
-    }
+    // Text overlays disabled everywhere
+    this.dock = null;
 
     if (this.opts.dots) {
       this.dotsWrap = document.createElement('div');
@@ -533,7 +519,7 @@ function initDpsCursorGallery() {
       modal = document.createElement('div');
       modal.id = 'dpsGalleryLightbox';
       modal.style.cssText = 'position:fixed;inset:0;z-index:999999;background:rgba(26,5,14,0.92);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;opacity:0;transition:opacity 0.25s ease;';
-      modal.innerHTML = '<div style="position:relative;max-width:1100px;width:100%;max-height:92vh;display:flex;flex-direction:column;align-items:center;"><button type="button" id="dpsLightboxClose" style="position:absolute;top:-18px;right:-18px;width:40px;height:40px;border-radius:50%;background:#FFFFFF;border:none;color:#2E0815;font-size:22px;font-weight:700;cursor:pointer;display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,0.4);z-index:10;">&times;</button><img id="dpsLightboxImg" style="max-width:100%;max-height:76vh;object-fit:contain;border-radius:12px;box-shadow:0 24px 60px rgba(0,0,0,0.5);" src="" alt=""><div id="dpsLightboxCaption" style="margin-top:16px;text-align:center;color:#FFFFFF;max-width:700px;"><div id="dpsLightboxTitle" style="font-family:Georgia,serif;font-size:1.35rem;font-weight:700;margin-bottom:6px;"></div><div id="dpsLightboxDesc" style="font-size:0.88rem;color:rgba(255,255,255,0.78);line-height:1.5;"></div></div></div>';
+      modal.innerHTML = '<div style="position:relative;max-width:1100px;width:100%;max-height:92vh;display:flex;flex-direction:column;align-items:center;"><button type="button" id="dpsLightboxClose" style="position:absolute;top:-18px;right:-18px;width:40px;height:40px;border-radius:50%;background:#FFFFFF;border:none;color:#2E0815;font-size:22px;font-weight:700;cursor:pointer;display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,0.4);z-index:10;">&times;</button><img id="dpsLightboxImg" style="max-width:100%;max-height:76vh;object-fit:contain;border-radius:12px;box-shadow:0 24px 60px rgba(0,0,0,0.5);" src="" alt=""></div></div>';
       document.body.appendChild(modal);
 
       const closeBtn = document.getElementById('dpsLightboxClose');
@@ -562,8 +548,7 @@ function initDpsCursorGallery() {
     const desc = document.getElementById('dpsLightboxDesc');
 
     if (img) img.src = photo.image;
-    if (title) title.textContent = photo.title || '';
-    if (desc) desc.textContent = photo.caption || '';
+    // No lightbox captions
 
     modal.style.display = 'flex';
     requestAnimationFrame(function () {

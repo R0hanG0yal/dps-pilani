@@ -1,3 +1,17 @@
+
+/* Strict Removal of All Text Overlays and Story Cards Over Images */
+.pl-note,
+.pl-cap-pill,
+.pl-cap,
+.pl-title,
+.pl-sub,
+.pl-count-capsule {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 /**
  * Polaroid Line Carousel — Instant photos pegged to a sagging string.
  * Vanilla CSS implementation ported from React/Originkit Architecture.

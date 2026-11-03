@@ -1,3 +1,23 @@
+
+/* Strict Removal of All Text Overlays and Captions Over Images */
+.cgs-dock,
+.cgs-caption-card,
+.cgs-info-pill,
+.cgs-title,
+.cgs-desc,
+.cgs-tag-pill,
+.cgs-note-badge,
+.cgs-caption,
+.cgs-counter,
+#dpsLightboxCaption,
+#dpsLightboxTitle,
+#dpsLightboxDesc {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 .cgs-host {
 
   position: relative;

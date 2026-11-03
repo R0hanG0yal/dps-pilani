@@ -291,7 +291,7 @@
 
       const note = document.createElement('div');
       note.className = 'pl-note';
-      note.textContent = sl.note || sl.title || '';
+      note.textContent = '';
 
       print.appendChild(shot);
       print.appendChild(note);
@@ -395,18 +395,7 @@
     const sl = this.slides[this.active] || {};
     this.cap.innerHTML = '';
 
-    if (sl.title) {
-      const titleSpan = document.createElement('span');
-      titleSpan.className = 'pl-title';
-      titleSpan.textContent = sl.title;
-      this.cap.appendChild(titleSpan);
-    }
-    if (sl.caption) {
-      const subSpan = document.createElement('span');
-      subSpan.className = 'pl-sub';
-      subSpan.innerHTML = sl.caption;
-      this.cap.appendChild(subSpan);
-    }
+    // Text overlay removed
 
     this.countEl.innerHTML = '<b>' + pad2(this.active + 1) + '</b> / ' + pad2(this.n);
     this.srEl.textContent = 'Print ' + (this.active + 1) + ' of ' + this.n + (sl.title ? ': ' + sl.title : '');
