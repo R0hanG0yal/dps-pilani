@@ -1957,3 +1957,38 @@ input:checked + .toggle-slider::before {
   font-size: 0.72rem;
   color: #94A3B8;
 }
+
+/* Expandable Subcategory Filter Bar */
+.admin-subcat-expandable {
+  transition: all 0.25s ease;
+}
+
+.admin-subcat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(46, 8, 21, 0.15);
+  background: #FFFFFF;
+  color: #2E0815;
+  font-family: var(--font-ui, sans-serif);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.admin-subcat-pill:hover {
+  background: rgba(125, 29, 63, 0.08);
+  border-color: #7D1D3F;
+  color: #7D1D3F;
+}
+
+.admin-subcat-pill.active {
+  background: #7D1D3F;
+  color: #FFFFFF !important;
+  border-color: #7D1D3F;
+  box-shadow: 0 4px 12px rgba(125, 29, 63, 0.25);
+}

@@ -1,17 +1,3 @@
-/**
- * Cursor Image Gallery Slider (Originkit Architecture)
- * Durga Public School, Pilani, Rajasthan
- *
- * Implements the interactive CursorNav image slider:
- * - Fluid pointer-following directional cursor with animated SVG arrows
- * - Seamless hardware-accelerated translateX slide transitions (easeInOut, 600ms)
- * - Intelligent hover detection (left half slides prev, right half slides next)
- * - Liquid glass caption pill (Title, Subtitle, Counter capsule, Lightbox expand)
- * - Interactive pagination dots with active pill expansion
- * - Full responsive touch swipe gestures for mobile & tablet
- * - Dynamic .setItems() API for real-time sub-category filtering
- */
-
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     define([], factory);
@@ -26,15 +12,15 @@
   const DEFAULTS = {
     durationMs: 600,
     ease: 'cubic-bezier(0.42, 0, 0.58, 1)',
-    imageFit: 'cover', // 'cover' or 'contain'
+    imageFit: 'cover',
     cursorSize: 58,
     cursorBg: true,
     cursorBackground: 'rgba(255, 255, 255, 0.94)',
-    cursorColor: '#2E0815', // Royal Wine
+    cursorColor: '#2E0815',
     borderRadius: 16,
     dots: true,
     dotSize: 8,
-    dotActive: '#B45309', // Royal Amber
+    dotActive: '#B45309',
     dotInactive: 'rgba(255, 255, 255, 0.45)',
     loop: true,
     autoplay: 0,
@@ -51,10 +37,10 @@
   }
 
   function CursorGallerySlider(container, options) {
-    if (!container) throw new Error('CursorGallerySlider requires a container element.');
+    if (!container) return;
 
     this.container = typeof container === 'string' ? document.querySelector(container) : container;
-    if (!this.container) throw new Error('Target container not found.');
+    if (!this.container) return;
 
     this.opts = Object.assign({}, DEFAULTS, options || {});
     this.slides = (this.opts.slides || []).map(function (s, i) {
@@ -93,7 +79,6 @@
     this.container.innerHTML = '';
     this.container.classList.add('cgs-host');
 
-    // Root element
     this.root = document.createElement('div');
     this.root.className = 'cgs-root';
     this.root.setAttribute('tabindex', '0');
@@ -103,7 +88,6 @@
       this.root.style.borderRadius = this.opts.borderRadius + 'px';
     }
 
-    // Viewport
     this.viewport = document.createElement('div');
     this.viewport.className = 'cgs-viewport';
     if (this.opts.borderRadius) {
@@ -111,82 +95,56 @@
     }
     this.root.appendChild(this.viewport);
 
-    // Active Layer Container
     this.activeLayer = document.createElement('div');
     this.activeLayer.className = 'cgs-layer cgs-layer-active';
     this.viewport.appendChild(this.activeLayer);
 
-    // Floating Custom Cursor
     this.cursorEl = document.createElement('div');
     this.cursorEl.className = 'cgs-cursor';
     this.cursorEl.setAttribute('aria-hidden', 'true');
     this.cursorEl.style.width = this.opts.cursorSize + 'px';
     this.cursorEl.style.height = this.opts.cursorSize + 'px';
-    if (this.opts.cursorBg) {
-      this.cursorEl.style.background = this.opts.cursorBackground;
-    }
-
-    // SVG chevrons
-    const arrowSize = Math.round(this.opts.cursorSize * 0.42);
-    this.cursorEl.innerHTML =
-      '<svg class="cgs-arrow cgs-arrow-left" width="' + arrowSize + '" height="' + arrowSize + '" viewBox="0 0 24 24" fill="none" stroke="' + this.opts.cursorColor + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">' +
-      '<polyline points="15 6 9 12 15 18"></polyline>' +
-      '</svg>' +
-      '<svg class="cgs-arrow cgs-arrow-right" width="' + arrowSize + '" height="' + arrowSize + '" viewBox="0 0 24 24" fill="none" stroke="' + this.opts.cursorColor + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">' +
-      '<polyline points="9 6 15 12 9 18"></polyline>' +
-      '</svg>';
-
+    this.cursorEl.style.background = this.opts.cursorBackground;
+    this.cursorEl.innerHTML = '<svg class="cgs-arrow-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="' + this.opts.cursorColor + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"></polyline></svg>';
     this.root.appendChild(this.cursorEl);
 
-    // Floating Liquid Glass Caption Dock
     if (this.opts.showCaption) {
       this.dock = document.createElement('div');
       this.dock.className = 'cgs-dock';
 
-      // Left info pill
-      this.infoPill = document.createElement('div');
-      this.infoPill.className = 'cgs-info-pill';
-      this.infoPill.innerHTML =
-        '<div class="cgs-info-header">' +
-          '<span class="cgs-note-badge"></span>' +
-          '<h4 class="cgs-title"></h4>' +
-        '</div>' +
-        '<p class="cgs-caption"></p>';
+      this.captionCard = document.createElement('div');
+      this.captionCard.className = 'cgs-caption-card';
+      this.captionCard.innerHTML = '<span class="cgs-tag-pill" style="display:none;"></span><h4 class="cgs-title"></h4><p class="cgs-desc"></p>';
+      this.dock.appendChild(this.captionCard);
 
-      // Right counter pill & action pod
-      this.navPod = document.createElement('div');
-      this.navPod.className = 'cgs-nav-pod';
-      this.navPod.innerHTML =
-        '<span class="cgs-count-capsule"><strong class="cgs-idx">01</strong> / <span class="cgs-total">01</span></span>' +
-        '<button type="button" class="cgs-zoom-btn" aria-label="Enlarge image" title="Click to enlarge">' +
-          '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>' +
-        '</button>';
+      this.dockRight = document.createElement('div');
+      this.dockRight.className = 'cgs-dock-right';
+      this.dockRight.innerHTML = '<div class="cgs-counter"><span class="cgs-counter-current">01</span><span class="cgs-counter-sep">/</span><span class="cgs-counter-total">01</span></div><button type="button" class="cgs-zoom-btn" title="View Fullscreen" aria-label="Expand image in lightbox"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg></button>';
+      this.dock.appendChild(this.dockRight);
 
-      this.dock.appendChild(this.infoPill);
-      this.dock.appendChild(this.navPod);
       this.root.appendChild(this.dock);
     }
 
-    // Pagination Dots
-    if (this.opts.dots && this.count > 1) {
+    if (this.opts.dots) {
       this.dotsWrap = document.createElement('div');
       this.dotsWrap.className = 'cgs-dots';
-      this.renderDots();
+      this.dotsWrap.setAttribute('role', 'tablist');
+      this.dotsWrap.setAttribute('aria-label', 'Slide navigation');
       this.root.appendChild(this.dotsWrap);
+      this.renderDots();
     }
 
-    // Mobile / Accessible Touch Controls
     this.touchPrev = document.createElement('button');
     this.touchPrev.type = 'button';
-    this.touchPrev.className = 'cgs-touch-btn cgs-touch-prev';
-    this.touchPrev.setAttribute('aria-label', 'Previous slide');
-    this.touchPrev.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>';
+    this.touchPrev.className = 'cgs-touch-arrow cgs-touch-prev';
+    this.touchPrev.setAttribute('aria-label', 'Previous Slide');
+    this.touchPrev.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>';
 
     this.touchNext = document.createElement('button');
     this.touchNext.type = 'button';
-    this.touchNext.className = 'cgs-touch-btn cgs-touch-next';
-    this.touchNext.setAttribute('aria-label', 'Next slide');
-    this.touchNext.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>';
+    this.touchNext.className = 'cgs-touch-arrow cgs-touch-next';
+    this.touchNext.setAttribute('aria-label', 'Next Slide');
+    this.touchNext.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>';
 
     this.root.appendChild(this.touchPrev);
     this.root.appendChild(this.touchNext);
@@ -197,8 +155,7 @@
   CursorGallerySlider.prototype.renderDots = function () {
     if (!this.dotsWrap) return;
     this.dotsWrap.innerHTML = '';
-    // If large count (> 30), show clean capsule indicator instead of 90 dots to prevent crowding
-    if (this.count > 25) {
+    if (this.count <= 1 || this.count > 12) {
       this.dotsWrap.style.display = 'none';
       return;
     }
@@ -208,12 +165,13 @@
       const dot = document.createElement('button');
       dot.type = 'button';
       dot.className = 'cgs-dot' + (i === this.index ? ' active' : '');
-      dot.setAttribute('data-idx', String(i));
+      dot.setAttribute('role', 'tab');
+      dot.setAttribute('aria-selected', i === this.index ? 'true' : 'false');
       dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+      dot.dataset.index = i;
       dot.addEventListener('click', function (e) {
         e.stopPropagation();
-        const target = parseInt(dot.getAttribute('data-idx'), 10);
-        self.goTo(target);
+        self.goTo(parseInt(this.dataset.index, 10));
       });
       this.dotsWrap.appendChild(dot);
     }
@@ -222,186 +180,148 @@
   CursorGallerySlider.prototype.updateDots = function () {
     if (!this.dotsWrap) return;
     const dots = this.dotsWrap.querySelectorAll('.cgs-dot');
-    for (let i = 0; i < dots.length; i++) {
-      if (i === this.index) {
-        dots[i].classList.add('active');
-        dots[i].setAttribute('aria-current', 'true');
+    const curr = this.index;
+    dots.forEach(function (d, i) {
+      if (i === curr) {
+        d.classList.add('active');
+        d.setAttribute('aria-selected', 'true');
       } else {
-        dots[i].classList.remove('active');
-        dots[i].removeAttribute('aria-current');
+        d.classList.remove('active');
+        d.setAttribute('aria-selected', 'false');
       }
-    }
+    });
   };
 
-  CursorGallerySlider.prototype.createSlideElement = function (item) {
-    const el = document.createElement('div');
-    el.className = 'cgs-slide-content' + (this.opts.imageFit === 'contain' ? ' cgs-fit-contain' : ' cgs-fit-cover');
+  CursorGallerySlider.prototype.createSlideElement = function (slideData) {
+    const wrapEl = document.createElement('div');
+    wrapEl.className = 'cgs-slide-content' + (this.opts.imageFit === 'contain' ? ' cgs-fit-contain' : '');
 
-    if (item && item.image) {
-      const img = document.createElement('img');
-      img.className = 'cgs-slide-img';
-      img.src = item.image;
-      img.alt = item.title || 'Gallery image';
-      img.loading = 'lazy';
-      img.decoding = 'async';
-      el.appendChild(img);
-    } else {
-      el.classList.add('cgs-slide-empty');
-      el.innerHTML = '<span class="cgs-empty-msg">No Image Available</span>';
+    if (!slideData || !slideData.image) {
+      const empty = document.createElement('div');
+      empty.className = 'cgs-slide-empty';
+      empty.textContent = 'No image available';
+      wrapEl.appendChild(empty);
+      return wrapEl;
     }
 
-    return el;
+    const img = document.createElement('img');
+    img.className = 'cgs-slide-img';
+    img.src = slideData.image;
+    img.alt = slideData.title || 'Durga Public School Archival Photo';
+    img.loading = 'lazy';
+    img.draggable = false;
+    wrapEl.appendChild(img);
+
+    return wrapEl;
   };
 
   CursorGallerySlider.prototype.renderSlide = function (idx) {
-    if (this.count === 0) {
-      this.activeLayer.innerHTML = '<div class="cgs-empty" style="color:rgba(255,255,255,0.7);font-family:sans-serif;font-size:0.95rem;text-align:center;padding:40px;">No archival prints in this sub-category</div>';
-      this.updateCaption();
-      this.updateDots();
-      return;
-    }
-    const item = this.slides[idx];
+    if (this.count === 0) return;
     this.activeLayer.innerHTML = '';
-    this.activeLayer.appendChild(this.createSlideElement(item));
+    const slide = this.slides[idx];
+    const el = this.createSlideElement(slide);
+    this.activeLayer.appendChild(el);
     this.updateCaption();
     this.updateDots();
   };
 
   CursorGallerySlider.prototype.updateCaption = function () {
-    if (!this.opts.showCaption || !this.dock) return;
+    if (!this.dock || this.count === 0) return;
+    const slide = this.slides[this.index] || {};
 
-    const titleEl = this.dock.querySelector('.cgs-title');
-    const noteEl = this.dock.querySelector('.cgs-note-badge');
-    const captionEl = this.dock.querySelector('.cgs-caption');
-    const idxEl = this.dock.querySelector('.cgs-idx');
-    const totalEl = this.dock.querySelector('.cgs-total');
+    const tag = this.dock.querySelector('.cgs-tag-pill');
+    const title = this.dock.querySelector('.cgs-title');
+    const desc = this.dock.querySelector('.cgs-desc');
+    const cur = this.dock.querySelector('.cgs-counter-current');
+    const tot = this.dock.querySelector('.cgs-counter-total');
 
-    if (this.count === 0) {
-      if (titleEl) titleEl.textContent = 'No Prints In Selection';
-      if (noteEl) noteEl.style.display = 'none';
-      if (captionEl) {
-        captionEl.innerHTML = 'Please choose another sub-category above.';
-        captionEl.style.display = 'block';
-      }
-      if (idxEl) idxEl.textContent = '00';
-      if (totalEl) totalEl.textContent = '00';
-      return;
-    }
-
-    const item = this.slides[this.index];
-    if (!item) return;
-
-    if (titleEl) titleEl.textContent = item.title || 'Heritage Photograph';
-    if (noteEl) {
-      if (item.note) {
-        noteEl.textContent = item.note;
-        noteEl.style.display = 'inline-block';
+    if (tag) {
+      const tagText = slide.note || slide.subcat || '';
+      if (tagText) {
+        tag.textContent = tagText;
+        tag.style.display = 'inline-block';
       } else {
-        noteEl.style.display = 'none';
+        tag.style.display = 'none';
       }
     }
-    if (captionEl) {
-      captionEl.innerHTML = item.caption || (item.date ? item.date : '');
-      captionEl.style.display = (item.caption || item.date) ? 'block' : 'none';
-    }
-    if (idxEl) idxEl.textContent = (this.index + 1 < 10 ? '0' : '') + (this.index + 1);
-    if (totalEl) totalEl.textContent = (this.count < 10 ? '0' : '') + this.count;
+
+    if (title) title.textContent = slide.title || ('Photograph #' + (this.index + 1));
+    if (desc) desc.textContent = slide.caption || '';
+    if (cur) cur.textContent = (this.index + 1 < 10 ? '0' : '') + (this.index + 1);
+    if (tot) tot.textContent = (this.count < 10 ? '0' : '') + this.count;
   };
 
   CursorGallerySlider.prototype.sideFor = function (relX, width) {
     if (width <= 0) return 'none';
-    const wantPrev = relX < width / 2;
-    if (wantPrev) {
+    if (relX < width / 2) {
       return (this.opts.loop || this.index > 0) ? 'left' : 'none';
     }
     return (this.opts.loop || this.index < this.count - 1) ? 'right' : 'none';
   };
 
-  CursorGallerySlider.prototype.startSlide = function (dir, targetIndex) {
+  CursorGallerySlider.prototype.startSlide = function (dir) {
     if (this.isSliding || this.count <= 1) return;
 
-    const fromIdx = this.index;
-    let toIdx;
-    if (typeof targetIndex === 'number') {
-      toIdx = clamp(targetIndex, 0, this.count - 1);
-      if (toIdx === fromIdx) return;
-      dir = toIdx > fromIdx ? 1 : -1;
+    let targetIndex = this.index + dir;
+    if (this.opts.loop) {
+      targetIndex = wrap(targetIndex, this.count);
     } else {
-      toIdx = this.opts.loop ? wrap(fromIdx + dir, this.count) : clamp(fromIdx + dir, 0, this.count - 1);
-      if (toIdx === fromIdx) return;
+      if (targetIndex < 0 || targetIndex >= this.count) return;
     }
 
     this.isSliding = true;
-
-    // Build incoming layer
-    const incomingLayer = document.createElement('div');
-    incomingLayer.className = 'cgs-layer cgs-layer-incoming';
-    incomingLayer.appendChild(this.createSlideElement(this.slides[toIdx]));
-
-    // Start position
-    const startTranslate = dir === 1 ? '100%' : '-100%';
-    const endTranslate = dir === 1 ? '-100%' : '100%';
-
-    incomingLayer.style.transform = 'translateX(' + startTranslate + ')';
-    incomingLayer.style.transition = 'none';
-    this.viewport.appendChild(incomingLayer);
-
     const self = this;
+    const fromIndex = this.index;
+    const toIndex = targetIndex;
     const duration = this.opts.durationMs;
     const ease = this.opts.ease;
 
-    // Force layout reflow
-    incomingLayer.getBoundingClientRect();
+    const incomingLayer = document.createElement('div');
+    incomingLayer.className = 'cgs-layer cgs-layer-incoming';
+    const incomingEl = this.createSlideElement(this.slides[toIndex]);
+    incomingLayer.appendChild(incomingEl);
 
-    // Trigger sliding animation
-    this.activeLayer.style.transition = 'transform ' + duration + 'ms ' + ease;
-    incomingLayer.style.transition = 'transform ' + duration + 'ms ' + ease;
+    const startX = dir === 1 ? '100%' : '-100%';
+    const endX = dir === 1 ? '-100%' : '100%';
 
-    this.activeLayer.style.transform = 'translateX(' + endTranslate + ')';
-    incomingLayer.style.transform = 'translateX(0%)';
+    incomingLayer.style.transform = 'translateX(' + startX + ')';
+    incomingLayer.style.transition = 'none';
+    this.viewport.appendChild(incomingLayer);
 
-    this.index = toIdx;
+    this.activeLayer.style.transform = 'translateX(0%)';
+    this.activeLayer.style.transition = 'none';
+
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        self.activeLayer.style.transition = 'transform ' + duration + 'ms ' + ease;
+        self.activeLayer.style.transform = 'translateX(' + endX + ')';
+
+        incomingLayer.style.transition = 'transform ' + duration + 'ms ' + ease;
+        incomingLayer.style.transform = 'translateX(0%)';
+      });
+    });
+
+    this.index = toIndex;
     this.updateCaption();
     this.updateDots();
 
-    if (typeof this.opts.onChange === 'function') {
-      this.opts.onChange(toIdx, this.slides[toIdx]);
-    }
+    setTimeout(function () {
+      self.activeLayer.innerHTML = '';
+      self.activeLayer.style.transform = 'translateX(0%)';
+      self.activeLayer.style.transition = 'none';
+      self.activeLayer.appendChild(incomingEl);
 
-    let finished = false;
-    function finalize() {
-      if (finished) return;
-      finished = true;
-
-      // Clean up previous active layer
-      if (self.activeLayer && self.activeLayer.parentNode) {
-        self.activeLayer.parentNode.removeChild(self.activeLayer);
+      if (incomingLayer.parentNode) {
+        incomingLayer.parentNode.removeChild(incomingLayer);
       }
 
-      // Promote incoming layer to active layer
-      incomingLayer.className = 'cgs-layer cgs-layer-active';
-      incomingLayer.style.transition = 'none';
-      incomingLayer.style.transform = 'translateX(0%)';
-      self.activeLayer = incomingLayer;
-
       self.isSliding = false;
-
-      // Re-evaluate cursor side under pointer
       if (self.pointerIn) {
         const rect = self.root.getBoundingClientRect();
         self.cursorSide = self.sideFor(self.pointerPos.x, rect.width);
         self.updateCursor();
       }
-    }
-
-    incomingLayer.addEventListener('transitionend', function te(e) {
-      if (e.target !== incomingLayer || e.propertyName !== 'transform') return;
-      incomingLayer.removeEventListener('transitionend', te);
-      finalize();
-    });
-
-    // Fallback safety timer
-    setTimeout(finalize, duration + 60);
+    }, duration + 30);
   };
 
   CursorGallerySlider.prototype.next = function () {
@@ -412,56 +332,52 @@
     this.startSlide(-1);
   };
 
-  CursorGallerySlider.prototype.goTo = function (targetIndex) {
-    if (targetIndex === this.index) return;
-    const dir = targetIndex > this.index ? 1 : -1;
-    this.startSlide(dir, targetIndex);
+  CursorGallerySlider.prototype.goTo = function (targetIdx) {
+    if (this.isSliding || targetIdx === this.index || targetIdx < 0 || targetIdx >= this.count) return;
+    const dir = targetIdx > this.index ? 1 : -1;
+    this.startSlide(dir);
   };
 
   CursorGallerySlider.prototype.updateCursor = function () {
     if (!this.cursorEl) return;
-    if (this.cursorSide === 'none' || !this.pointerIn) {
-      this.cursorEl.classList.remove('visible', 'side-left', 'side-right');
+    if (!this.pointerIn || this.cursorSide === 'none') {
+      this.cursorEl.classList.remove('visible');
       this.root.style.cursor = 'default';
       return;
     }
 
-    this.cursorEl.style.transform = 'translate(' + this.pointerPos.x.toFixed(1) + 'px,' + this.pointerPos.y.toFixed(1) + 'px) translate(-50%, -50%)';
     this.cursorEl.classList.add('visible');
     this.root.style.cursor = 'none';
+    this.cursorEl.style.transform = 'translate(' + (this.pointerPos.x - this.opts.cursorSize / 2) + 'px, ' + (this.pointerPos.y - this.opts.cursorSize / 2) + 'px)';
 
-    if (this.cursorSide === 'left') {
-      this.cursorEl.classList.add('side-left');
-      this.cursorEl.classList.remove('side-right');
-    } else {
-      this.cursorEl.classList.add('side-right');
-      this.cursorEl.classList.remove('side-left');
+    const arrowSvg = this.cursorEl.querySelector('.cgs-arrow-svg');
+    if (arrowSvg) {
+      if (this.cursorSide === 'left') {
+        arrowSvg.style.transform = 'scaleX(-1)';
+      } else {
+        arrowSvg.style.transform = 'scaleX(1)';
+      }
     }
   };
 
   CursorGallerySlider.prototype.bindEvents = function () {
     const self = this;
 
-    // Pointer move for custom cursor tracking
-    this.root.addEventListener('pointermove', function (e) {
-      const rect = self.root.getBoundingClientRect();
-      const relX = e.clientX - rect.left;
-      const relY = e.clientY - rect.top;
-      self.pointerPos = { x: relX, y: relY };
-      self.pointerIn = true;
-      self.cursorSide = self.sideFor(relX, rect.width);
-      self.updateCursor();
-    });
-
     this.root.addEventListener('pointerenter', function (e) {
-      const rect = self.root.getBoundingClientRect();
-      const relX = e.clientX - rect.left;
-      const relY = e.clientY - rect.top;
-      self.pointerPos = { x: relX, y: relY };
       self.pointerIn = true;
-      self.cursorSide = self.sideFor(relX, rect.width);
+      const rect = self.root.getBoundingClientRect();
+      self.pointerPos = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+      self.cursorSide = self.sideFor(self.pointerPos.x, rect.width);
       self.updateCursor();
       self.stopAutoplay();
+    });
+
+    this.root.addEventListener('pointermove', function (e) {
+      self.pointerIn = true;
+      const rect = self.root.getBoundingClientRect();
+      self.pointerPos = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+      self.cursorSide = self.sideFor(self.pointerPos.x, rect.width);
+      self.updateCursor();
     });
 
     this.root.addEventListener('pointerleave', function () {
@@ -471,34 +387,14 @@
       if (self.opts.autoplay > 0) self.startAutoplay();
     });
 
-    // Click on slider: navigate according to side, or open lightbox if clicking photo / info
     this.root.addEventListener('click', function (e) {
-      // Direct click on zoom button or info pill triggers lightbox
-      if (e.target.closest('.cgs-zoom-btn, .cgs-info-pill')) {
-        if (typeof self.opts.onSlideClick === 'function' && self.count > 0) {
-          self.opts.onSlideClick(self.slides[self.index], self.index);
-        }
+      if (self.isSliding) return;
+      if (e.target.closest('.cgs-dock') || e.target.closest('.cgs-dots') || e.target.closest('.cgs-touch-arrow')) {
         return;
       }
-
-      // Ignore clicks on dots or touch prev/next buttons
-      if (e.target.closest('.cgs-dots, .cgs-touch-btn')) {
-        return;
-      }
-
       const rect = self.root.getBoundingClientRect();
       const relX = e.clientX - rect.left;
-      const width = rect.width;
-
-      // On narrow / mobile screens (< 700px), if tapped in the middle 55% of the slide, open lightbox!
-      if (width < 700 && relX > width * 0.22 && relX < width * 0.78) {
-        if (typeof self.opts.onSlideClick === 'function' && self.count > 0) {
-          self.opts.onSlideClick(self.slides[self.index], self.index);
-          return;
-        }
-      }
-
-      const side = self.sideFor(relX, width);
+      const side = self.sideFor(relX, rect.width);
       if (side === 'left') {
         self.prev();
       } else if (side === 'right') {
@@ -506,7 +402,6 @@
       }
     });
 
-    // Zoom Button / Lightbox trigger
     if (this.dock) {
       const zoomBtn = this.dock.querySelector('.cgs-zoom-btn');
       if (zoomBtn) {
@@ -519,7 +414,6 @@
       }
     }
 
-    // Touch Prev / Next Buttons
     this.touchPrev.addEventListener('click', function (e) {
       e.stopPropagation();
       self.prev();
@@ -530,7 +424,6 @@
       self.next();
     });
 
-    // Touch Swipe Gestures
     let touchStartX = 0;
     let touchStartY = 0;
     let touchStartTime = 0;
@@ -549,7 +442,7 @@
       const dy = e.changedTouches[0].clientY - touchStartY;
       const dt = Date.now() - touchStartTime;
 
-      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.4 && dt < 600) {
+      if (Math.abs(dx) > 35 && Math.abs(dx) > Math.abs(dy) * 1.3 && dt < 600) {
         if (dx < 0) {
           self.next();
         } else {
@@ -559,7 +452,6 @@
       if (self.opts.autoplay > 0) self.startAutoplay();
     }, { passive: true });
 
-    // Keyboard navigation
     this.root.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
@@ -616,10 +508,6 @@
     this.updateDots();
   };
 
-  CursorGallerySlider.prototype.updateSizes = function () {
-    this.layout();
-  };
-
   CursorGallerySlider.prototype.destroy = function () {
     this.stopAutoplay();
     if (this.container) {
@@ -631,3 +519,106 @@
   return CursorGallerySlider;
 });
 
+function initDpsCursorGallery() {
+  if (typeof window === 'undefined') return;
+  window.dpsCursorSliders = window.dpsCursorSliders || {};
+
+  const hosts = document.querySelectorAll('[data-cursor-chapter]');
+  if (!hosts.length) return;
+
+  function openLightbox(photo) {
+    if (!photo || !photo.image) return;
+    let modal = document.getElementById('dpsGalleryLightbox');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'dpsGalleryLightbox';
+      modal.style.cssText = 'position:fixed;inset:0;z-index:999999;background:rgba(26,5,14,0.92);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;opacity:0;transition:opacity 0.25s ease;';
+      modal.innerHTML = '<div style="position:relative;max-width:1100px;width:100%;max-height:92vh;display:flex;flex-direction:column;align-items:center;"><button type="button" id="dpsLightboxClose" style="position:absolute;top:-18px;right:-18px;width:40px;height:40px;border-radius:50%;background:#FFFFFF;border:none;color:#2E0815;font-size:22px;font-weight:700;cursor:pointer;display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,0.4);z-index:10;">&times;</button><img id="dpsLightboxImg" style="max-width:100%;max-height:76vh;object-fit:contain;border-radius:12px;box-shadow:0 24px 60px rgba(0,0,0,0.5);" src="" alt=""><div id="dpsLightboxCaption" style="margin-top:16px;text-align:center;color:#FFFFFF;max-width:700px;"><div id="dpsLightboxTitle" style="font-family:Georgia,serif;font-size:1.35rem;font-weight:700;margin-bottom:6px;"></div><div id="dpsLightboxDesc" style="font-size:0.88rem;color:rgba(255,255,255,0.78);line-height:1.5;"></div></div></div>';
+      document.body.appendChild(modal);
+
+      const closeBtn = document.getElementById('dpsLightboxClose');
+      closeBtn.addEventListener('click', function () {
+        modal.style.opacity = '0';
+        setTimeout(function () { modal.style.display = 'none'; }, 250);
+      });
+
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) {
+          modal.style.opacity = '0';
+          setTimeout(function () { modal.style.display = 'none'; }, 250);
+        }
+      });
+
+      window.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.style.display !== 'none') {
+          modal.style.opacity = '0';
+          setTimeout(function () { modal.style.display = 'none'; }, 250);
+        }
+      });
+    }
+
+    const img = document.getElementById('dpsLightboxImg');
+    const title = document.getElementById('dpsLightboxTitle');
+    const desc = document.getElementById('dpsLightboxDesc');
+
+    if (img) img.src = photo.image;
+    if (title) title.textContent = photo.title || '';
+    if (desc) desc.textContent = photo.caption || '';
+
+    modal.style.display = 'flex';
+    requestAnimationFrame(function () {
+      modal.style.opacity = '1';
+    });
+  }
+
+  hosts.forEach(function (host) {
+    const chapterKey = host.getAttribute('data-cursor-chapter');
+    if (!chapterKey) return;
+
+    const dataPool = (window.DPS_GALLERY_DATA && window.DPS_GALLERY_DATA[chapterKey]) ? window.DPS_GALLERY_DATA[chapterKey] : [];
+    if (!dataPool.length) return;
+
+    const slider = new CursorGallerySlider(host, {
+      slides: dataPool,
+      imageFit: chapterKey === 'news-cuttings' ? 'contain' : 'cover',
+      durationMs: 600,
+      cursorBg: true,
+      cursorBackground: 'rgba(255, 255, 255, 0.94)',
+      cursorColor: '#2E0815',
+      borderRadius: 16,
+      onSlideClick: function (slide) {
+        openLightbox(slide);
+      }
+    });
+
+    window.dpsCursorSliders[chapterKey] = slider;
+
+    const section = host.closest('.scrapbook-chapter');
+    if (section) {
+      const pills = section.querySelectorAll('.scrapbook-subcat-pill');
+      pills.forEach(function (pill) {
+        pill.addEventListener('click', function () {
+          pills.forEach(function (p) { p.classList.remove('active'); });
+          this.classList.add('active');
+
+          const subcat = this.getAttribute('data-subcat');
+          if (!subcat || subcat === 'all') {
+            slider.setItems(dataPool);
+          } else {
+            const filtered = dataPool.filter(function (it) {
+              const itemSub = (it.subcat || '').toLowerCase();
+              return itemSub === subcat.toLowerCase();
+            });
+            slider.setItems(filtered.length ? filtered : dataPool);
+          }
+        });
+      });
+    }
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initDpsCursorGallery);
+} else {
+  initDpsCursorGallery();
+}
