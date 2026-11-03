@@ -536,8 +536,29 @@
                   <input type="text" id="setSchoolName" class="form-input">
                 </div>
                 <div class="form-group">
-                  <label class="form-label" for="setAffiliation">RBSE Recognition / Affiliation Code</label>
-                  <input type="text" id="setAffiliation" class="form-input">
+                  <label class="form-label" for="setBoardType">Board Affiliation Authority</label>
+                  <select id="setBoardType" class="form-select">
+                    <option value="RBSE">RBSE (Rajasthan Board of Secondary Education, Ajmer)</option>
+                    <option value="CBSE">CBSE (Central Board of Secondary Education, New Delhi)</option>
+                    <option value="DUAL">Dual Recognition (RBSE &amp; CBSE Pattern)</option>
+                    <option value="STATE">State Board / Department of Education, Rajasthan</option>
+                    <option value="CISCE">CISCE (ICSE / ISC)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-grid-3">
+                <div class="form-group">
+                  <label class="form-label" for="setAffiliation">Board Affiliation / Recognition Code</label>
+                  <input type="text" id="setAffiliation" class="form-input" placeholder="e.g. 1730419">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="setSchoolCode">School Examination / Center Code</label>
+                  <input type="text" id="setSchoolCode" class="form-input" placeholder="e.g. 10764">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="setUdiseCode">National U-DISE+ School Code</label>
+                  <input type="text" id="setUdiseCode" class="form-input" placeholder="e.g. 08050907502">
                 </div>
               </div>
 
@@ -880,7 +901,7 @@
         <div class="form-grid-2">
           <div class="form-group">
             <label class="form-label" for="newLeadStudent">Student Full Name *</label>
-            <input type="text" id="newLeadStudent" class="form-input" placeholder="e.g. Aarav Sharma" required>
+            <input type="text" id="newLeadStudent" class="form-input" placeholder="Student Full Name" required>
           </div>
           <div class="form-group">
             <label class="form-label" for="newLeadGrade">Grade / Class Sought *</label>
@@ -1013,7 +1034,7 @@
         <div class="form-grid-2">
           <div class="form-group">
             <label class="form-label" for="newFacId">Employee ID *</label>
-            <input type="text" id="newFacId" class="form-input" placeholder="e.g. FAC-07" required>
+            <input type="text" id="newFacId" class="form-input" placeholder="e.g. FAC-01" required>
           </div>
           <div class="form-group">
             <label class="form-label" for="newFacName">Faculty Full Name *</label>
