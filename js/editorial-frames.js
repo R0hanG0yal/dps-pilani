@@ -314,7 +314,45 @@
 
     if (!stageEl) return;
 
-    if (typeof PolaroidLineCarousel !== 'undefined') {
+    if (typeof CursorGallerySlider !== 'undefined') {
+      heroSpotlightInstance = new CursorGallerySlider(stageEl, {
+        slides: HERO_SPOTLIGHT_ITEMS.map(function (it) {
+          return {
+            image: it.image,
+            title: it.title,
+            caption: it.sub,
+            note: it.tag || it.title
+          };
+        }),
+        imageFit: 'cover',
+        durationMs: 600,
+        autoplay: 4000,
+        borderRadius: 20,
+        showCaption: true,
+        ariaLabel: 'Campus Highlights Cursor Gallery',
+        onChange: function (index) {
+          const pillMap = { 0: 0, 1: 1, 2: 2, 3: 3 };
+          const activePillIdx = pillMap[index];
+          photoPills.forEach(function (pill, pIdx) {
+            if (pIdx === activePillIdx) {
+              pill.classList.add('active');
+              pill.setAttribute('aria-selected', 'true');
+            } else {
+              pill.classList.remove('active');
+              pill.setAttribute('aria-selected', 'false');
+            }
+          });
+        },
+        onSlideClick: function (item) {
+          window.openHeroPhotoModal({
+            fullImage: item.image,
+            title: item.title,
+            tag: item.note,
+            date: 'Campus Highlight'
+          });
+        }
+      });
+    } else if (typeof PolaroidLineCarousel !== 'undefined') {
       heroSpotlightInstance = new PolaroidLineCarousel(stageEl, {
         slides: HERO_SPOTLIGHT_ITEMS.map(function (it) {
           return {

@@ -624,62 +624,50 @@
   let cuttingsSpotlightInstance = null;
 
   function initNewsCuttingsSpotlight(data) {
-    const spotlightEl = document.getElementById('sCuttingsSpotlight');
-    if (!spotlightEl) return;
+    const sliderEl = document.getElementById('sCuttingsCursorSlider') || document.getElementById('sCuttingsSpotlight');
+    if (!sliderEl) return;
 
     if (cuttingsSpotlightInstance) {
       cuttingsSpotlightInstance.destroy();
     }
 
-    if (typeof PolaroidLineCarousel !== 'undefined') {
-      cuttingsSpotlightInstance = new PolaroidLineCarousel(spotlightEl, {
-        slides: data.map(function (c) {
-          return {
-            image: c.fullImage || c.image,
-            title: c.title,
-            caption: (c.date ? c.date + ' &bull; ' : '') + (c.newspaper || 'Rajasthan Press') + (c.edition ? ' &bull; ' + c.edition : ''),
-            note: (c.newspaper || 'Rajasthan Press') + (c.date ? ' ' + c.date : ''),
-            id: c.id
-          };
-        }),
-        cardWidth: 290,
-        sag: 44,
-        swing: 1,
-        autoplay: 4000,
-        containFit: true,
-        string: '#8a7f72',
-        background: 'linear-gradient(180deg, rgba(251, 247, 239, 0.95) 0%, rgba(244, 236, 220, 0.98) 100%)',
-        ink: '#2E0815',
+    if (typeof CursorGallerySlider !== 'undefined') {
+      const slides = data.map(function (c) {
+        return {
+          image: c.fullImage || c.image,
+          title: c.title,
+          caption: (c.date ? c.date + ' &bull; ' : '') + (c.newspaper || 'Rajasthan Press') + (c.edition ? ' &bull; ' + c.edition : ''),
+          note: (c.newspaper || 'Rajasthan Press'),
+          id: c.id
+        };
+      });
+
+      cuttingsSpotlightInstance = new CursorGallerySlider(sliderEl, {
+        slides: slides,
+        imageFit: 'contain',
+        durationMs: 600,
+        autoplay: 4500,
+        borderRadius: 16,
+        showCaption: true,
+        ariaLabel: 'Authentic Newspaper Clippings Gallery',
         onSlideClick: function (slide) {
           openCuttingModal(slide.id);
         }
       });
-    } else if (typeof SpotlightFrames !== 'undefined') {
-      const items = data.map(function (c) {
-        return {
-          image: c.fullImage || c.image,
-          title: c.title,
-          tag: c.newspaper || c.paperName || 'Rajasthan Press',
-          sub: (c.date || '') + (c.edition ? ' &bull; ' + c.edition : ''),
-          id: c.id
-        };
-      });
-      cuttingsSpotlightInstance = new SpotlightFrames(spotlightEl, {
-        images: items,
-        collapsedWidth: 72,
-        expandedWidth: 540,
-        gap: 8,
-        radius: 16,
-        startIndex: 0,
-        trigger: 'auto',
-        fitMode: 'contain',
-        expandByAspectRatio: true,
-        autoplay: true,
-        autoplayInterval: 3200,
-        showControls: true,
-        showArrows: true,
-        onSlideClick: function (item) {
-          openCuttingModal(item.id);
+    } else if (typeof PolaroidLineCarousel !== 'undefined') {
+      cuttingsSpotlightInstance = new PolaroidLineCarousel(sliderEl, {
+        slides: data.map(function (c) {
+          return {
+            image: c.fullImage || c.image,
+            title: c.title,
+            caption: (c.date ? c.date + ' &bull; ' : '') + (c.newspaper || 'Rajasthan Press'),
+            note: (c.newspaper || 'Rajasthan Press'),
+            id: c.id
+          };
+        }),
+        containFit: true,
+        onSlideClick: function (slide) {
+          openCuttingModal(slide.id);
         }
       });
     }
@@ -898,10 +886,23 @@
         btn.classList.add('active');
         const filter = btn.getAttribute('data-filter') || 'all';
         renderCuttings(allData, filter);
+        const filtered = filter === 'all'
+          ? allData
+          : allData.filter(it => (it.newspaper || '').toLowerCase().includes(filter.toLowerCase()));
+
+        if (cuttingsSpotlightInstance && typeof cuttingsSpotlightInstance.setItems === 'function') {
+          cuttingsSpotlightInstance.setItems(filtered.map(function (c) {
+            return {
+              image: c.fullImage || c.image,
+              title: c.title,
+              caption: (c.date ? c.date + ' &bull; ' : '') + (c.newspaper || 'Rajasthan Press') + (c.edition ? ' &bull; ' + c.edition : ''),
+              note: (c.newspaper || 'Rajasthan Press'),
+              id: c.id
+            };
+          }));
+        }
+
         if (cuttingsSliderInstance) {
-          const filtered = filter === 'all'
-            ? allData
-            : allData.filter(it => (it.newspaper || '').toLowerCase().includes(filter.toLowerCase()));
           cuttingsSliderInstance.setItems(filtered);
         }
       });

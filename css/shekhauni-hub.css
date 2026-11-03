@@ -1314,7 +1314,7 @@
    ============================================================================ */
 .shekhauni-tab-bar {
   display: grid !important;
-  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
   gap: 8px !important;
   background: rgba(255, 255, 255, 0.75) !important;
   padding: 8px !important;
@@ -1421,4 +1421,16 @@
     font-size: 0.60rem !important;
     padding: 1px 5px !important;
   }
+}
+
+/* Interactive News Cutting Cursor Gallery Slider Wrap */
+.s-cuttings-slider-wrap {
+  position: relative;
+  width: 100%;
+  margin-top: 16px;
+}
+
+.s-cuttings-cursor-slider {
+  width: 100%;
+  height: 540px;
 }

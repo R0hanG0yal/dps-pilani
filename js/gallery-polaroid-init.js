@@ -108,34 +108,46 @@
       masterSlidesByChapter[conf.id] = slides;
       activeSlidesByChapter[conf.id] = slides;
 
-      // Instantiate PolaroidLineCarousel
+      // Instantiate CursorGallerySlider (Originkit Architecture)
       try {
-        const carousel = new PolaroidLineCarousel(stageEl, {
-          slides: slides,
-          cardWidth: 285,
-          sag: 44,
-          swing: 1,
-          autoplay: 4200,
-          containFit: conf.containFit,
-          string: '#8a7f72',
-          background: 'linear-gradient(180deg, rgba(254, 252, 248, 0.96) 0%, rgba(247, 241, 230, 0.98) 100%)',
-          ink: '#2E0815',
-          ariaLabel: conf.title + ' Pegged Line Carousel',
-          onSlideClick: function (slide, idx) {
-            if (conf.id === 'news-cuttings' && typeof window.openCuttingModal === 'function') {
-              window.openCuttingModal(slide.id);
-              return;
+        let sliderInstance;
+        if (typeof CursorGallerySlider !== 'undefined') {
+          sliderInstance = new CursorGallerySlider(stageEl, {
+            slides: slides,
+            imageFit: conf.containFit ? 'contain' : 'cover',
+            durationMs: 600,
+            autoplay: 4500,
+            borderRadius: 18,
+            showCaption: true,
+            ariaLabel: conf.title + ' Cursor Gallery Slider',
+            onSlideClick: function (slide, idx) {
+              if (conf.id === 'news-cuttings' && typeof window.openCuttingModal === 'function') {
+                window.openCuttingModal(slide.id);
+                return;
+              }
+              openLightboxModal(activeSlidesByChapter[conf.id] || slides, idx !== undefined ? idx : sliderInstance.index);
             }
-            openLightboxModal(activeSlidesByChapter[conf.id] || slides, idx !== undefined ? idx : carousel.active);
-          }
-        });
+          });
+        } else if (typeof PolaroidLineCarousel !== 'undefined') {
+          sliderInstance = new PolaroidLineCarousel(stageEl, {
+            slides: slides,
+            cardWidth: 285,
+            sag: 44,
+            swing: 1,
+            autoplay: 4200,
+            containFit: conf.containFit,
+            onSlideClick: function (slide, idx) {
+              openLightboxModal(activeSlidesByChapter[conf.id] || slides, idx);
+            }
+          });
+        }
 
-        window.galleryPolaroidCarousels[conf.id] = carousel;
+        window.galleryPolaroidCarousels[conf.id] = sliderInstance;
 
         // Wire sub-category filter pills for this chapter
-        setupChapterSubcatFilter(chapterEl, conf.id, carousel);
+        setupChapterSubcatFilter(chapterEl, conf.id, sliderInstance);
       } catch (err) {
-        console.error('Error mounting carousel for chapter ' + conf.id + ':', err);
+        console.error('Error mounting slider for chapter ' + conf.id + ':', err);
       }
     });
 

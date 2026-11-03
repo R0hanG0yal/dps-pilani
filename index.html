@@ -36,6 +36,7 @@
   <link rel="stylesheet" href="css/shekhauni-hub.css">
   <link rel="stylesheet" href="css/spotlight-frames.css">
   <link rel="stylesheet" href="css/polaroid-line-carousel.css">
+  <link rel="stylesheet" href="css/cursor-gallery-slider.css">
 
   <!-- JSON-LD Institutional Schema -->
   <script type="application/ld+json">
@@ -714,7 +715,7 @@
             <span class="hub-kicker-dot"></span>
             <span>Official Information &amp; Media Portal &bull; Modeled on shekhauni.ac.in</span>
           </div>
-          <h2 class="sec-title">School Media News &amp; <em>Public Notifications</em></h2>
+          <h2 class="sec-title">Official Circulars &amp; <em>Public Notifications</em></h2>
           <p class="sec-lead">Direct institutional channel for live board announcements, official circulars, regional newspaper clippings, and campus events.</p>
         </div>
 
@@ -730,10 +731,6 @@
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
               <span>Topper News &amp; Merits</span>
               <span class="s-tab-badge" style="background:#D97706;">RBSE</span>
-            </button>
-            <button type="button" class="s-tab-btn" role="tab" id="sTabBtnMedia" aria-selected="false" aria-controls="sTabPaneMedia" data-tab="media">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1m2 13a2 2 0 0 1-2-2V7m2 13a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/></svg>
-              <span>School Media News</span>
             </button>
             <button type="button" class="s-tab-btn" role="tab" id="sTabBtnCuttings" aria-selected="false" aria-controls="sTabPaneCuttings" data-tab="cuttings">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
@@ -793,47 +790,6 @@
             </div>
           </div>
 
-          <!-- PANE 2: SCHOOL MEDIA NEWS (Editorial & Press Releases) -->
-          <div class="s-tab-pane" id="sTabPaneMedia" role="tabpanel" aria-labelledby="sTabBtnMedia" hidden>
-            <div class="grid-3">
-              <article class="card">
-                <div class="card-media">
-                  <img decoding="async" src="assets/photos/news-cuttings/cutting-01.jpg" alt="RBSE Board Merit Press Release" loading="lazy">
-                  <span class="card-tag tag-saffron">Board Results</span>
-                </div>
-                <div class="card-body">
-                  <span style="font-size:0.72rem;color:var(--ink-500);font-weight:700;">RAJASTHAN STATE BOARD &bull; 2026</span>
-                  <h3 class="card-title">Historic 100% Pass Percentage in Senior Secondary Examinations</h3>
-                  <p class="card-text">Dainik Bhaskar &amp; Rajasthan Patrika report outstanding performance of Durga Public School scholars securing state distinctions in Science, Commerce, and Arts.</p>
-                </div>
-              </article>
-
-              <article class="card">
-                <div class="card-media">
-                  <img decoding="async" src="assets/photos/news-cuttings/cutting-04.jpg" alt="Haryalo Rajasthan Mega Drive" loading="lazy">
-                  <span class="card-tag tag-green">Environmental Drive</span>
-                </div>
-                <div class="card-body">
-                  <span style="font-size:0.72rem;color:var(--ink-500);font-weight:700;">COMMUNITY IMPACT &bull; PILANI</span>
-                  <h3 class="card-title">Haryalo Rajasthan Mega Campus Tree Plantation Drive</h3>
-                  <p class="card-text">Special front-page coverage on school scholars and management planting 500+ indigenous saplings along Loharu Road corridor.</p>
-                </div>
-              </article>
-
-              <article class="card">
-                <div class="card-media">
-                  <img decoding="async" src="assets/photos/news-cuttings/cutting-18.jpg" alt="Poetry & Literature Competition" loading="lazy">
-                  <span class="card-tag">Literary Honors</span>
-                </div>
-                <div class="card-body">
-                  <span style="font-size:0.72rem;color:var(--ink-500);font-weight:700;">SAHITYA SAMAROH &bull; DISTRICT LEVEL</span>
-                  <h3 class="card-title">Inter-School Hindi Poetry &amp; Oratory Championship</h3>
-                  <p class="card-text">Durga Devi Public School scholars lift the prestigious district literature trophy for evocative patriotic compositions.</p>
-                </div>
-              </article>
-            </div>
-          </div>
-
           <!-- PANE 3: NEWS CUTTING CORNER (23 Newspaper Clippings from Rajasthan Press) -->
           <div class="s-tab-pane" id="sTabPaneCuttings" role="tabpanel" aria-labelledby="sTabBtnCuttings" hidden>
             <div class="s-cuttings-toolbar">
@@ -844,45 +800,14 @@
                 <button type="button" class="s-cutting-filter-btn" data-filter="bhaskar">Dainik Bhaskar</button>
               </div>
 
-              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                <div class="s-view-mode-toggle" role="radiogroup" aria-label="News Cuttings Display View">
-                  <button type="button" class="s-view-mode-btn active" id="sViewBtnSpotlight" data-view="spotlight" aria-checked="true">
-                    Polaroid Line Carousel
-                  </button>
-                  <button type="button" class="s-view-mode-btn" id="sViewBtnSlider" data-view="slider" aria-checked="false">
-                    3D Smooth Slider
-                  </button>
-                  <button type="button" class="s-view-mode-btn" id="sViewBtnGrid" data-view="grid" aria-checked="false">
-                    Grid View
-                  </button>
-                </div>
-                <span class="s-slider-hint-badge">
-                  <span>Pegged Line Carousel &bull; Drag line or prints to swing</span> &harr;
-                </span>
-              </div>
+              <span class="s-slider-hint-badge">
+                <span>Hover left or right to slide &bull; Click to advance &bull; Click to enlarge</span>
+              </span>
             </div>
 
-            <!-- Polaroid Line Carousel Viewport (Originkit Architecture) -->
-            <div class="s-spotlight-container-wrap" id="sSpotlightContainerWrap">
-              <div id="sCuttingsSpotlight" class="s-spotlight-viewport" aria-label="Interactive Newspaper Clipping Polaroid Line Carousel"></div>
-            </div>
-
-            <!-- Smooth Scroll Slider Viewport (Originkit Architecture) -->
-            <div class="s-slider-container-wrap" id="sSliderContainerWrap" style="display:none;">
-              <div id="sCuttingsSlider" class="s-slider-viewport" aria-label="Interactive Newspaper Clipping Rail">
-                <!-- Dynamically populated with all 23 clippings by smooth-scroll-slider.js -->
-              </div>
-              <button type="button" class="s-slider-arrow-btn prev" id="sSliderPrevBtn" aria-label="Previous News Clippings">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-              </button>
-              <button type="button" class="s-slider-arrow-btn next" id="sSliderNextBtn" aria-label="Next News Clippings">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-              </button>
-            </div>
-
-            <!-- Classic Grid View (Toggleable) -->
-            <div id="sCuttingsGrid" class="s-cuttings-grid" style="display:none;">
-              <!-- Dynamically populated with all 23 clippings by shekhauni-hub.js -->
+            <!-- Interactive News Cutting Cursor Gallery Slider (Originkit Architecture) -->
+            <div class="s-cuttings-slider-wrap">
+              <div id="sCuttingsCursorSlider" class="s-cuttings-cursor-slider" aria-label="Interactive Newspaper Clipping Archival Slider"></div>
             </div>
           </div>
 
@@ -1630,6 +1555,7 @@
   <script src="js/smooth-scroll-slider.js"></script>
   <script src="js/spotlight-frames.js"></script>
   <script src="js/polaroid-line-carousel.js"></script>
+  <script src="js/cursor-gallery-slider.js"></script>
   <script src="js/shekhauni-hub.js"></script>
   <script src="js/editorial-frames.js"></script>
 </body>
