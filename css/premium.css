@@ -2351,3 +2351,130 @@ details.apple-expandable-item summary,
 .sam-card.sam-shake {
   animation: samShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
+
+
+/* ========================================================
+   LEADERSHIP MESSAGES EXPANDABLE ACCORDION SYSTEM
+   (Director, Principal, Academic Coordinator Desks)
+   ======================================================== */
+
+.leadership-card {
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Ensure typography stays elegant, readable and never clamped */
+.leadership-quote,
+.principal-quote,
+.leadership-card p {
+  line-height: 1.72;
+}
+
+.leadership-card .principal-quote,
+.leadership-card .leadership-quote {
+  font-family: var(--font-display, Georgia, serif);
+  font-style: italic;
+  margin-bottom: 14px;
+}
+
+/* Smooth expandable accordion container via CSS grid & max-height */
+.leadership-expandable-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: grid-template-rows 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.35s ease;
+}
+
+.leadership-expandable-wrap.is-expanded {
+  grid-template-rows: 1fr;
+  max-height: 1400px;
+  opacity: 1;
+}
+
+.leadership-expandable-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.leadership-expandable-inner p {
+  margin-top: 10px;
+  margin-bottom: 12px;
+}
+
+/* Toggle buttons */
+.leadership-expand-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  border-radius: 999px;
+  font-family: var(--font-ui, sans-serif);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 8px 18px;
+  transition: all 0.25s ease;
+  margin-top: 12px;
+  margin-bottom: 8px;
+  outline: none;
+  border: 1px solid transparent;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  width: auto;
+}
+
+.leadership-expand-btn .chevron-icon {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.leadership-expand-btn[aria-expanded="true"] .chevron-icon {
+  transform: rotate(180deg);
+}
+
+/* Wine Card Button Variant (Director's card) */
+.leadership-expand-btn-wine {
+  background: rgba(217, 184, 138, 0.12);
+  border-color: rgba(217, 184, 138, 0.35);
+  color: #F6E2C6;
+}
+
+.leadership-expand-btn-wine:hover,
+.leadership-expand-btn-wine:focus-visible {
+  background: rgba(217, 184, 138, 0.24);
+  border-color: rgba(217, 184, 138, 0.65);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+}
+
+/* Light Card Button Variant (Principal and Coordinator cards) */
+.leadership-expand-btn-light {
+  background: rgba(125, 29, 63, 0.06);
+  border-color: rgba(125, 29, 63, 0.22);
+  color: #7D1D3F;
+}
+
+.leadership-expand-btn-light:hover,
+.leadership-expand-btn-light:focus-visible {
+  background: #7D1D3F;
+  border-color: #7D1D3F;
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(125, 29, 63, 0.18);
+}
+
+@media (max-width: 768px) {
+  .leadership-expand-btn {
+    font-size: 0.78rem;
+    padding: 8px 16px;
+    width: 100%;
+    justify-content: center;
+  }
+}

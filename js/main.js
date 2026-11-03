@@ -1419,6 +1419,53 @@
     });
   }
 
+  
+  /* ==========================================================
+     Expandable Leadership Messages (Director, Principal, Coordinator)
+     ========================================================== */
+  function initLeadershipExpanders() {
+    const expandBtns = document.querySelectorAll('.leadership-expand-btn');
+    if (!expandBtns.length) return;
+
+    expandBtns.forEach(function (btn) {
+      if (btn._hasExpanderInit) return;
+      btn._hasExpanderInit = true;
+
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = btn.getAttribute('aria-controls');
+        let targetWrap = targetId ? document.getElementById(targetId) : null;
+        if (!targetWrap) {
+          const card = btn.closest('.leadership-card, .card');
+          if (card) {
+            targetWrap = card.querySelector('.leadership-expandable-wrap');
+          }
+        }
+        if (!targetWrap) return;
+
+        const isCurrentlyExpanded = btn.getAttribute('aria-expanded') === 'true';
+        const labelEl = btn.querySelector('.btn-label');
+
+        if (isCurrentlyExpanded) {
+          btn.setAttribute('aria-expanded', 'false');
+          targetWrap.classList.remove('is-expanded');
+          targetWrap.setAttribute('aria-hidden', 'true');
+          if (labelEl) labelEl.textContent = 'Read Full Message';
+        } else {
+          btn.setAttribute('aria-expanded', 'true');
+          targetWrap.classList.add('is-expanded');
+          targetWrap.setAttribute('aria-hidden', 'false');
+          if (labelEl) labelEl.textContent = 'Show Less';
+        }
+      });
+    });
+  }
+
+  initLeadershipExpanders();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLeadershipExpanders);
+  }
+
   });
 })();
 
