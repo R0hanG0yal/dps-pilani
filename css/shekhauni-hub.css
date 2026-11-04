@@ -15,9 +15,18 @@
   text-align: left !important;
 }
 
-/* Hide cluttering tagline from sticky top navbar brand */
-.dps-header .dps-brand-tagline {
-  display: none !important;
+.dps-brand-tagline {
+  font-family: var(--font-ui, 'Plus Jakarta Sans', sans-serif) !important;
+  font-size: 0.66rem !important;
+  font-weight: 600 !important;
+  color: var(--wine-700, #7D1D3F) !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+  font-style: italic !important;
+  margin-bottom: 2px !important;
+  display: block !important;
+  white-space: nowrap !important;
+  line-height: 1.15 !important;
 }
 
 .dps-brand-name {
