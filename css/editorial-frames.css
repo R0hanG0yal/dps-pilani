@@ -8611,11 +8611,9 @@ details.apple-expandable-item[open] > summary::after {
     font-weight: 400 !important;
   }
 
-  /* Leadership & Institutional Desk Messages: NEVER line-clamp; keep full readability and allow expandable reveal */
-  .leadership-card p,
-  .leadership-quote,
-  .principal-quote,
-  .card-wine p,
+  /* Leadership & Institutional Desk Messages: On mobile, quote clamps to 2 lines with 3 dots until expanded */
+  .leadership-card p:not(.leadership-quote),
+  .card-wine p:not(.leadership-quote),
   .leadership-expandable-wrap p {
     display: block !important;
     -webkit-line-clamp: unset !important;
@@ -8625,6 +8623,91 @@ details.apple-expandable-item[open] > summary::after {
     font-size: 0.92rem !important;
     line-height: 1.68 !important;
     margin-bottom: 12px !important;
+  }
+
+  .leadership-card .leadership-quote.quote-clamped,
+  .leadership-card .principal-quote.quote-clamped {
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: 0.94rem !important;
+    line-height: 1.65 !important;
+    margin-bottom: 6px !important;
+    cursor: pointer !important;
+  }
+
+  .leadership-card .leadership-quote.quote-expanded,
+  .leadership-card .principal-quote.quote-expanded {
+    display: block !important;
+    -webkit-box-orient: unset !important;
+    -webkit-line-clamp: unset !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+    font-size: 0.94rem !important;
+    line-height: 1.68 !important;
+    margin-bottom: 12px !important;
+    cursor: pointer !important;
+  }
+
+  /* Leadership 3-Dots Expand Button (Mobile Only) */
+  .leadership-quote-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .leadership-quote-dots-btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    background: rgba(217, 184, 138, 0.16);
+    border: 1px solid rgba(217, 184, 138, 0.45);
+    color: #F6E2C6;
+    padding: 3px 12px;
+    border-radius: 999px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.14em;
+    cursor: pointer;
+    margin-bottom: 14px;
+    transition: all 0.2s ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .leadership-director .leadership-quote-dots-btn {
+    background: rgba(217, 184, 138, 0.16);
+    border-color: rgba(217, 184, 138, 0.45);
+    color: #F6E2C6;
+  }
+
+  .leadership-director .leadership-quote-dots-btn:hover,
+  .leadership-director .leadership-quote-dots-btn:active {
+    background: rgba(217, 184, 138, 0.28);
+    color: #FFFFFF;
+    border-color: #D9B88A;
+  }
+
+  .leadership-principal .leadership-quote-dots-btn,
+  .leadership-coordinator .leadership-quote-dots-btn {
+    background: rgba(125, 29, 63, 0.08);
+    border-color: rgba(125, 29, 63, 0.28);
+    color: #7D1D3F;
+  }
+
+  .leadership-principal .leadership-quote-dots-btn:hover,
+  .leadership-principal .leadership-quote-dots-btn:active,
+  .leadership-coordinator .leadership-quote-dots-btn:hover,
+  .leadership-coordinator .leadership-quote-dots-btn:active {
+    background: rgba(125, 29, 63, 0.16);
+    color: #501328;
+    border-color: #7D1D3F;
   }
 
   /* House System Cards: Clean 2-line motto */
@@ -11801,4 +11884,18 @@ img[src*="coordinator.jpg"] {
 
 .dfb-logo-img {
   filter: brightness(1.2) drop-shadow(0 1px 4px rgba(217, 184, 138, 0.75)) !important;
+}
+
+/* Desktop: Never clamp leadership quotes and hide 3-dots button */
+@media (min-width: 769px) {
+  .leadership-quote-dots-btn {
+    display: none !important;
+  }
+  .leadership-card .leadership-quote {
+    display: block !important;
+    -webkit-line-clamp: unset !important;
+    -webkit-box-orient: unset !important;
+    overflow: visible !important;
+    cursor: default !important;
+  }
 }

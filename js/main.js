@@ -1504,11 +1504,9 @@
         e.preventDefault();
         const targetId = btn.getAttribute('aria-controls');
         let targetWrap = targetId ? document.getElementById(targetId) : null;
-        if (!targetWrap) {
-          const card = btn.closest('.leadership-card, .card');
-          if (card) {
-            targetWrap = card.querySelector('.leadership-expandable-wrap');
-          }
+        const card = btn.closest('.leadership-card, .card');
+        if (!targetWrap && card) {
+          targetWrap = card.querySelector('.leadership-expandable-wrap');
         }
         if (!targetWrap) return;
 
@@ -1525,14 +1523,86 @@
           targetWrap.classList.add('is-expanded');
           targetWrap.setAttribute('aria-hidden', 'false');
           if (labelEl) labelEl.textContent = 'Show Less';
+
+          // Also expand the 2-line quote if it was clamped
+          if (card) {
+            const quote = card.querySelector('.leadership-quote, .principal-quote');
+            const dotsBtn = card.querySelector('.leadership-quote-dots-btn');
+            if (quote) {
+              quote.classList.remove('quote-clamped');
+              quote.classList.add('quote-expanded');
+            }
+            if (dotsBtn) {
+              dotsBtn.setAttribute('aria-expanded', 'true');
+              dotsBtn.innerHTML = '<span class="dots-icon">&bull;&bull;&bull;</span><span class="dots-action" style="font-size:0.68rem;letter-spacing:0.02em;font-weight:600;margin-left:4px;">Less</span>';
+            }
+          }
+        }
+      });
+    });
+  }
+
+  /* ==========================================================
+     Mobile 2-Line Leadership Quote Expanders with 3-Dots Toggle
+     (Director, Principal, Coordinator)
+     ========================================================== */
+  function initLeadershipQuoteClamps() {
+    const quoteWraps = document.querySelectorAll('.leadership-quote-wrap');
+    if (!quoteWraps.length) return;
+
+    quoteWraps.forEach(function (wrap) {
+      if (wrap._hasQuoteClampInit) return;
+      wrap._hasQuoteClampInit = true;
+
+      const quote = wrap.querySelector('.leadership-quote, .principal-quote');
+      const dotsBtn = wrap.querySelector('.leadership-quote-dots-btn');
+      if (!quote) return;
+
+      function toggleQuote(forceExpand) {
+        const isClamped = quote.classList.contains('quote-clamped');
+        const expand = (typeof forceExpand === 'boolean') ? forceExpand : isClamped;
+
+        if (expand) {
+          quote.classList.remove('quote-clamped');
+          quote.classList.add('quote-expanded');
+          if (dotsBtn) {
+            dotsBtn.setAttribute('aria-expanded', 'true');
+            dotsBtn.innerHTML = '<span class="dots-icon">&bull;&bull;&bull;</span><span class="dots-action" style="font-size:0.68rem;letter-spacing:0.02em;font-weight:600;margin-left:4px;">Less</span>';
+          }
+        } else {
+          quote.classList.remove('quote-expanded');
+          quote.classList.add('quote-clamped');
+          if (dotsBtn) {
+            dotsBtn.setAttribute('aria-expanded', 'false');
+            dotsBtn.innerHTML = '<span class="dots-icon">&bull;&bull;&bull;</span>';
+          }
+        }
+      }
+
+      if (dotsBtn) {
+        dotsBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleQuote();
+        });
+      }
+
+      // Tapping clamped quote on mobile expands it
+      quote.addEventListener('click', function () {
+        if (window.innerWidth <= 768 && quote.classList.contains('quote-clamped')) {
+          toggleQuote(true);
         }
       });
     });
   }
 
   initLeadershipExpanders();
+  initLeadershipQuoteClamps();
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initLeadershipExpanders);
+    document.addEventListener('DOMContentLoaded', function () {
+      initLeadershipExpanders();
+      initLeadershipQuoteClamps();
+    });
   }
 
   });
