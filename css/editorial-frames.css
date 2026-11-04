@@ -9748,12 +9748,11 @@ details.apple-expandable-item[open] > summary::after {
     transform: translateX(2px) !important;
   }
 
-  /* Card Footer on Mobile (Two Clean Rounded Pills matching reference) */
+  /* Card Footer on Mobile (Menu modal utility bar - stacked cleanly for full readability) */
   .dps-mega-card-footer {
     display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: space-between !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
     gap: 10px !important;
     padding: 12px 14px 14px 14px !important;
     background: rgba(116, 25, 94, 0.03) !important;
@@ -9761,27 +9760,30 @@ details.apple-expandable-item[open] > summary::after {
   }
 
   .mega-badge-pill {
-    flex: 1 1 auto !important;
-    display: inline-flex !important;
+    width: 100% !important;
+    display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 5px !important;
-    background: rgba(255, 255, 255, 0.88) !important;
-    border: 1px solid rgba(217, 184, 138, 0.4) !important;
-    padding: 7px 10px !important;
-    border-radius: 100px !important;
-    font-size: 0.66rem !important;
-    font-weight: 700 !important;
+    text-align: center !important;
+    gap: 6px !important;
+    background: rgba(255, 255, 255, 0.94) !important;
+    border: 1px solid rgba(217, 184, 138, 0.45) !important;
+    padding: 7px 12px !important;
+    border-radius: 999px !important;
+    font-size: 0.65rem !important;
+    font-weight: 600 !important;
     color: #2E0815 !important;
     box-shadow: 0 2px 6px rgba(46, 8, 21, 0.04) !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+    box-sizing: border-box !important;
+    line-height: 1.35 !important;
+    white-space: normal !important;
   }
 
   .mega-footer-actions {
-    flex: 0 0 auto !important;
-    display: flex !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
   }
 
   .mega-portal-btn {
@@ -9789,16 +9791,31 @@ details.apple-expandable-item[open] > summary::after {
     align-items: center !important;
     justify-content: center !important;
     gap: 5px !important;
-    background: linear-gradient(135deg, rgba(145, 35, 75, 0.95) 0%, rgba(105, 22, 52, 0.98) 100%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.35) !important;
-    padding: 7px 14px !important;
-    border-radius: 100px !important;
+    padding: 9px 8px !important;
+    margin: 0 !important;
+    border-radius: 999px !important;
     font-size: 0.70rem !important;
     font-weight: 700 !important;
-    color: #FFFFFF !important;
     text-decoration: none !important;
-    box-shadow: 0 3px 10px rgba(125, 29, 63, 0.22) !important;
     white-space: nowrap !important;
+    box-sizing: border-box !important;
+    text-align: center !important;
+    width: 100% !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .mega-footer-actions a:first-child.mega-portal-btn {
+    background: rgba(125, 29, 63, 0.08) !important;
+    color: #7D1D3F !important;
+    border: 1px solid rgba(125, 29, 63, 0.28) !important;
+    box-shadow: none !important;
+  }
+
+  .mega-footer-actions a:last-child.mega-portal-btn {
+    background: linear-gradient(135deg, rgba(145, 35, 75, 0.96) 0%, rgba(105, 22, 52, 0.98) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 3px 10px rgba(125, 29, 63, 0.22) !important;
   }
 }
 
