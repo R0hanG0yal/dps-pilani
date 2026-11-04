@@ -103,13 +103,16 @@
     admissionStatus: 'Open for Nursery to Class XII',
     admissionLastDate: '31st March 2026',
     contact: {
-      phonePrimary: '+91 94140 37571',
-      phoneSecondary: '+91 94140 37572',
-      email: 'dpspilani@gmail.com',
-      whatsapp: '+91 94140 37571',
+      phoneOffice: '+91 98878 70013',
+      phonePrincipal: '+91 86195 79870',
+      phoneDirector: '+91 94148 83839',
+      phonePrimary: '+91 98878 70013',
+      phoneSecondary: '+91 86195 79870',
+      email: 'durgapublicschoolpilani@gmail.com',
+      whatsapp: '+91 98878 70013',
       timingsSummer: '8:00 AM – 2:00 PM',
       timingsWinter: '8:30 AM – 2:30 PM',
-      address: 'Loharu Road, Near Ganesh Mandir, Pilani, Rajasthan 333031'
+      address: 'Near Ganesh Temple, Loharu Road, Pilani, Rajasthan 333031'
     },
     metrics: {
       legacyYears: '20+',
@@ -119,7 +122,7 @@
     },
     noticeBanner: {
       enabled: false,
-      message: 'Admissions Open for Session 2026–27 (Nursery to Class XII) | Merit Scholarships Available | Helpline: +91 94140 37571',
+      message: 'Admissions Open for Session 2026–27 (Nursery to Class XII) | Merit Scholarships Available | Helpline: +91 98878 70013',
       link: 'admissions.html',
       theme: 'theme-wine',
       marquee: false
@@ -526,6 +529,24 @@
     },
 
     init: function () {
+      // Auto-migrate legacy phone and email in stored config
+      try {
+        const rawCfg = localStorage.getItem('dps_site_config');
+        if (rawCfg && (rawCfg.includes('94140') || rawCfg.includes('dpspilani@gmail.com') || rawCfg.includes('1596'))) {
+          const parsed = JSON.parse(rawCfg);
+          if (parsed.contact) {
+            parsed.contact.phoneOffice = '+91 98878 70013';
+            parsed.contact.phonePrincipal = '+91 86195 79870';
+            parsed.contact.phoneDirector = '+91 94148 83839';
+            parsed.contact.phonePrimary = '+91 98878 70013';
+            parsed.contact.phoneSecondary = '+91 86195 79870';
+            parsed.contact.whatsapp = '+91 98878 70013';
+            parsed.contact.email = 'durgapublicschoolpilani@gmail.com';
+            parsed.contact.address = 'Near Ganesh Temple, Loharu Road, Pilani, Rajasthan 333031';
+            localStorage.setItem('dps_site_config', JSON.stringify(parsed));
+          }
+        }
+      } catch (e) {}
       this.loadState();
       this.bindEvents();
       this.checkAuth();
@@ -1312,8 +1333,11 @@
       document.getElementById('setAffiliation').value = cfg.affiliationNo;
       document.getElementById('setSession').value = cfg.sessionYear;
       document.getElementById('setAdmissionStatus').value = cfg.admissionStatus;
-      document.getElementById('setPhonePrimary').value = cfg.contact.phonePrimary;
-      document.getElementById('setPhoneSecondary').value = cfg.contact.phoneSecondary;
+      if (document.getElementById('setPhoneOffice')) document.getElementById('setPhoneOffice').value = cfg.contact.phoneOffice || cfg.contact.phonePrimary || '+91 98878 70013';
+      if (document.getElementById('setPhonePrincipal')) document.getElementById('setPhonePrincipal').value = cfg.contact.phonePrincipal || cfg.contact.phoneSecondary || '+91 86195 79870';
+      if (document.getElementById('setPhoneDirector')) document.getElementById('setPhoneDirector').value = cfg.contact.phoneDirector || '+91 94148 83839';
+      if (document.getElementById('setPhonePrimary')) document.getElementById('setPhonePrimary').value = cfg.contact.phoneOffice || cfg.contact.phonePrimary || '+91 98878 70013';
+      if (document.getElementById('setPhoneSecondary')) document.getElementById('setPhoneSecondary').value = cfg.contact.phonePrincipal || cfg.contact.phoneSecondary || '+91 86195 79870';
       document.getElementById('setEmail').value = cfg.contact.email;
       document.getElementById('setWhatsapp').value = cfg.contact.whatsapp;
       document.getElementById('setTimingsSummer').value = cfg.contact.timingsSummer;
@@ -1331,8 +1355,14 @@
       this.state.config.affiliationNo = document.getElementById('setAffiliation').value;
       this.state.config.sessionYear = document.getElementById('setSession').value;
       this.state.config.admissionStatus = document.getElementById('setAdmissionStatus').value;
-      this.state.config.contact.phonePrimary = document.getElementById('setPhonePrimary').value;
-      this.state.config.contact.phoneSecondary = document.getElementById('setPhoneSecondary').value;
+      const offVal = (document.getElementById('setPhoneOffice')?.value || document.getElementById('setPhonePrimary')?.value || '+91 98878 70013').trim();
+      const prinVal = (document.getElementById('setPhonePrincipal')?.value || document.getElementById('setPhoneSecondary')?.value || '+91 86195 79870').trim();
+      const dirVal = (document.getElementById('setPhoneDirector')?.value || '+91 94148 83839').trim();
+      this.state.config.contact.phoneOffice = offVal;
+      this.state.config.contact.phonePrincipal = prinVal;
+      this.state.config.contact.phoneDirector = dirVal;
+      this.state.config.contact.phonePrimary = offVal;
+      this.state.config.contact.phoneSecondary = prinVal;
       this.state.config.contact.email = document.getElementById('setEmail').value;
       this.state.config.contact.whatsapp = document.getElementById('setWhatsapp').value;
       this.state.config.contact.timingsSummer = document.getElementById('setTimingsSummer').value;
