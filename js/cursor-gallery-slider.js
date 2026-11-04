@@ -12,7 +12,7 @@
   const DEFAULTS = {
     durationMs: 600,
     ease: 'cubic-bezier(0.42, 0, 0.58, 1)',
-    imageFit: 'cover',
+    imageFit: 'frame',
     cursorSize: 58,
     cursorBg: true,
     cursorBackground: 'rgba(255, 255, 255, 0.94)',
@@ -179,8 +179,17 @@
   };
 
   CursorGallerySlider.prototype.createSlideElement = function (slideData) {
+    const isContain = this.opts.imageFit === 'contain';
+    const isCover = this.opts.imageFit === 'cover';
     const wrapEl = document.createElement('div');
-    wrapEl.className = 'cgs-slide-content' + (this.opts.imageFit === 'contain' ? ' cgs-fit-contain' : '');
+
+    if (isContain) {
+      wrapEl.className = 'cgs-slide-content cgs-fit-contain';
+    } else if (isCover) {
+      wrapEl.className = 'cgs-slide-content cgs-fit-cover';
+    } else {
+      wrapEl.className = 'cgs-slide-content cgs-slide-framed';
+    }
 
     if (!slideData || !slideData.image) {
       const empty = document.createElement('div');
@@ -190,13 +199,54 @@
       return wrapEl;
     }
 
+    if (isCover) {
+      const img = document.createElement('img');
+      img.className = 'cgs-slide-img cgs-img-cover';
+      img.src = slideData.image;
+      img.alt = slideData.title || 'Durga Public School Archival Photo';
+      img.loading = 'lazy';
+      img.draggable = false;
+      wrapEl.appendChild(img);
+      return wrapEl;
+    }
+
+    // 1. Ambient blurred backdrop using the photo's colors
+    const backdrop = document.createElement('div');
+    backdrop.className = 'cgs-ambient-backdrop';
+    backdrop.style.backgroundImage = 'url("' + slideData.image + '")';
+    wrapEl.appendChild(backdrop);
+
+    // 2. Ambient depth & vignette overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'cgs-ambient-overlay';
+    wrapEl.appendChild(overlay);
+
+    // 3. Central Architectural Photo Frame (Uncropped full aspect-ratio presentation)
+    const frame = document.createElement('div');
+    frame.className = 'cgs-photo-frame';
+
     const img = document.createElement('img');
     img.className = 'cgs-slide-img';
     img.src = slideData.image;
     img.alt = slideData.title || 'Durga Public School Archival Photo';
     img.loading = 'lazy';
     img.draggable = false;
-    wrapEl.appendChild(img);
+
+    function applyRatio() {
+      if (img.naturalWidth && img.naturalHeight) {
+        frame.style.aspectRatio = img.naturalWidth + ' / ' + img.naturalHeight;
+      }
+    }
+
+    if (img.complete && img.naturalWidth) {
+      applyRatio();
+    } else {
+      img.addEventListener('load', applyRatio, { once: true });
+    }
+
+    frame.appendChild(img);
+
+    wrapEl.appendChild(frame);
 
     return wrapEl;
   };
@@ -599,7 +649,7 @@ function initDpsCursorGallery() {
 
     const slider = new CursorGallerySlider(host, {
       slides: dataPool,
-      imageFit: chapterKey === 'news-cuttings' ? 'contain' : 'cover',
+      imageFit: chapterKey === 'news-cuttings' ? 'contain' : 'frame',
       durationMs: 600,
       cursorBg: true,
       cursorBackground: 'rgba(255, 255, 255, 0.94)',

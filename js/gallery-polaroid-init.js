@@ -241,7 +241,7 @@
         } else if (typeof CursorGallerySlider !== 'undefined') {
           sliderInstance = new CursorGallerySlider(stageEl, {
             slides: slides,
-            imageFit: conf.containFit ? 'contain' : 'cover',
+            imageFit: conf.containFit ? 'contain' : 'frame',
             durationMs: 600,
             autoplay: 4500,
             borderRadius: 18,

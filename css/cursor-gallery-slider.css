@@ -121,53 +121,110 @@
 }
 
 .cgs-slide-content {
-
   position: relative;
-
   width: 100%;
-
   height: 100%;
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
+  background: #12030A;
+  overflow: hidden;
+}
 
-  background: #0E0307;
+/* Ambient Blurred Backdrop ("rest could be the background") */
+.cgs-ambient-backdrop {
+  position: absolute;
+  inset: -30px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(36px) brightness(0.40) saturate(1.35);
+  -webkit-filter: blur(36px) brightness(0.40) saturate(1.35);
+  transform: scale(1.15);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.88;
+}
 
+/* Ambient Depth & Vignette Overlay */
+.cgs-ambient-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(30, 6, 17, 0.22) 0%, rgba(14, 3, 7, 0.82) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Architectural Photo Frame ("make a frame in which you can put the picture and rest could be the background") */
+.cgs-photo-frame {
+  position: relative;
+  z-index: 3;
+  width: fit-content;
+  height: calc(100% - 40px);
+  max-width: calc(100% - 100px);
+  max-height: calc(100% - 40px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  box-shadow:
+    0 24px 60px -12px rgba(0, 0, 0, 0.75),
+    0 0 0 1px rgba(255, 255, 255, 0.18),
+    0 0 0 4px rgba(217, 184, 138, 0.25);
+  background: rgba(14, 3, 7, 0.45);
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+}
+
+.cgs-photo-frame:hover {
+  transform: scale(1.012);
+  box-shadow:
+    0 28px 70px -10px rgba(0, 0, 0, 0.85),
+    0 0 0 1px rgba(255, 255, 255, 0.28),
+    0 0 0 5px rgba(217, 184, 138, 0.4);
 }
 
 .cgs-slide-img {
-
   width: 100%;
-
   height: 100%;
-
-  object-fit: cover;
-
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
   display: block;
-
-  pointer-events: none;
-
+  border-radius: 10px;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
-.cgs-fit-contain {
+/* Fallback cover mode if explicitly requested */
+.cgs-fit-cover .cgs-slide-img,
+.cgs-img-cover {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 0 !important;
+}
 
+/* News Cuttings Specific Overrides */
+.cgs-fit-contain .cgs-ambient-backdrop {
+  opacity: 0.10;
+}
+
+.cgs-fit-contain .cgs-ambient-overlay {
   background: radial-gradient(circle at center, #FDFBF7 0%, #F5EFE4 70%, #E9DFC9 100%) !important;
+}
 
+.cgs-fit-contain .cgs-photo-frame {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  max-width: calc(100% - 40px);
+  max-height: calc(100% - 30px);
+  height: 100%;
 }
 
 .cgs-fit-contain .cgs-slide-img {
-
-  object-fit: contain;
-
-  padding: 16px 20px 72px 20px;
-
-  box-sizing: border-box;
-
   filter: drop-shadow(0 10px 24px rgba(46, 8, 21, 0.18));
-
 }
 
 .cgs-slide-empty {
@@ -781,4 +838,33 @@
 }
 .hero-spotlight-stage .cgs-dots {
   display: none !important;
+}
+
+@media (max-width: 992px) {
+  .cgs-photo-frame {
+    max-width: calc(100% - 60px);
+    max-height: calc(100% - 36px);
+    height: calc(100% - 36px);
+  }
+}
+
+@media (max-width: 768px) {
+  .cgs-photo-frame {
+    max-width: calc(100% - 24px) !important;
+    max-height: calc(100% - 24px) !important;
+    height: calc(100% - 24px) !important;
+    border-radius: 12px;
+    box-shadow:
+      0 12px 30px -8px rgba(0, 0, 0, 0.65),
+      0 0 0 1px rgba(255, 255, 255, 0.16),
+      0 0 0 3px rgba(217, 184, 138, 0.22) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .cgs-photo-frame {
+    max-width: calc(100% - 16px) !important;
+    max-height: calc(100% - 16px) !important;
+    height: calc(100% - 16px) !important;
+  }
 }
