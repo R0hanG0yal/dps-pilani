@@ -36,7 +36,7 @@
 
   min-height: 440px;
 
-  background: #1A050E;
+  background: radial-gradient(circle at center, #FDFBF7 0%, #F5EFE4 70%, #E9DFC9 100%);
 
   overflow: hidden;
 
@@ -54,11 +54,11 @@
 
   box-shadow:
 
-    0 16px 40px -12px rgba(46, 8, 21, 0.35),
+    0 16px 40px -12px rgba(46, 8, 21, 0.12),
 
-    0 2px 10px rgba(0, 0, 0, 0.08);
+    0 2px 10px rgba(0, 0, 0, 0.04);
 
-  border: 1px solid rgba(217, 184, 138, 0.35);
+  border: 1px solid rgba(217, 184, 138, 0.45);
 
 }
 
@@ -127,31 +127,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #12030A;
+  background: radial-gradient(circle at center, #FDFBF7 0%, #F5EFE4 70%, #E9DFC9 100%);
   overflow: hidden;
 }
 
-/* Ambient Blurred Backdrop ("rest could be the background") */
-.cgs-ambient-backdrop {
-  position: absolute;
-  inset: -30px;
-  background-size: cover;
-  background-position: center;
-  filter: blur(36px) brightness(0.40) saturate(1.35);
-  -webkit-filter: blur(36px) brightness(0.40) saturate(1.35);
-  transform: scale(1.15);
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.88;
-}
-
-/* Ambient Depth & Vignette Overlay */
+/* Ambient Backdrop and Overlay disabled in favor of parchment theme */
+.cgs-ambient-backdrop,
 .cgs-ambient-overlay {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, rgba(30, 6, 17, 0.22) 0%, rgba(14, 3, 7, 0.82) 100%);
-  pointer-events: none;
-  z-index: 2;
+  display: none !important;
 }
 
 /* Architectural Photo Frame ("make a frame in which you can put the picture and rest could be the background") */
@@ -167,10 +150,11 @@
   justify-content: center;
   border-radius: 14px;
   box-shadow:
-    0 24px 60px -12px rgba(0, 0, 0, 0.75),
-    0 0 0 1px rgba(255, 255, 255, 0.18),
-    0 0 0 4px rgba(217, 184, 138, 0.25);
-  background: rgba(14, 3, 7, 0.45);
+    0 18px 44px -8px rgba(46, 8, 21, 0.20),
+    0 4px 14px rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(255, 255, 255, 0.85),
+    0 0 0 3px rgba(217, 184, 138, 0.40);
+  background: #FFFFFF;
   overflow: hidden;
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
 }
@@ -178,9 +162,10 @@
 .cgs-photo-frame:hover {
   transform: scale(1.012);
   box-shadow:
-    0 28px 70px -10px rgba(0, 0, 0, 0.85),
-    0 0 0 1px rgba(255, 255, 255, 0.28),
-    0 0 0 5px rgba(217, 184, 138, 0.4);
+    0 24px 52px -6px rgba(46, 8, 21, 0.24),
+    0 6px 18px rgba(0, 0, 0, 0.08),
+    0 0 0 1px #FFFFFF,
+    0 0 0 4px rgba(217, 184, 138, 0.60);
 }
 
 .cgs-slide-img {
@@ -206,11 +191,7 @@
 }
 
 /* News Cuttings Specific Overrides */
-.cgs-fit-contain .cgs-ambient-backdrop {
-  opacity: 0.10;
-}
-
-.cgs-fit-contain .cgs-ambient-overlay {
+.cgs-fit-contain {
   background: radial-gradient(circle at center, #FDFBF7 0%, #F5EFE4 70%, #E9DFC9 100%) !important;
 }
 
@@ -855,9 +836,9 @@
     height: calc(100% - 24px) !important;
     border-radius: 12px;
     box-shadow:
-      0 12px 30px -8px rgba(0, 0, 0, 0.65),
-      0 0 0 1px rgba(255, 255, 255, 0.16),
-      0 0 0 3px rgba(217, 184, 138, 0.22) !important;
+      0 12px 28px -6px rgba(46, 8, 21, 0.16),
+      0 0 0 1px rgba(255, 255, 255, 0.85),
+      0 0 0 2px rgba(217, 184, 138, 0.35) !important;
   }
 }
 

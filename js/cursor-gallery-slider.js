@@ -210,18 +210,7 @@
       return wrapEl;
     }
 
-    // 1. Ambient blurred backdrop using the photo's colors
-    const backdrop = document.createElement('div');
-    backdrop.className = 'cgs-ambient-backdrop';
-    backdrop.style.backgroundImage = 'url("' + slideData.image + '")';
-    wrapEl.appendChild(backdrop);
-
-    // 2. Ambient depth & vignette overlay
-    const overlay = document.createElement('div');
-    overlay.className = 'cgs-ambient-overlay';
-    wrapEl.appendChild(overlay);
-
-    // 3. Central Architectural Photo Frame (Uncropped full aspect-ratio presentation)
+    // Central Architectural Photo Frame (Uncropped full aspect-ratio presentation)
     const frame = document.createElement('div');
     frame.className = 'cgs-photo-frame';
 
