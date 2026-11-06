@@ -32,4 +32,4 @@ Allow: /
 User-agent: ClaudeBot
 Allow: /
 
-Sitemap: https://durgapublicschoolpilani.edu.in/sitemap.xml
+Sitemap: https://durgapublicschoolpilani.in/sitemap.xml
